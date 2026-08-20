@@ -1,0 +1,154 @@
+'use client';
+
+import React from 'react';
+import Image from 'next/image';
+import { CivicIssue } from '@/lib/types';
+import { 
+  MapPin, 
+  Clock, 
+  AlertTriangle, 
+  CheckCircle2, 
+  ThumbsUp, 
+  ArrowRight,
+  ShieldAlert,
+  Sparkles
+} from 'lucide-react';
+
+interface IssueCardProps {
+  issue: CivicIssue;
+  onSelect: (issue: CivicIssue) => void;
+  onUpvote?: (e: React.MouseEvent, ticketId: string) => void;
+}
+
+export function IssueCard({ issue, onSelect, onUpvote }: IssueCardProps) {
+  const getStatusBadge = (status: CivicIssue['status']) => {
+    switch (status) {
+      case 'reported':
+        return <span className="status-badge status-reported">Reported</span>;
+      case 'acknowledged':
+        return <span className="status-badge status-acknowledged">Acknowledged</span>;
+      case 'in_progress':
+        return <span className="status-badge status-in_progress">In Progress</span>;
+      case 'resolved':
+        return <span className="status-badge status-resolved">Resolved</span>;
+      case 'escalated':
+        return <span className="status-badge status-escalated">Escalated</span>;
+    }
+  };
+
+  const getSeverityBadge = (severity: CivicIssue['severity']) => {
+    switch (severity) {
+      case 'critical':
+        return <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-red-600 text-white uppercase tracking-wider">Critical</span>;
+      case 'high':
+        return <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-orange-100 text-orange-800 border border-orange-200">High Severity</span>;
+      case 'medium':
+        return <span className="px-2 py-0.5 rounded text-[10px] font-medium bg-amber-50 text-amber-700 border border-amber-200">Medium</span>;
+      case 'low':
+        return <span className="px-2 py-0.5 rounded text-[10px] font-medium bg-slate-100 text-slate-600 border border-slate-200">Low</span>;
+    }
+  };
+
+  return (
+    <div 
+      onClick={() => onSelect(issue)}
+      className={`bg-white rounded-xl border transition-all duration-200 hover:shadow-xl hover:-translate-y-0.5 cursor-pointer overflow-hidden flex flex-col justify-between ${
+        issue.emergency ? 'border-red-300 shadow-red-100/50 emergency-pulse' : 'border-slate-200 shadow-sm'
+      }`}
+    >
+      <div>
+        {/* Card Header & Photo */}
+        <div className="relative h-44 w-full bg-slate-100 overflow-hidden">
+          {issue.photoUrl ? (
+            <img
+              src={issue.photoUrl}
+              alt={issue.title}
+              className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+              loading="lazy"
+            />
+          ) : (
+            <div className="w-full h-full flex flex-col items-center justify-center bg-slate-100 text-slate-400">
+              <Sparkles className="w-8 h-8 mb-1 text-slate-300" />
+              <span className="text-[10px] font-semibold text-slate-400">Civic Issue Ticket</span>
+            </div>
+          )}
+
+          {/* Emergency Tag */}
+          {issue.emergency && (
+            <div className="absolute top-3 left-3 bg-red-600 text-white px-2.5 py-1 rounded-md text-[10px] font-extrabold uppercase tracking-wider flex items-center gap-1 shadow-lg">
+              <ShieldAlert className="w-3.5 h-3.5" />
+              Emergency Hazard
+            </div>
+          )}
+
+          {/* Status Overlay */}
+          <div className="absolute top-3 right-3 shadow-md">
+            {getStatusBadge(issue.status)}
+          </div>
+
+          {/* AI Category Tag Overlay */}
+          <div className="absolute bottom-3 left-3 bg-slate-900/80 backdrop-blur-md text-slate-100 text-[11px] font-semibold px-2.5 py-1 rounded-md flex items-center gap-1.5 border border-slate-700">
+            <Sparkles className="w-3 h-3 text-blue-400" />
+            <span>{issue.category}</span>
+          </div>
+        </div>
+
+        {/* Card Body */}
+        <div className="p-4 space-y-3">
+          <div className="flex items-center justify-between gap-2">
+            <span className="text-[11px] font-mono font-bold text-slate-400 uppercase">
+              {issue.ticketNumber}
+            </span>
+            {getSeverityBadge(issue.severity)}
+          </div>
+
+          <h3 className="text-sm font-bold text-slate-900 line-clamp-1 hover:text-blue-600 transition-colors">
+            {issue.title}
+          </h3>
+
+          <p className="text-xs text-slate-600 line-clamp-2 leading-relaxed">
+            {issue.description}
+          </p>
+
+          {/* Location */}
+          <div className="flex items-center gap-1.5 text-xs text-slate-500 pt-1 border-t border-slate-100">
+            <MapPin className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+            <span className="truncate">{issue.location.address}</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Card Footer */}
+      <div className="px-4 py-3 bg-slate-50 border-t border-slate-100 flex items-center justify-between text-xs">
+        <div className="flex items-center gap-1 text-slate-500">
+          <Clock className="w-3.5 h-3.5 text-slate-400" />
+          <span>
+            {issue.status === 'resolved' 
+              ? 'Resolved' 
+              : `${issue.slaHoursRemaining}h SLA remaining`}
+          </span>
+        </div>
+
+        <div className="flex items-center gap-3">
+          {onUpvote && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onUpvote(e, issue.ticketNumber);
+              }}
+              className="flex items-center gap-1 text-slate-600 hover:text-blue-600 font-semibold px-2 py-1 rounded hover:bg-white transition-colors"
+              title="Upvote/confirm this issue"
+            >
+              <ThumbsUp className="w-3.5 h-3.5 text-blue-500" />
+              <span>{issue.upvotesCount}</span>
+            </button>
+          )}
+
+          <span className="text-blue-600 font-bold text-xs flex items-center gap-0.5 group-hover:translate-x-0.5 transition-transform">
+            Details <ArrowRight className="w-3.5 h-3.5" />
+          </span>
+        </div>
+      </div>
+    </div>
+  );
+}
