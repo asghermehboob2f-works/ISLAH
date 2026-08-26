@@ -1,5 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Black+Ops+One&family=Unbounded:wght@700;800;900&display=swap');
 @import "tailwindcss";
 @import "leaflet/dist/leaflet.css";
+
+.brand-font {
+  font-family: 'Black Ops One', cursive, sans-serif;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+}
 
 @layer base {
   :root {

@@ -2,6 +2,7 @@
 
 import React, { useState, Suspense } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useApp } from '@/context/AppContext';
 import { 
@@ -53,8 +54,8 @@ function LoginContent() {
       
       {/* Brand Header */}
       <div className="text-center space-y-2">
-        <div className="w-12 h-12 rounded-2xl bg-blue-600 flex items-center justify-center text-white mx-auto shadow-lg shadow-blue-600/30">
-          <ShieldCheck className="w-7 h-7 stroke-[2.2]" />
+        <div className="relative w-14 h-14 flex items-center justify-center mx-auto shrink-0">
+          <Image src="/logo.png?v=3" alt="ISLAH Logo" width={56} height={56} className="w-full h-full object-contain" unoptimized />
         </div>
         <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">
           Welcome Back

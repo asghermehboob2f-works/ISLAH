@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { ShieldCheck, ArrowUpRight, Activity, PhoneCall, Heart } from 'lucide-react';
 
 export function Footer() {
@@ -12,14 +13,14 @@ export function Footer() {
           
           {/* Brand Col */}
           <div className="lg:col-span-2 space-y-4">
-            <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-xl bg-blue-600 flex items-center justify-center text-white shadow-lg shadow-blue-600/30">
-                <ShieldCheck className="w-5 h-5 stroke-[2.2]" />
+            <Link href="/" className="inline-flex items-center gap-3 focus:outline-none">
+              <div className="relative w-10 h-10 flex items-center justify-center shrink-0">
+                <Image src="/logo.png?v=3" alt="ISLAH Logo" width={40} height={40} className="w-full h-full object-contain" unoptimized />
               </div>
-              <span className="text-xl font-bold tracking-tight text-white">
+              <span className="brand-font text-2xl font-normal uppercase tracking-[0.1em] leading-none translate-y-[2.5px] bg-gradient-to-r from-emerald-400 via-teal-200 to-white bg-clip-text text-transparent">
                 ISLAH
               </span>
-            </div>
+            </Link>
             <p className="text-xs text-slate-400 max-w-sm leading-relaxed">
               ISLAH is a modern civic technology infrastructure platform empowering citizens to report local issues in seconds and enabling municipal departments to transparently track, resolve, and verify them.
             </p>

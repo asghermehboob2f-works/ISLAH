@@ -2,6 +2,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import { useApp } from '@/context/AppContext';
 import { 
@@ -81,21 +82,13 @@ export function Navbar() {
           
           {/* 1. Left: Logo & Brand Identity */}
           <div className="flex items-center shrink-0 z-10">
-            <Link href="/" className="flex items-center gap-2.5 group focus:outline-none">
-              <div className="w-9 h-9 rounded-xl bg-blue-600 flex items-center justify-center text-white shadow-md shadow-blue-600/30 group-hover:scale-105 transition-transform">
-                <ShieldCheck className="w-5 h-5 stroke-[2.2]" />
+            <Link href="/" className="flex items-center gap-3 focus:outline-none">
+              <div className="relative w-10 h-10 flex items-center justify-center shrink-0">
+                <Image src="/logo.png?v=3" alt="ISLAH Logo" width={40} height={40} className="w-full h-full object-contain" unoptimized />
               </div>
-              <div className="flex flex-col">
-                <span className="text-lg font-extrabold tracking-tight text-white flex items-center gap-1.5 leading-none">
-                  ISLAH
-                  <span className="text-[9px] font-bold uppercase tracking-wider bg-blue-500/20 text-blue-300 border border-blue-400/30 px-1.5 py-0.5 rounded font-mono">
-                    Civic Platform
-                  </span>
-                </span>
-                <span className="text-[10px] text-slate-400 font-medium hidden sm:inline leading-tight mt-0.5">
-                  See it. Snap it. Solved.
-                </span>
-              </div>
+              <span className="brand-font text-2xl font-normal uppercase tracking-[0.1em] leading-none translate-y-[2.5px] bg-gradient-to-r from-emerald-400 via-teal-200 to-white bg-clip-text text-transparent">
+                ISLAH
+              </span>
             </Link>
           </div>
 
