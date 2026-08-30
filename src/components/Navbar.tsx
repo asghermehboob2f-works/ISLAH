@@ -5,16 +5,15 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import { useApp } from '@/context/AppContext';
-import { useTheme } from '@/context/ThemeContext';
-import { 
-  PlusCircle, 
-  MapPin, 
-  Search, 
-  User, 
-  Briefcase, 
-  BarChart3, 
-  ShieldCheck, 
-  Menu, 
+import {
+  PlusCircle,
+  MapPin,
+  Search,
+  User,
+  Briefcase,
+  BarChart3,
+  ShieldCheck,
+  Menu,
   X,
   FileText,
   Info,
@@ -22,16 +21,13 @@ import {
   LogOut,
   LogIn,
   Trees,
-  Leaf,
-  Sun,
-  Moon
+  Leaf
 } from 'lucide-react';
 
 export function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
   const { user, activeRole, logout, issues } = useApp();
-  const { theme, toggleTheme } = useTheme();
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
@@ -85,7 +81,7 @@ export function Navbar() {
     <header className="sticky top-0 z-50 w-full bg-slate-950/90 backdrop-blur-md border-b border-slate-800 text-white shadow-md font-sans transition-all">
       <div className="w-full max-w-[1800px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 relative">
         <div className="flex items-center justify-between h-16">
-          
+
           {/* 1. Left: Logo & Brand Identity */}
           <div className="flex items-center shrink-0 z-10">
             <Link href="/" className="flex items-center gap-3 focus:outline-none">
@@ -108,11 +104,10 @@ export function Navbar() {
                   <Link
                     key={link.href}
                     href={link.href}
-                    className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all ${
-                      isActive
+                    className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all ${isActive
                         ? 'bg-blue-600 text-white shadow-sm'
                         : 'text-slate-300 hover:text-white hover:bg-slate-800'
-                    }`}
+                      }`}
                   >
                     <Icon className="w-3.5 h-3.5" />
                     {link.name}
@@ -124,7 +119,7 @@ export function Navbar() {
 
           {/* 3. Right: Search + Report Issue CTA + Click-Driven User Login */}
           <div className="flex items-center gap-2.5 sm:gap-3 shrink-0 z-10">
-            
+
             {/* Expandable Search Input / Button */}
             <div className="relative flex items-center">
               {searchOpen ? (
@@ -158,19 +153,6 @@ export function Navbar() {
               )}
             </div>
 
-            {/* Theme Mode Toggle (Dark / Light) */}
-            <button
-              onClick={toggleTheme}
-              className="p-2 text-slate-300 hover:text-white bg-slate-900 hover:bg-slate-800 rounded-xl border border-slate-800 transition-colors flex items-center justify-center shrink-0"
-              title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
-            >
-              {theme === 'dark' ? (
-                <Sun className="w-4 h-4 text-amber-400" />
-              ) : (
-                <Moon className="w-4 h-4 text-sky-400" />
-              )}
-            </button>
-
             {/* Primary Action: Report Issue Button */}
             <Link
               href={user ? '/report' : '/login?returnUrl=/report'}
@@ -189,16 +171,15 @@ export function Navbar() {
                     activeRole === 'admin'
                       ? '/admin'
                       : activeRole === 'staff'
-                      ? '/department/dashboard'
-                      : '/dashboard'
+                        ? '/department/dashboard'
+                        : '/dashboard'
                   }
-                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold border transition-all ${
-                    activeRole === 'admin'
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold border transition-all ${activeRole === 'admin'
                       ? 'bg-purple-950/80 border-purple-500/50 text-purple-300 hover:bg-purple-900'
                       : activeRole === 'staff'
-                      ? 'bg-amber-950/80 border-amber-500/50 text-amber-300 hover:bg-amber-900'
-                      : 'bg-blue-950/80 border-blue-500/50 text-blue-300 hover:bg-blue-900'
-                  }`}
+                        ? 'bg-amber-950/80 border-amber-500/50 text-amber-300 hover:bg-amber-900'
+                        : 'bg-blue-950/80 border-blue-500/50 text-blue-300 hover:bg-blue-900'
+                    }`}
                 >
                   {activeRole === 'admin' ? (
                     <Shield className="w-3.5 h-3.5 text-purple-400 shrink-0" />
@@ -238,7 +219,7 @@ export function Navbar() {
                     <div className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 px-3 py-1.5">
                       Select Access Portal
                     </div>
-                    
+
                     <Link
                       href="/login"
                       onClick={() => setLoginDropdownOpen(false)}
@@ -296,34 +277,16 @@ export function Navbar() {
                   key={link.href}
                   href={link.href}
                   onClick={() => setMobileMenuOpen(false)}
-                  className={`flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-colors ${
-                    isActive
+                  className={`flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-colors ${isActive
                       ? 'bg-blue-600 text-white'
                       : 'text-slate-300 hover:bg-slate-900'
-                  }`}
+                    }`}
                 >
                   <Icon className="w-4 h-4 text-blue-400" />
                   {link.name}
                 </Link>
               );
             })}
-
-            <button
-              onClick={toggleTheme}
-              className="w-full text-left flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:bg-slate-900 transition-colors"
-            >
-              {theme === 'dark' ? (
-                <>
-                  <Sun className="w-4 h-4 text-amber-400" />
-                  <span>Switch to Light Mode</span>
-                </>
-              ) : (
-                <>
-                  <Moon className="w-4 h-4 text-sky-400" />
-                  <span>Switch to Dark Mode</span>
-                </>
-              )}
-            </button>
 
             {user ? (
               <div className="pt-2 border-t border-slate-800 space-y-1">
@@ -332,8 +295,8 @@ export function Navbar() {
                     activeRole === 'admin'
                       ? '/admin'
                       : activeRole === 'staff'
-                      ? '/department/dashboard'
-                      : '/dashboard'
+                        ? '/department/dashboard'
+                        : '/dashboard'
                   }
                   onClick={() => setMobileMenuOpen(false)}
                   className="flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-xs font-bold text-blue-300 bg-slate-900 border border-slate-800"

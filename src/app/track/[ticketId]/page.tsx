@@ -5,18 +5,16 @@ import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { useApp } from '@/context/AppContext';
 import { formatDateTime } from '@/lib/dateUtils';
-import { 
-  ShieldCheck, 
-  MapPin, 
-  Clock, 
-  CheckCircle2, 
-  AlertTriangle, 
-  ArrowLeft, 
-  FileText, 
+import {
+  ShieldCheck,
+  MapPin,
+  Clock,
+  CheckCircle2,
+  AlertTriangle,
+  ArrowLeft,
+  FileText,
   Building,
-  Sparkles,
-  Check,
-  XCircle
+  Sparkles
 } from 'lucide-react';
 import { TimelineEvent } from '@/lib/types';
 
@@ -44,7 +42,7 @@ export default function PublicTicketTrackerPage() {
 
   return (
     <div className="w-full max-w-5xl xl:max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 py-10 space-y-8 font-sans">
-      
+
       {/* Top Header */}
       <div className="flex items-center justify-between border-b border-slate-200 pb-4">
         <Link href="/my-reports" className="text-xs font-bold text-slate-600 hover:text-slate-900 flex items-center gap-1">
@@ -58,7 +56,7 @@ export default function PublicTicketTrackerPage() {
 
       {/* Ticket Details Body */}
       <div className="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 space-y-6 shadow-sm">
-        
+
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-4">
           <div>
             <span className="text-xs font-extrabold text-blue-600 uppercase tracking-wider">
@@ -74,27 +72,11 @@ export default function PublicTicketTrackerPage() {
           </div>
 
           <div className="flex flex-col items-end gap-2">
-            {ticket.status === 'resolved' ? (
-              <span className="bg-emerald-600 text-white px-4 py-1.5 rounded-full text-xs font-extrabold uppercase tracking-wider flex items-center gap-2 shadow-xs border border-emerald-700">
-                <span className="w-4 h-4 rounded-full bg-white flex items-center justify-center text-emerald-700 shrink-0">
-                  <Check className="w-2.5 h-2.5 text-emerald-700 stroke-[3.5]" />
-                </span>
-                Resolved
-              </span>
-            ) : ticket.status === 'rejected' ? (
-              <span className="bg-red-600 text-white px-4 py-1.5 rounded-full text-xs font-extrabold uppercase tracking-wider flex items-center gap-2 shadow-xs border border-red-700">
-                <span className="w-4 h-4 rounded-full bg-white flex items-center justify-center text-red-600 shrink-0">
-                  <XCircle className="w-2.5 h-2.5 text-red-600 stroke-[3.5]" />
-                </span>
-                Rejected / Invalid
-              </span>
-            ) : (
-              <span className={`px-4 py-1.5 rounded-full text-xs font-extrabold uppercase tracking-wider ${
+            <span className={`px-4 py-1.5 rounded-full text-xs font-extrabold uppercase tracking-wider ${ticket.status === 'resolved' ? 'bg-emerald-100 text-emerald-800 border border-emerald-300' :
                 ticket.status === 'in_progress' ? 'bg-amber-100 text-amber-800 border border-amber-300' : 'bg-blue-100 text-blue-800 border border-blue-300'
               }`}>
-                Status: {ticket.status.replace('_', ' ')}
-              </span>
-            )}
+              Status: {ticket.status.replace('_', ' ')}
+            </span>
 
             {ticket.nextActionDate && (
               <span className="text-[11px] bg-amber-50 text-amber-900 border border-amber-300 font-mono font-bold px-3 py-1 rounded-lg">

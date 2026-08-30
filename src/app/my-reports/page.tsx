@@ -7,12 +7,12 @@ import { IssueCard } from '@/components/IssueCard';
 import { IssueDetailModal } from '@/components/IssueDetailModal';
 import { InteractiveMap } from '@/components/InteractiveMap';
 import { CivicIssue, UserBadge } from '@/lib/types';
-import { 
-  Award, 
-  PlusCircle, 
-  Map, 
-  List, 
-  FileText, 
+import {
+  Award,
+  PlusCircle,
+  Map,
+  List,
+  FileText,
   User,
   LogIn,
   Building2,
@@ -22,7 +22,7 @@ import {
 
 export default function MyReportsPage() {
   const { user, activeRole, issues, upvoteIssue } = useApp();
-  
+
   const [activeTrack, setActiveTrack] = useState<'civic' | 'environmental'>('civic');
   const [viewMode, setViewMode] = useState<'list' | 'map'>('list');
   const [statusFilter, setStatusFilter] = useState<string>('all');
@@ -75,10 +75,10 @@ export default function MyReportsPage() {
 
   return (
     <div className="w-full max-w-[1800px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 py-8 space-y-8 font-sans">
-      
+
       {/* Profile Header */}
       <div className="bg-slate-900 text-white rounded-2xl p-6 md:p-8 border border-slate-800 shadow-xl grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
-        
+
         <div className="lg:col-span-7 space-y-3">
           <div className="flex items-center gap-3">
             <div className="w-12 h-12 rounded-2xl bg-blue-600 flex items-center justify-center font-bold text-lg text-white shadow-lg">
@@ -131,15 +131,14 @@ export default function MyReportsPage() {
 
       {/* Domain Track Switcher (Spec #11: Visual Separation of Reports) */}
       <div className="flex flex-col sm:flex-row items-center justify-between gap-4 bg-white p-4 rounded-2xl border border-slate-200 shadow-xs">
-        
+
         <div className="flex items-center gap-2 bg-slate-100 p-1 rounded-xl border border-slate-200 w-full sm:w-auto">
           <button
             onClick={() => setActiveTrack('civic')}
-            className={`flex-1 sm:flex-none px-4 py-2 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-2 ${
-              activeTrack === 'civic'
+            className={`flex-1 sm:flex-none px-4 py-2 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-2 ${activeTrack === 'civic'
                 ? 'bg-blue-600 text-white shadow-sm'
                 : 'text-slate-600 hover:text-slate-900'
-            }`}
+              }`}
           >
             <Building2 className="w-4 h-4" />
             <span>My Civic Reports ({civicReports.length})</span>
@@ -147,11 +146,10 @@ export default function MyReportsPage() {
 
           <button
             onClick={() => setActiveTrack('environmental')}
-            className={`flex-1 sm:flex-none px-4 py-2 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-2 ${
-              activeTrack === 'environmental'
+            className={`flex-1 sm:flex-none px-4 py-2 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-2 ${activeTrack === 'environmental'
                 ? 'bg-emerald-600 text-white shadow-sm'
                 : 'text-slate-600 hover:text-slate-900'
-            }`}
+              }`}
           >
             <Trees className="w-4 h-4 text-emerald-500" />
             <span>My Environmental Reports ({environmentalReports.length})</span>
@@ -162,17 +160,15 @@ export default function MyReportsPage() {
           <div className="flex items-center bg-slate-100 p-1 rounded-lg border border-slate-200">
             <button
               onClick={() => setViewMode('list')}
-              className={`p-1.5 rounded-md text-xs font-semibold flex items-center gap-1 ${
-                viewMode === 'list' ? 'bg-slate-900 text-white' : 'text-slate-600 hover:text-slate-900'
-              }`}
+              className={`p-1.5 rounded-md text-xs font-semibold flex items-center gap-1 ${viewMode === 'list' ? 'bg-slate-900 text-white' : 'text-slate-600 hover:text-slate-900'
+                }`}
             >
               <List className="w-4 h-4" /> List
             </button>
             <button
               onClick={() => setViewMode('map')}
-              className={`p-1.5 rounded-md text-xs font-semibold flex items-center gap-1 ${
-                viewMode === 'map' ? 'bg-slate-900 text-white' : 'text-slate-600 hover:text-slate-900'
-              }`}
+              className={`p-1.5 rounded-md text-xs font-semibold flex items-center gap-1 ${viewMode === 'map' ? 'bg-slate-900 text-white' : 'text-slate-600 hover:text-slate-900'
+                }`}
             >
               <Map className="w-4 h-4" /> Map View
             </button>
@@ -180,9 +176,8 @@ export default function MyReportsPage() {
 
           <Link
             href={activeTrack === 'civic' ? '/report/civic' : '/report/environmental'}
-            className={`text-xs font-bold px-4 py-2 rounded-xl flex items-center gap-1.5 shadow-md transition-colors ${
-              activeTrack === 'civic' ? 'bg-blue-600 hover:bg-blue-500 text-white' : 'bg-emerald-600 hover:bg-emerald-500 text-white'
-            }`}
+            className={`text-xs font-bold px-4 py-2 rounded-xl flex items-center gap-1.5 shadow-md transition-colors ${activeTrack === 'civic' ? 'bg-blue-600 hover:bg-blue-500 text-white' : 'bg-emerald-600 hover:bg-emerald-500 text-white'
+              }`}
           >
             <PlusCircle className="w-4 h-4" />
             <span>New {activeTrack === 'civic' ? 'Civic' : 'Environmental'} Report</span>
@@ -193,15 +188,14 @@ export default function MyReportsPage() {
 
       {/* Reports Dashboard Status Filter Toolbar */}
       <div className="flex items-center gap-2 overflow-x-auto pb-1 border-b border-slate-200">
-        {['all', 'reported', 'in_progress', 'resolved', 'rejected', 'escalated'].map((st) => (
+        {['all', 'reported', 'in_progress', 'resolved', 'escalated'].map((st) => (
           <button
             key={st}
             onClick={() => setStatusFilter(st)}
-            className={`px-3 py-1.5 rounded-lg text-xs font-bold capitalize transition-all shrink-0 ${
-              statusFilter === st
+            className={`px-3 py-1.5 rounded-lg text-xs font-bold capitalize transition-all shrink-0 ${statusFilter === st
                 ? activeTrack === 'civic' ? 'bg-blue-600 text-white' : 'bg-emerald-600 text-white'
                 : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200'
-            }`}
+              }`}
           >
             {st === 'all' ? `All (${currentTrackReports.length})` : st.replace('_', ' ')}
           </button>
@@ -228,9 +222,8 @@ export default function MyReportsPage() {
               </p>
               <Link
                 href={activeTrack === 'civic' ? '/report/civic' : '/report/environmental'}
-                className={`inline-flex items-center gap-1.5 text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow-xs ${
-                  activeTrack === 'civic' ? 'bg-blue-600 hover:bg-blue-500' : 'bg-emerald-600 hover:bg-emerald-500'
-                }`}
+                className={`inline-flex items-center gap-1.5 text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow-xs ${activeTrack === 'civic' ? 'bg-blue-600 hover:bg-blue-500' : 'bg-emerald-600 hover:bg-emerald-500'
+                  }`}
               >
                 <PlusCircle className="w-4 h-4" /> Report {activeTrack === 'civic' ? 'Civic' : 'Environmental'} Issue
               </Link>

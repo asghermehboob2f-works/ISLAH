@@ -1,17 +1,17 @@
 'use client';
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { 
-  User, 
-  CivicIssue, 
-  Department, 
-  StaffAccount, 
-  SuccessStory, 
-  Testimonial, 
-  BlogPost, 
-  FAQItem, 
-  AuditLogItem, 
-  CMSContent, 
+import {
+  User,
+  CivicIssue,
+  Department,
+  StaffAccount,
+  SuccessStory,
+  Testimonial,
+  BlogPost,
+  FAQItem,
+  AuditLogItem,
+  CMSContent,
   AppStats,
   UserRole,
   IssueCategory,
@@ -38,7 +38,7 @@ interface AppContextType {
   cmsContent: CMSContent;
   stats: AppStats;
   loading: boolean;
-  
+
   // Auth
   loginCitizen: (email: string, pass?: string) => Promise<AuthResponse>;
   signupCitizen: (name: string, email: string, phone: string, pass: string) => Promise<AuthResponse>;
@@ -50,7 +50,7 @@ interface AppContextType {
 
   // Issues
   createReport: (reportData: Partial<CivicIssue>) => Promise<CivicIssue | null>;
-  updateIssueStatus: (issueId: string, status: IssueStatus, resolutionPhotoUrl?: string, noteText?: string, nextActionDate?: string, rejectionReason?: string) => Promise<boolean>;
+  updateIssueStatus: (issueId: string, status: IssueStatus, resolutionPhotoUrl?: string, noteText?: string, nextActionDate?: string) => Promise<boolean>;
   upvoteIssue: (issueId: string) => Promise<void>;
   addNoteToIssue: (issueId: string, noteText: string) => Promise<void>;
   reassignIssueDepartment: (issueId: string, newDeptId: string) => Promise<void>;
@@ -321,7 +321,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }
   };
 
-  const updateIssueStatus = async (issueId: string, status: IssueStatus, resolutionPhotoUrl?: string, noteText?: string, nextActionDate?: string, rejectionReason?: string): Promise<boolean> => {
+  const updateIssueStatus = async (issueId: string, status: IssueStatus, resolutionPhotoUrl?: string, noteText?: string, nextActionDate?: string): Promise<boolean> => {
     // 1. Optimistically update local React state for immediate UI feedback
     const now = new Date().toISOString();
     setIssues(prev => prev.map(i => {
@@ -331,15 +331,14 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           id: `tl-${Date.now()}`,
           timestamp: now,
           status,
-          title: status === 'rejected' ? 'Ticket Marked Invalid / Rejected' : `Status Updated: ${status.replace('_', ' ').toUpperCase()}`,
-          description: rejectionReason ? `Reason: ${rejectionReason}` : (noteText || `Ticket status updated to ${status.replace('_', ' ')}`),
+          title: `Status Updated: ${status.replace('_', ' ').toUpperCase()}`,
+          description: noteText || `Ticket status updated to ${status.replace('_', ' ')}`,
           actor: user?.name || 'Department Officer',
           actorRole: (user?.role || 'staff') as any
         };
         return {
           ...i,
           status,
-          rejectionReason: rejectionReason || (status === 'rejected' ? (noteText || 'Marked invalid upon inspection.') : i.rejectionReason),
           resolutionPhotoUrl: resolutionPhotoUrl || i.resolutionPhotoUrl,
           nextActionDate: nextActionDate !== undefined ? nextActionDate : i.nextActionDate,
           updatedAt: now,
@@ -354,7 +353,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       const res = await fetch(`/api/reports/${issueId}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ status, resolutionPhotoUrl, note: noteText, nextActionDate, rejectionReason })
+        body: JSON.stringify({ status, resolutionPhotoUrl, note: noteText, nextActionDate })
       });
       const data = await res.json();
       if (data.success) {

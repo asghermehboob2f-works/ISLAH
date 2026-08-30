@@ -4,19 +4,18 @@ import React, { useState } from 'react';
 import { CivicIssue, IssueStatus } from '@/lib/types';
 import { useApp } from '@/context/AppContext';
 import { formatDate, formatTime } from '@/lib/dateUtils';
-import { 
-  X, 
-  MapPin, 
-  CheckCircle2, 
-  Send, 
-  ShieldCheck, 
+import {
+  X,
+  MapPin,
+  CheckCircle2,
+  Send,
+  ShieldCheck,
   FileText,
   Building,
   Upload,
   Trash2,
   Check,
-  UserCheck,
-  XCircle
+  UserCheck
 } from 'lucide-react';
 
 interface IssueDetailModalProps {
@@ -65,12 +64,6 @@ export function IssueDetailModal({ issue, onClose }: IssueDetailModalProps) {
       await updateIssueStatus(issue.id, 'resolved', resolutionPhotoInput, 'Work completed and verified by department staff.');
       setIsVerifying(false);
       alert('Ticket marked as RESOLVED and verified!');
-    } else if (newStatus === 'rejected') {
-      const reason = prompt('Please specify the reason for marking this ticket as Invalid / Rejected:', noteInput || 'Marked invalid upon inspection / duplicate / invalid location details.');
-      if (!reason) return;
-      await updateIssueStatus(issue.id, 'rejected', undefined, `Ticket marked invalid/rejected. Reason: ${reason}`, undefined, reason);
-      alert('Ticket marked as INVALID / REJECTED and closed out of active pending queue.');
-      onClose();
     } else {
       await updateIssueStatus(issue.id, newStatus, undefined, `Status updated to ${newStatus.replace('_', ' ').toUpperCase()} by officer.`);
     }
@@ -106,8 +99,8 @@ export function IssueDetailModal({ issue, onClose }: IssueDetailModalProps) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm overflow-y-auto font-sans">
-      <div className="bg-white dark:bg-slate-900 w-full max-w-4xl rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden my-8 max-h-[90vh] flex flex-col transition-colors">
-        
+      <div className="bg-white w-full max-w-4xl rounded-2xl shadow-2xl border border-slate-200 overflow-hidden my-8 max-h-[90vh] flex flex-col">
+
         {/* Modal Top Header */}
         <div className="bg-slate-950 text-white px-6 py-4 flex items-center justify-between border-b border-slate-800 shrink-0">
           <div className="flex items-center gap-3">
@@ -126,17 +119,17 @@ export function IssueDetailModal({ issue, onClose }: IssueDetailModalProps) {
         </div>
 
         {/* Modal Content Scroll Area */}
-        <div className="p-6 overflow-y-auto space-y-6 flex-1 text-slate-900 dark:text-slate-100">
-          
+        <div className="p-6 overflow-y-auto space-y-6 flex-1 text-slate-900">
+
           {/* Main Title & Status Row */}
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-slate-100 dark:border-slate-800">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-slate-100">
             <div>
               <div className="flex items-center gap-2 mb-1">
-                <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider" suppressHydrationWarning>
+                <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider" suppressHydrationWarning>
                   Reported by {issue.citizenName} • {formatDate(issue.reportedAt)}
                 </span>
               </div>
-              <h2 className="text-xl font-bold text-slate-900 dark:text-slate-100 leading-tight">
+              <h2 className="text-xl font-bold text-slate-900 leading-tight">
                 {issue.title}
               </h2>
             </div>
@@ -149,36 +142,15 @@ export function IssueDetailModal({ issue, onClose }: IssueDetailModalProps) {
                   </span>
                   Resolved
                 </span>
-              ) : issue.status === 'rejected' ? (
-                <span className="bg-red-600 text-white px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 shadow-xs border border-red-700">
-                  <span className="w-4 h-4 rounded-full bg-white flex items-center justify-center text-red-600 shrink-0">
-                    <XCircle className="w-2.5 h-2.5 text-red-600 stroke-[3.5]" />
-                  </span>
-                  Rejected / Invalid
-                </span>
               ) : (
-                <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider ${
-                  issue.status === 'in_progress' ? 'bg-amber-100 text-amber-800 border border-amber-300' :
-                  issue.status === 'escalated' ? 'bg-red-100 text-red-800 border border-red-300' : 'bg-blue-100 text-blue-800 border border-blue-300'
-                }`}>
+                <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider ${issue.status === 'in_progress' ? 'bg-amber-100 text-amber-800 border border-amber-300' :
+                    issue.status === 'escalated' ? 'bg-red-100 text-red-800 border border-red-300' : 'bg-blue-100 text-blue-800 border border-blue-300'
+                  }`}>
                   Status: {issue.status.replace('_', ' ')}
                 </span>
               )}
             </div>
           </div>
-
-          {/* Rejection Banner */}
-          {(issue.status === 'rejected' || issue.rejectionReason) && (
-            <div className="bg-red-50 border border-red-200 rounded-xl p-4 space-y-1.5 text-red-900 shadow-xs">
-              <div className="flex items-center gap-2 text-red-700 font-bold text-xs uppercase tracking-wider">
-                <XCircle className="w-4 h-4 text-red-600" />
-                Report Marked Invalid / Rejected & Closed
-              </div>
-              <p className="text-xs text-red-800 font-semibold">
-                Rejection Reason: <span className="font-normal text-slate-800">{issue.rejectionReason || 'Marked invalid upon municipal inspection / duplicate / invalid location.'}</span>
-              </p>
-            </div>
-          )}
 
           {/* Photo Section: Original vs Resolution Photo */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -376,11 +348,10 @@ export function IssueDetailModal({ issue, onClose }: IssueDetailModalProps) {
                   <button
                     type="button"
                     onClick={() => handleStatusChange('acknowledged')}
-                    className={`text-xs font-bold px-3 py-1.5 rounded-lg border transition-all ${
-                      issue.status === 'acknowledged'
+                    className={`text-xs font-bold px-3 py-1.5 rounded-lg border transition-all ${issue.status === 'acknowledged'
                         ? 'bg-blue-600 text-white border-blue-600 shadow-xs'
                         : 'bg-white text-blue-700 border-blue-300 hover:bg-blue-50'
-                    }`}
+                      }`}
                   >
                     Acknowledge
                   </button>
@@ -388,11 +359,10 @@ export function IssueDetailModal({ issue, onClose }: IssueDetailModalProps) {
                   <button
                     type="button"
                     onClick={() => handleStatusChange('under_review')}
-                    className={`text-xs font-bold px-3 py-1.5 rounded-lg border transition-all ${
-                      issue.status === 'under_review'
+                    className={`text-xs font-bold px-3 py-1.5 rounded-lg border transition-all ${issue.status === 'under_review'
                         ? 'bg-purple-600 text-white border-purple-600 shadow-xs'
                         : 'bg-white text-purple-700 border-purple-300 hover:bg-purple-50'
-                    }`}
+                      }`}
                   >
                     Under Inspection
                   </button>
@@ -400,11 +370,10 @@ export function IssueDetailModal({ issue, onClose }: IssueDetailModalProps) {
                   <button
                     type="button"
                     onClick={() => handleStatusChange('in_progress')}
-                    className={`text-xs font-bold px-3 py-1.5 rounded-lg border transition-all ${
-                      issue.status === 'in_progress'
+                    className={`text-xs font-bold px-3 py-1.5 rounded-lg border transition-all ${issue.status === 'in_progress'
                         ? 'bg-amber-600 text-white border-amber-600 shadow-xs'
                         : 'bg-white text-amber-800 border-amber-300 hover:bg-amber-100'
-                    }`}
+                      }`}
                   >
                     Dispatch Field Team
                   </button>
@@ -412,11 +381,10 @@ export function IssueDetailModal({ issue, onClose }: IssueDetailModalProps) {
                   <button
                     type="button"
                     onClick={() => handleStatusChange('resolved')}
-                    className={`text-xs font-bold px-3 py-1.5 rounded-lg border transition-all ${
-                      issue.status === 'resolved'
+                    className={`text-xs font-bold px-3 py-1.5 rounded-lg border transition-all ${issue.status === 'resolved'
                         ? 'bg-emerald-600 text-white border-emerald-600 shadow-xs'
                         : 'bg-white text-emerald-700 border-emerald-300 hover:bg-emerald-50'
-                    }`}
+                      }`}
                   >
                     Mark Resolved
                   </button>
@@ -424,11 +392,10 @@ export function IssueDetailModal({ issue, onClose }: IssueDetailModalProps) {
                   <button
                     type="button"
                     onClick={() => handleStatusChange('rejected')}
-                    className={`text-xs font-bold px-3 py-1.5 rounded-lg border transition-all ${
-                      issue.status === 'rejected'
+                    className={`text-xs font-bold px-3 py-1.5 rounded-lg border transition-all ${issue.status === 'rejected'
                         ? 'bg-red-600 text-white border-red-600 shadow-xs'
                         : 'bg-white text-red-700 border-red-300 hover:bg-red-50'
-                    }`}
+                      }`}
                   >
                     Mark Invalid / Reject
                   </button>
@@ -503,7 +470,7 @@ export function IssueDetailModal({ issue, onClose }: IssueDetailModalProps) {
 
           {/* Timeline & Notes Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
-            
+
             {/* Timeline */}
             <div className="space-y-3">
               <h3 className="text-xs font-bold text-slate-800 uppercase tracking-wider">

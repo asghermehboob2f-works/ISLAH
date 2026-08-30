@@ -6,11 +6,11 @@ import { useApp } from '@/context/AppContext';
 import { IssueCard } from '@/components/IssueCard';
 import { IssueDetailModal } from '@/components/IssueDetailModal';
 import { CivicIssue, IssueCategory, IssueStatus, IssueSeverity } from '@/lib/types';
-import { 
-  FileText, 
-  Search, 
-  Filter, 
-  MapPin, 
+import {
+  FileText,
+  Search,
+  Filter,
+  MapPin,
   PlusCircle,
   SlidersHorizontal,
   Layers,
@@ -53,7 +53,7 @@ export default function PublicReportsPage() {
 
   return (
     <div className="w-full max-w-[1800px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 py-8 space-y-6 font-sans">
-      
+
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200 pb-5">
         <div>
@@ -83,7 +83,7 @@ export default function PublicReportsPage() {
       {/* Filter Toolbar */}
       <div className="bg-white rounded-2xl border border-slate-200 p-4 space-y-3 shadow-xs">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
-          
+
           {/* Search */}
           <div>
             <label className="font-bold text-slate-600 block mb-1">Search Keywords</label>
@@ -127,7 +127,6 @@ export default function PublicReportsPage() {
               <option value="acknowledged">Acknowledged</option>
               <option value="in_progress">In Progress</option>
               <option value="resolved">Resolved</option>
-              <option value="rejected">Rejected / Invalid</option>
               <option value="escalated">Escalated</option>
             </select>
           </div>

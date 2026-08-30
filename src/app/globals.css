@@ -12,13 +12,13 @@
   :root {
     --background: 210 40% 98%;
     --foreground: 222 47% 11%;
-    
+
     --card: 0 0% 100%;
     --card-foreground: 222 47% 11%;
-    
+
     --primary: 221 83% 53%;
     --primary-foreground: 210 40% 98%;
-    
+
     --secondary: 215 25% 27%;
     --secondary-foreground: 210 40% 98%;
 
@@ -48,13 +48,16 @@ body {
   width: 8px;
   height: 8px;
 }
+
 ::-webkit-scrollbar-track {
   background: #f1f5f9;
 }
+
 ::-webkit-scrollbar-thumb {
   background: #cbd5e1;
   border-radius: 4px;
 }
+
 ::-webkit-scrollbar-thumb:hover {
   background: #94a3b8;
 }
@@ -106,10 +109,9 @@ body {
 }
 
 .status-resolved {
-  background-color: #059669;
-  color: #ffffff;
-  border: 1px solid #047857;
-  font-weight: 700;
+  background-color: #ecfdf5;
+  color: #047857;
+  border: 1px solid #a7f3d0;
 }
 
 .status-escalated {
@@ -124,9 +126,12 @@ body {
 }
 
 @keyframes emergency-glow {
-  0%, 100% {
+
+  0%,
+  100% {
     box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.4);
   }
+
   50% {
     box-shadow: 0 0 0 10px rgba(220, 38, 38, 0);
   }

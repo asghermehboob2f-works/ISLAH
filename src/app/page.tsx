@@ -6,21 +6,21 @@ import { useApp } from '@/context/AppContext';
 import { IssueCard } from '@/components/IssueCard';
 import { IssueDetailModal } from '@/components/IssueDetailModal';
 import { CivicIssue } from '@/lib/types';
-import { 
-  ShieldCheck, 
-  PlusCircle, 
-  MapPin, 
-  ArrowRight, 
-  Camera, 
-  Sparkles, 
-  Route, 
-  CheckCircle2, 
-  ShieldAlert, 
-  Award, 
-  Building2, 
-  Users, 
-  BarChart3, 
-  Clock, 
+import {
+  ShieldCheck,
+  PlusCircle,
+  MapPin,
+  ArrowRight,
+  Camera,
+  Sparkles,
+  Route,
+  CheckCircle2,
+  ShieldAlert,
+  Award,
+  Building2,
+  Users,
+  BarChart3,
+  Clock,
   Flame,
   Zap,
   Check
@@ -41,16 +41,16 @@ export default function HomePage() {
 
   return (
     <div className="space-y-12 sm:space-y-16 pb-16 font-sans">
-      
+
       {/* 1. Hero Section */}
       <section className="relative overflow-hidden bg-slate-900 text-white pt-12 sm:pt-16 pb-16 sm:pb-20 border-b border-slate-800">
-        
+
         {/* Subtle Background Grid Pattern */}
         <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#38bdf8_1px,transparent_1px)] [background-size:24px_24px] pointer-events-none" />
-        
+
         <div className="w-full max-w-[1800px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 xl:gap-16 items-center">
-            
+
             {/* Left Content */}
             <div className="lg:col-span-7 space-y-5">
               <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white leading-tight">
@@ -113,7 +113,7 @@ export default function HomePage() {
                 </div>
 
                 <div className="space-y-3">
-                  
+
                   {/* Step 1 */}
                   <div className="flex items-start gap-3 bg-slate-900/60 p-3 rounded-xl border border-slate-800">
                     <div className="w-7 h-7 rounded-lg bg-blue-600/20 text-blue-400 flex items-center justify-center shrink-0 font-bold text-xs">
@@ -174,26 +174,26 @@ export default function HomePage() {
 
       {/* 2. Trust & Municipal Accountability Banner */}
       <section className="w-full max-w-[1800px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
-        <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-5 md:p-6 shadow-xs grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 text-center divide-y sm:divide-y-0 sm:divide-x divide-slate-100 dark:divide-slate-800">
+        <div className="bg-white rounded-xl border border-slate-200 p-5 md:p-6 shadow-xs grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 text-center divide-y sm:divide-y-0 sm:divide-x divide-slate-100">
           <div className="space-y-1 py-1">
-            <Users className="w-5 h-5 text-blue-600 dark:text-blue-400 mx-auto mb-1" />
-            <div className="text-lg font-bold text-slate-900 dark:text-slate-100 font-mono">100% Transparent</div>
-            <p className="text-xs text-slate-500 dark:text-slate-400">Every ticket is publicly trackable</p>
+            <Users className="w-5 h-5 text-blue-600 mx-auto mb-1" />
+            <div className="text-lg font-bold text-slate-900 font-mono">100% Transparent</div>
+            <p className="text-xs text-slate-500">Every ticket is publicly trackable</p>
           </div>
           <div className="space-y-1 py-1">
-            <Building2 className="w-5 h-5 text-sky-600 dark:text-sky-400 mx-auto mb-1" />
-            <div className="text-lg font-bold text-slate-900 dark:text-slate-100 font-mono">5 Departments</div>
-            <p className="text-xs text-slate-500 dark:text-slate-400">Integrated municipal work queues</p>
+            <Building2 className="w-5 h-5 text-sky-600 mx-auto mb-1" />
+            <div className="text-lg font-bold text-slate-900 font-mono">5 Departments</div>
+            <p className="text-xs text-slate-500">Integrated municipal work queues</p>
           </div>
           <div className="space-y-1 py-1">
-            <Sparkles className="w-5 h-5 text-indigo-600 dark:text-indigo-400 mx-auto mb-1" />
-            <div className="text-lg font-bold text-slate-900 dark:text-slate-100 font-mono">AI Verification</div>
-            <p className="text-xs text-slate-500 dark:text-slate-400">Automated photo cross-verification</p>
+            <Sparkles className="w-5 h-5 text-indigo-600 mx-auto mb-1" />
+            <div className="text-lg font-bold text-slate-900 font-mono">AI Verification</div>
+            <p className="text-xs text-slate-500">Automated photo cross-verification</p>
           </div>
           <div className="space-y-1 py-1">
-            <ShieldCheck className="w-5 h-5 text-emerald-600 dark:text-emerald-400 mx-auto mb-1" />
-            <div className="text-lg font-bold text-slate-900 dark:text-slate-100 font-mono">95.8% SLA Pass</div>
-            <p className="text-xs text-slate-500 dark:text-slate-400">Strict resolution timeframe adherence</p>
+            <ShieldCheck className="w-5 h-5 text-emerald-600 mx-auto mb-1" />
+            <div className="text-lg font-bold text-slate-900 font-mono">95.8% SLA Pass</div>
+            <p className="text-xs text-slate-500">Strict resolution timeframe adherence</p>
           </div>
         </div>
       </section>
@@ -201,13 +201,13 @@ export default function HomePage() {
       {/* 3. How It Works Section */}
       <section className="w-full max-w-[1800px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 space-y-8">
         <div className="text-center max-w-2xl mx-auto space-y-2">
-          <h2 className="text-[11px] font-extrabold text-blue-600 dark:text-blue-400 uppercase tracking-wider">
+          <h2 className="text-[11px] font-extrabold text-blue-600 uppercase tracking-wider">
             Operational Lifecycle
           </h2>
-          <h3 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-slate-100">
+          <h3 className="text-2xl sm:text-3xl font-bold text-slate-900">
             How ISLAH Works
           </h3>
-          <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+          <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
             From citizen observation to confirmed municipal fix, ISLAH streamlines every stage of civic resolution with zero bureaucratic friction.
           </p>
         </div>
@@ -222,12 +222,12 @@ export default function HomePage() {
           ].map((item, idx) => {
             const Icon = item.icon;
             return (
-              <div key={idx} className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5 rounded-xl space-y-2 hover:border-blue-300 dark:hover:border-blue-500/50 transition-colors shadow-xs relative">
-                <div className="w-9 h-9 rounded-lg bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 flex items-center justify-center font-bold">
+              <div key={idx} className="bg-white border border-slate-200 p-5 rounded-xl space-y-2 hover:border-blue-300 transition-colors shadow-xs relative">
+                <div className="w-9 h-9 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center font-bold">
                   <Icon className="w-4 h-4" />
                 </div>
-                <h4 className="text-xs font-bold text-slate-900 dark:text-slate-100">{item.title}</h4>
-                <p className="text-[11px] text-slate-600 dark:text-slate-400 leading-relaxed">{item.desc}</p>
+                <h4 className="text-xs font-bold text-slate-900">{item.title}</h4>
+                <p className="text-[11px] text-slate-600 leading-relaxed">{item.desc}</p>
               </div>
             );
           })}
@@ -236,32 +236,32 @@ export default function HomePage() {
 
       {/* 4. Issue Categories Overview */}
       <section className="w-full max-w-[1800px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 space-y-6">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 border-b border-slate-200 dark:border-slate-800 pb-3">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 border-b border-slate-200 pb-3">
           <div>
-            <h2 className="text-[11px] font-extrabold text-blue-600 dark:text-blue-400 uppercase tracking-wider mb-0.5">
+            <h2 className="text-[11px] font-extrabold text-blue-600 uppercase tracking-wider mb-0.5">
               Coverage Scope
             </h2>
-            <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100">
+            <h3 className="text-xl font-bold text-slate-900">
               Civic Infrastructure Categories
             </h3>
           </div>
-          <Link href="/report" className="text-xs font-bold text-blue-600 dark:text-blue-400 hover:text-blue-500 flex items-center gap-1">
+          <Link href="/report" className="text-xs font-bold text-blue-600 hover:text-blue-500 flex items-center gap-1">
             Report issue in any category <ArrowRight className="w-3.5 h-3.5" />
           </Link>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-4">
           {categoriesList.map((cat, i) => (
-            <div key={i} className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-4 rounded-xl hover:shadow-sm transition-all space-y-2 flex flex-col justify-between">
+            <div key={i} className="bg-white border border-slate-200 p-4 rounded-xl hover:shadow-sm transition-all space-y-2 flex flex-col justify-between">
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <span className="text-[10px] font-bold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-2 py-0.5 rounded">
+                  <span className="text-[10px] font-bold bg-slate-100 text-slate-700 px-2 py-0.5 rounded">
                     {cat.count} Active
                   </span>
-                  <span className="text-[10px] font-semibold text-blue-600 dark:text-blue-400">SLA &lt; 24h</span>
+                  <span className="text-[10px] font-semibold text-blue-600">SLA &lt; 24h</span>
                 </div>
-                <h4 className="text-sm font-bold text-slate-900 dark:text-slate-100">{cat.name}</h4>
-                <p className="text-[11px] text-slate-600 dark:text-slate-400 leading-relaxed">{cat.desc}</p>
+                <h4 className="text-sm font-bold text-slate-900">{cat.name}</h4>
+                <p className="text-[11px] text-slate-600 leading-relaxed">{cat.desc}</p>
               </div>
             </div>
           ))}
@@ -270,7 +270,7 @@ export default function HomePage() {
 
       {/* 5. Emergency Lane Priority */}
       <section className="w-full max-w-[1800px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
-        <div className="bg-gradient-to-r from-red-950 to-slate-900 text-white rounded-2xl p-6 sm:p-8 border border-red-900/80 shadow-lg grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+        <div className="bg-gradient-to-r from-red-950 to-slate-900 text-white rounded-2xl p-6 sm:p-8 border border-red-900 shadow-lg grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
           <div className="lg:col-span-8 space-y-3">
             <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-red-600/30 text-red-300 border border-red-500/40 text-[10px] font-bold uppercase tracking-wider">
               <ShieldAlert className="w-3.5 h-3.5 text-red-400" />
@@ -298,14 +298,14 @@ export default function HomePage() {
       <section className="w-full max-w-[1800px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 space-y-5">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-[11px] font-extrabold text-blue-600 dark:text-blue-400 uppercase tracking-wider mb-0.5">
+            <h2 className="text-[11px] font-extrabold text-blue-600 uppercase tracking-wider mb-0.5">
               Real-Time Feed
             </h2>
-            <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100">
+            <h3 className="text-xl font-bold text-slate-900">
               Recent Civic Reports & Status
             </h3>
           </div>
-          <Link href="/my-reports" className="text-xs font-bold text-blue-600 dark:text-blue-400 hover:text-blue-500 flex items-center gap-1">
+          <Link href="/my-reports" className="text-xs font-bold text-blue-600 hover:text-blue-500 flex items-center gap-1">
             View All Reports <ArrowRight className="w-3.5 h-3.5" />
           </Link>
         </div>
