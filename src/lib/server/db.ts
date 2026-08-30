@@ -153,6 +153,19 @@ function initTables(db: any) {
   try { db.exec(`ALTER TABLE issues ADD COLUMN approx_longitude REAL;`); } catch (e) {}
   try { db.exec(`ALTER TABLE issues ADD COLUMN rejection_reason TEXT;`); } catch (e) {}
   try { db.exec(`ALTER TABLE issues ADD COLUMN evidence_files_json TEXT DEFAULT '[]';`); } catch (e) {}
+  try { db.exec(`ALTER TABLE issues ADD COLUMN reference_link TEXT;`); } catch (e) {}
+  try { db.exec(`ALTER TABLE issues ADD COLUMN video_url TEXT;`); } catch (e) {}
+  try { db.exec(`ALTER TABLE issues ADD COLUMN document_url TEXT;`); } catch (e) {}
+  try { db.exec(`ALTER TABLE issues ADD COLUMN report_type TEXT;`); } catch (e) {}
+
+  // Departments schema migrations
+  try { db.exec(`ALTER TABLE departments ADD COLUMN type TEXT DEFAULT 'Civic';`); } catch (e) {}
+  try { db.exec(`ALTER TABLE departments ADD COLUMN description TEXT;`); } catch (e) {}
+  try { db.exec(`ALTER TABLE departments ADD COLUMN alternate_contact TEXT;`); } catch (e) {}
+  try { db.exec(`ALTER TABLE departments ADD COLUMN office_location TEXT;`); } catch (e) {}
+  try { db.exec(`ALTER TABLE departments ADD COLUMN login_email TEXT;`); } catch (e) {}
+  try { db.exec(`ALTER TABLE departments ADD COLUMN password_hash TEXT;`); } catch (e) {}
+  try { db.exec(`ALTER TABLE departments ADD COLUMN updated_at TEXT;`); } catch (e) {}
 
   // CMS Content Table
   db.exec(`

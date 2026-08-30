@@ -110,13 +110,16 @@ export default function DepartmentDashboardPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
           
           <div>
-            <label className="text-[10px] font-bold uppercase tracking-wider text-slate-500 block mb-1">Department</label>
+            <label className="text-[10px] font-bold uppercase tracking-wider text-slate-500 block mb-1">
+              Department {isStaffUser && staffDeptId && <span className="text-purple-700 font-extrabold">(Assigned Only)</span>}
+            </label>
             <select
               value={selectedDept}
+              disabled={Boolean(isStaffUser && staffDeptId && staffDeptId !== 'dept-all')}
               onChange={(e) => setSelectedDept(e.target.value)}
-              className="w-full text-xs border border-slate-300 rounded-lg px-3 py-1.5 bg-slate-50 focus:bg-white font-semibold text-slate-800"
+              className="w-full text-xs border border-slate-300 rounded-lg px-3 py-1.5 bg-slate-50 focus:bg-white font-semibold text-slate-800 disabled:opacity-80 disabled:bg-slate-100 cursor-not-allowed"
             >
-              <option value="all">All Departments ({departments.length})</option>
+              {(!isStaffUser || !staffDeptId) && <option value="all">All Departments ({departments.length})</option>}
               {departments.map((d) => (
                 <option key={d.id} value={d.id}>{d.name}</option>
               ))}

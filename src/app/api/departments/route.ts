@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { getDb } from '@/lib/server/db';
+import { getDb, hashPassword } from '@/lib/server/db';
 import { getCurrentUser, logAudit } from '@/lib/server/auth';
 
 export async function GET() {
@@ -8,7 +8,6 @@ export async function GET() {
     const rows = db.prepare('SELECT * FROM departments ORDER BY name ASC').all() as any[];
 
     const data = rows.map((d) => {
-      // Calculate active and resolved ticket counts dynamically from real issues
       const activeQuery = db.prepare(`
         SELECT COUNT(*) as count FROM issues WHERE department_id = ? AND status != 'resolved'
       `).get(d.id) as { count: number };
@@ -24,9 +23,16 @@ export async function GET() {
         id: d.id,
         name: d.name,
         code: d.code,
+        type: d.type || 'Civic',
+        description: d.description || '',
         email: d.email || d.contact_email,
         contactEmail: d.email || d.contact_email,
         contactPhone: d.contact || d.contact_phone || '',
+        phone: d.contact || d.contact_phone || '',
+        alternatePhone: d.alternate_contact || '',
+        officeLocation: d.office_location || '',
+        loginEmail: d.login_email || d.email || '',
+        hasPassword: Boolean(d.password_hash),
         categoriesHandled: categories,
         slaHoursDefault: d.sla_hours_default || 24,
         leadOfficer: d.lead_officer || 'Department Lead',
@@ -58,7 +64,22 @@ export async function POST(req: Request) {
     }
 
     const body = await req.json();
-    const { name, code, contactEmail, contactPhone, categoriesHandled, slaHoursDefault, leadOfficer } = body;
+    const { 
+      name, 
+      code, 
+      type, 
+      description, 
+      contactEmail, 
+      contactPhone, 
+      alternatePhone, 
+      officeLocation, 
+      categoriesHandled, 
+      slaHoursDefault, 
+      leadOfficer,
+      loginEmail,
+      password,
+      status
+    } = body;
 
     if (!name || !code) {
       return NextResponse.json(
@@ -70,41 +91,59 @@ export async function POST(req: Request) {
     const db = getDb();
     const id = `dept-${Date.now()}`;
     const now = new Date().toISOString();
-    const categoriesJson = JSON.stringify(categoriesHandled || ['Infrastructure']);
+    const categoriesJson = JSON.stringify(categoriesHandled || ['Other']);
+    const passHash = password ? hashPassword(password) : null;
+    const deptType = type || 'Civic';
+    const deptStatus = status || 'active';
 
     db.prepare(`
       INSERT INTO departments (
-        id, name, code, email, contact, categories_json, sla_hours_default, lead_officer, status, created_at
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'active', ?)
+        id, name, code, type, description, email, contact, alternate_contact, office_location, categories_json, sla_hours_default, lead_officer, login_email, password_hash, status, created_at, updated_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `).run(
       id,
       name,
       code.toUpperCase(),
+      deptType,
+      description || '',
       contactEmail || `dept.${code.toLowerCase()}@islah.gov.in`,
       contactPhone || '',
+      alternatePhone || '',
+      officeLocation || '',
       categoriesJson,
       slaHoursDefault || 24,
       leadOfficer || 'Chief Officer',
+      loginEmail || contactEmail || `dept.${code.toLowerCase()}@islah.gov.in`,
+      passHash,
+      deptStatus,
+      now,
       now
     );
 
-    logAudit(currentUser.name, 'admin', 'CREATE_DEPARTMENT', name, `Created municipal department ${code}`);
+    logAudit(currentUser.name, 'admin', 'CREATE_DEPARTMENT', name, `Created municipal department ${code} (${deptType})`);
 
     const newDept = {
       id,
       name,
       code: code.toUpperCase(),
+      type: deptType,
+      description: description || '',
       email: contactEmail || `dept.${code.toLowerCase()}@islah.gov.in`,
       contactEmail: contactEmail || `dept.${code.toLowerCase()}@islah.gov.in`,
       contactPhone: contactPhone || '',
-      categoriesHandled: categoriesHandled || ['Infrastructure'],
+      phone: contactPhone || '',
+      alternatePhone: alternatePhone || '',
+      officeLocation: officeLocation || '',
+      loginEmail: loginEmail || contactEmail || `dept.${code.toLowerCase()}@islah.gov.in`,
+      hasPassword: Boolean(passHash),
+      categoriesHandled: categoriesHandled || ['Other'],
       slaHoursDefault: slaHoursDefault || 24,
       leadOfficer: leadOfficer || 'Chief Officer',
       activeTickets: 0,
       resolvedTickets: 0,
       avgResolutionHours: 12.0,
       slaCompliancePercent: 100.0,
-      status: 'active'
+      status: deptStatus
     };
 
     return NextResponse.json({ success: true, data: newDept });

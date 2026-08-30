@@ -54,6 +54,7 @@ interface AppContextType {
   upvoteIssue: (issueId: string) => Promise<void>;
   addNoteToIssue: (issueId: string, noteText: string) => Promise<void>;
   reassignIssueDepartment: (issueId: string, newDeptId: string) => Promise<void>;
+  deleteReport: (issueId: string) => Promise<boolean>;
 
   // Departments
   addDepartment: (dept: Partial<Department>) => Promise<void>;
@@ -374,6 +375,21 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }
   };
 
+  const deleteReport = async (issueId: string): Promise<boolean> => {
+    try {
+      const res = await fetch(`/api/reports/${issueId}`, { method: 'DELETE' });
+      const json = await res.json();
+      if (json.success) {
+        await refreshData();
+        return true;
+      }
+      return false;
+    } catch (err) {
+      console.error('Failed to delete report:', err);
+      return false;
+    }
+  };
+
   // Department Methods
   const addDepartment = async (dept: Partial<Department>) => {
     try {
@@ -626,6 +642,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         upvoteIssue,
         addNoteToIssue,
         reassignIssueDepartment,
+        deleteReport,
         addDepartment,
         updateDepartment,
         deleteDepartment,

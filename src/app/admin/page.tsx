@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { useApp } from '@/context/AppContext';
 import { IssueDetailModal } from '@/components/IssueDetailModal';
+import { DepartmentManagementSection } from '@/components/DepartmentManagementSection';
 import { CivicIssue, Department, StaffAccount, SuccessStory, Testimonial, BlogPost, FAQItem, IssueCategory, UserRole } from '@/lib/types';
 import { 
   ShieldCheck, 
@@ -33,7 +34,8 @@ import {
   RefreshCw,
   Lock,
   ChevronRight,
-  Archive
+  Archive,
+  MapPin
 } from 'lucide-react';
 
 export default function AdminPage() {
@@ -53,6 +55,7 @@ export default function AdminPage() {
     stats,
     updateIssueStatus,
     reassignIssueDepartment,
+    deleteReport,
     addDepartment,
     updateDepartment,
     deleteDepartment,
@@ -75,7 +78,7 @@ export default function AdminPage() {
   } = useApp();
 
   const [activeTab, setActiveTab] = useState<
-    'overview' | 'reports' | 'departments' | 'staff' | 'cms' | 'stories' | 'testimonials' | 'blog' | 'faqs' | 'analytics' | 'settings' | 'audit'
+    'overview' | 'reports' | 'emergency' | 'departments' | 'staff' | 'cms' | 'stories' | 'testimonials' | 'blog' | 'faqs' | 'analytics' | 'settings' | 'audit'
   >('overview');
 
   const [selectedIssue, setSelectedIssue] = useState<CivicIssue | null>(null);
@@ -219,14 +222,17 @@ export default function AdminPage() {
   };
 
   interface NavMenuItem {
-    id: 'overview' | 'reports' | 'departments' | 'staff' | 'cms' | 'stories' | 'blog' | 'faqs' | 'analytics' | 'audit';
+    id: 'overview' | 'reports' | 'emergency' | 'departments' | 'staff' | 'cms' | 'stories' | 'blog' | 'faqs' | 'analytics' | 'audit';
     label: string;
     icon: any;
     badge?: number;
   }
 
+  const emergencyReportsCount = issues.filter(i => i.emergency).length;
+
   const navMenuItems: NavMenuItem[] = [
     { id: 'overview', label: 'Overview', icon: LayoutDashboard },
+    { id: 'emergency', label: 'Emergency Cell', icon: ShieldAlert, badge: emergencyReportsCount },
     { id: 'reports', label: 'All Reports', icon: FileText, badge: issues.length },
     { id: 'departments', label: 'Departments', icon: Building2, badge: departments.length },
     { id: 'staff', label: 'Staff Management', icon: Users, badge: staffAccounts.length },
@@ -431,6 +437,119 @@ export default function AdminPage() {
             </div>
           )}
 
+          {/* DEDICATED EMERGENCY CELL DASHBOARD (Spec #10) */}
+          {activeTab === 'emergency' && (
+            <div className="space-y-6">
+              <div className="flex items-center justify-between border-b border-red-200 pb-4 bg-red-50/50 p-4 rounded-2xl border">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-red-600 text-white flex items-center justify-center font-bold shadow-sm">
+                    <ShieldAlert className="w-6 h-6 animate-pulse" />
+                  </div>
+                  <div>
+                    <h1 className="text-xl font-black text-red-950 tracking-tight flex items-center gap-2">
+                      <span>Emergency & Immediate Hazard Dispatch Cell</span>
+                      <span className="text-xs font-mono font-bold bg-red-600 text-white px-2 py-0.5 rounded-full">
+                        {issues.filter(i => i.emergency).length} ACTIVE TICKET(S)
+                      </span>
+                    </h1>
+                    <p className="text-xs text-red-700 font-medium">
+                      High-priority dispatch queue subject to mandatory 4-hour SLA response protocol.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {issues.filter(i => i.emergency).length === 0 ? (
+                <div className="bg-emerald-50 border border-emerald-200 rounded-2xl p-8 text-center space-y-2">
+                  <CheckCircle2 className="w-10 h-10 text-emerald-600 mx-auto" />
+                  <h3 className="text-base font-bold text-emerald-950">No Active Emergency Tickets</h3>
+                  <p className="text-xs text-emerald-700">All emergency priority hazards have been triaged or resolved.</p>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 gap-4">
+                  {issues.filter(i => i.emergency).map((r) => (
+                    <div key={r.id} className="bg-white border-2 border-red-200 rounded-2xl p-5 shadow-sm hover:border-red-400 transition-all space-y-4">
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-3">
+                        <div className="flex items-center gap-2.5">
+                          <span className="font-mono font-black text-red-600 bg-red-50 border border-red-200 px-2.5 py-1 rounded-lg text-xs">
+                            {r.ticketNumber}
+                          </span>
+                          <span className="text-xs font-bold text-slate-900">{r.category}</span>
+                          {r.subcategory && (
+                            <span className="text-[11px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded">
+                              {r.subcategory}
+                            </span>
+                          )}
+                        </div>
+
+                        <div className="flex items-center gap-2">
+                          <span className="text-[11px] font-mono font-bold bg-red-600 text-white px-2.5 py-1 rounded-md flex items-center gap-1">
+                            <Clock className="w-3.5 h-3.5" /> 4h Priority SLA
+                          </span>
+                          <span className={`text-xs font-extrabold uppercase px-2.5 py-1 rounded-md ${
+                            r.status === 'resolved' ? 'bg-emerald-100 text-emerald-800' :
+                            r.status === 'in_progress' ? 'bg-amber-100 text-amber-800' : 'bg-red-100 text-red-800'
+                          }`}>
+                            {r.status}
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+                        <div className="space-y-1">
+                          <span className="text-[10px] font-bold text-slate-400 uppercase">Incident Title & Details</span>
+                          <h3 className="font-bold text-slate-900 text-sm">{r.title}</h3>
+                          <p className="text-slate-600 leading-snug line-clamp-2">{r.description}</p>
+                        </div>
+
+                        <div className="space-y-1">
+                          <span className="text-[10px] font-bold text-slate-400 uppercase">Incident Location & Ward</span>
+                          <div className="font-bold text-slate-800 flex items-start gap-1">
+                            <MapPin className="w-3.5 h-3.5 text-red-600 shrink-0 mt-0.5" />
+                            <span>{r.location.address}</span>
+                          </div>
+                          <div className="text-slate-500 font-mono text-[11px]">Ward: {r.location.ward || 'N/A'} • Lat: {r.location.lat}, Lng: {r.location.lng}</div>
+                        </div>
+
+                        <div className="space-y-1">
+                          <span className="text-[10px] font-bold text-slate-400 uppercase">Assigned Authority & Reporter</span>
+                          <div className="font-bold text-slate-900">{r.departmentName}</div>
+                          <div className="text-slate-500">Reported by: <strong>{r.citizenName}</strong></div>
+                          <div className="text-slate-400 font-mono text-[10px]">{new Date(r.reportedAt).toLocaleString()}</div>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center justify-between pt-2 border-t border-slate-100 text-xs">
+                        <div className="flex items-center gap-2">
+                          <span className="font-bold text-slate-600">Quick Status Override:</span>
+                          <button
+                            onClick={() => updateIssueStatus(r.id, 'in_progress')}
+                            className="bg-amber-500 hover:bg-amber-600 text-white font-bold px-3 py-1 rounded text-[11px]"
+                          >
+                            Mark In Progress
+                          </button>
+                          <button
+                            onClick={() => updateIssueStatus(r.id, 'resolved')}
+                            className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-3 py-1 rounded text-[11px]"
+                          >
+                            Mark Resolved
+                          </button>
+                        </div>
+
+                        <button
+                          onClick={() => setSelectedIssue(r)}
+                          className="bg-slate-900 hover:bg-slate-800 text-white font-bold px-3.5 py-1.5 rounded-lg text-xs"
+                        >
+                          Inspect Full Dossier
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+
           {/* TAB 2: REPORTS MANAGEMENT */}
           {activeTab === 'reports' && (
             <div className="space-y-4">
@@ -484,8 +603,8 @@ export default function AdminPage() {
                         <th className="py-3 px-4">Title & Ward</th>
                         <th className="py-3 px-4">Assigned Dept</th>
                         <th className="py-3 px-4">Status</th>
-                        <th className="py-3 px-4">Reassign / Override</th>
-                        <th className="py-3 px-4">Inspect</th>
+                        <th className="py-3 px-4">Reassign Department</th>
+                        <th className="py-3 px-4 text-right">Admin Actions</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-200 font-medium">
@@ -514,10 +633,32 @@ export default function AdminPage() {
                               {departments.map(d => <option key={d.id} value={d.id}>{d.name}</option>)}
                             </select>
                           </td>
-                          <td className="py-3 px-4">
+                          <td className="py-3 px-4 text-right space-x-1.5">
+                            {r.status !== 'resolved' && (
+                              <button
+                                onClick={async () => {
+                                  if (confirm(`Admin: Close ticket ${r.ticketNumber}?`)) {
+                                    await updateIssueStatus(r.id, 'resolved', undefined, 'Closed by Admin');
+                                  }
+                                }}
+                                className="bg-emerald-600 hover:bg-emerald-500 text-white text-[10px] font-bold px-2 py-1 rounded"
+                              >
+                                Close
+                              </button>
+                            )}
+                            <button
+                              onClick={async () => {
+                                if (confirm(`Admin: Permanently delete ticket ${r.ticketNumber}?`)) {
+                                  await deleteReport(r.id);
+                                }
+                              }}
+                              className="bg-red-50 text-red-700 border border-red-200 hover:bg-red-100 text-[10px] font-bold px-2 py-1 rounded"
+                            >
+                              Delete
+                            </button>
                             <button
                               onClick={() => setSelectedIssue(r)}
-                              className="bg-slate-800 hover:bg-slate-700 text-white text-[10px] font-bold px-2.5 py-1 rounded"
+                              className="bg-slate-800 hover:bg-slate-700 text-white text-[10px] font-bold px-2 py-1 rounded"
                             >
                               Inspect
                             </button>
@@ -532,86 +673,9 @@ export default function AdminPage() {
             </div>
           )}
 
-          {/* TAB 3: DEPARTMENTS (SAFE DELETION / ARCHIVE SUPPORT) */}
+          {/* TAB 3: DEPARTMENT MANAGEMENT */}
           {activeTab === 'departments' && (
-            <div className="space-y-4">
-              <div className="flex items-center justify-between border-b border-slate-200 pb-3">
-                <div>
-                  <h1 className="text-lg font-bold text-slate-900">Department Management</h1>
-                  <p className="text-xs text-slate-500">Safe deletion rule: archived if historical tickets exist</p>
-                </div>
-                <button
-                  onClick={() => setShowAddDeptModal(true)}
-                  className="bg-purple-700 hover:bg-purple-600 text-white font-bold text-xs px-3.5 py-2 rounded-lg flex items-center gap-1.5"
-                >
-                  <Plus className="w-4 h-4" /> Create Department
-                </button>
-              </div>
-
-              {/* Add Dept Modal */}
-              {showAddDeptModal && (
-                <form onSubmit={handleCreateDept} className="bg-purple-50 border border-purple-200 p-4 rounded-xl space-y-3 text-xs">
-                  <h3 className="font-bold text-purple-900">New Municipal Department</h3>
-                  <div className="grid grid-cols-2 gap-3">
-                    <input
-                      type="text"
-                      placeholder="Department Name"
-                      value={newDeptData.name}
-                      onChange={(e) => setNewDeptData({ ...newDeptData, name: e.target.value })}
-                      required
-                      className="border border-purple-300 rounded p-2 bg-white"
-                    />
-                    <input
-                      type="text"
-                      placeholder="Code (e.g. PWD-RD)"
-                      value={newDeptData.code}
-                      onChange={(e) => setNewDeptData({ ...newDeptData, code: e.target.value })}
-                      required
-                      className="border border-purple-300 rounded p-2 bg-white"
-                    />
-                  </div>
-                  <div className="flex justify-end gap-2">
-                    <button type="button" onClick={() => setShowAddDeptModal(false)} className="px-3 py-1.5 bg-slate-200 text-slate-700 font-bold rounded">Cancel</button>
-                    <button type="submit" className="px-4 py-1.5 bg-purple-700 text-white font-bold rounded">Save Department</button>
-                  </div>
-                </form>
-              )}
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {departments.map((dept) => (
-                  <div key={dept.id} className="bg-white border border-slate-200 p-5 rounded-xl space-y-3 shadow-xs">
-                    <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-                      <div>
-                        <span className="text-[10px] font-mono font-bold bg-purple-100 text-purple-800 px-2 py-0.5 rounded">
-                          {dept.code}
-                        </span>
-                        <h3 className="text-base font-bold text-slate-900 mt-1">{dept.name}</h3>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <span className={`text-[10px] font-bold px-2 py-0.5 rounded ${
-                          dept.status === 'active' ? 'bg-emerald-100 text-emerald-800' : 'bg-red-100 text-red-800'
-                        }`}>
-                          {dept.status.toUpperCase()}
-                        </span>
-                        <button
-                          onClick={() => deleteDepartment(dept.id)}
-                          title="Safe Delete / Archive Department"
-                          className="p-1 text-red-600 hover:bg-red-50 rounded"
-                        >
-                          <Archive className="w-4 h-4" />
-                        </button>
-                      </div>
-                    </div>
-
-                    <div className="text-xs space-y-1 text-slate-600">
-                      <div><strong>Lead Officer:</strong> {dept.leadOfficer}</div>
-                      <div><strong>Contact Email:</strong> {dept.contactEmail || dept.email}</div>
-                      <div><strong>Active Tickets:</strong> {dept.activeTickets}</div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+            <DepartmentManagementSection />
           )}
 
           {/* TAB 4: STAFF MANAGEMENT */}

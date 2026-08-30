@@ -46,6 +46,10 @@ export interface CivicIssue {
   customCategory?: string;
   description: string;
   voiceNoteUrl?: string;
+  referenceLink?: string;
+  videoUrl?: string;
+  documentUrl?: string;
+  reportType?: 'civic' | 'environmental';
   visibility?: 'PUBLIC' | 'PRIVATE';
   isSensitiveWildlife?: boolean;
   approxLocation?: {
@@ -76,7 +80,7 @@ export interface CivicIssue {
   photoUrl: string;
   resolutionPhotoUrl?: string;
   aiConfidence: number; // 0-100
-  aiCategoryDetected: string;
+  aiCategoryDetected?: string;
   aiVerificationScore?: number; // 0-100 for resolution verification
   aiVerificationStatus?: 'Verified' | 'Needs Review' | 'Unable to Verify';
   notes: Array<{
@@ -95,12 +99,16 @@ export interface Department {
   id: string;
   name: string;
   code: string;
+  type?: 'Civic' | 'Environmental' | 'Wildlife' | 'Emergency';
+  description?: string;
   iconName?: string;
-  categoriesHandled?: IssueCategory[];
+  categoriesHandled?: string[];
   contactEmail?: string;
   email?: string;
   contactPhone?: string;
   phone?: string;
+  alternatePhone?: string;
+  officeLocation?: string;
   slaHoursDefault?: number;
   status: 'active' | 'inactive' | 'archived';
   activeTickets: number;
@@ -108,6 +116,8 @@ export interface Department {
   avgResolutionHours?: number;
   slaCompliancePercent?: number;
   leadOfficer: string;
+  loginEmail?: string;
+  passwordHash?: string;
 }
 
 export interface StaffAccount {

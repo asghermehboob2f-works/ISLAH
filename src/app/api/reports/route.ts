@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getDb } from '@/lib/server/db';
 import { getCurrentUser, logAudit } from '@/lib/server/auth';
+import { getDepartmentForCategory } from '@/lib/departmentRouting';
 
 export async function GET(req: Request) {
   try {
@@ -100,6 +101,10 @@ export async function GET(req: Request) {
         photoUrl: r.photo_url || '',
         resolutionPhotoUrl: r.resolution_photo_url || '',
         voiceNoteUrl: r.voice_note_url || '',
+        referenceLink: r.reference_link || undefined,
+        videoUrl: r.video_url || undefined,
+        documentUrl: r.document_url || undefined,
+        reportType: r.report_type || (r.category === 'Environment & Wildlife' ? 'environmental' : 'civic'),
         visibility: r.visibility || 'PUBLIC',
         upvotesCount: r.upvotes_count || 1,
         duplicatesCount: r.duplicates_count || 0,
@@ -152,6 +157,10 @@ export async function POST(req: Request) {
       departmentName: reqDeptName,
       photoUrl,
       voiceNoteUrl,
+      referenceLink,
+      videoUrl,
+      documentUrl,
+      reportType: reqReportType,
       visibility,
       slaHoursTotal,
       isSensitiveWildlife: reqSensitive,
@@ -165,36 +174,55 @@ export async function POST(req: Request) {
       );
     }
 
+    const isEnvCategory = category === 'Environment & Wildlife';
+    const reportType = reqReportType || (isEnvCategory ? 'environmental' : 'civic');
+    const isEmergency = Boolean(emergency);
+
     const db = getDb();
     const id = `iss-${Date.now().toString().slice(-6)}`;
-    const ticketNumber = `ISL-2026-${Math.floor(1000 + Math.random() * 9000)}`;
+    const randomSuffix = Math.floor(100000 + Math.random() * 900000);
+    const ticketNumber = reportType === 'environmental' 
+      ? `ISLAH-ENV-2026-${randomSuffix}` 
+      : `ISLAH-CIV-2026-${randomSuffix}`;
+      
     const now = new Date().toISOString();
 
     const citizenId = currentUser ? currentUser.id : 'usr-guest';
     const citizenName = currentUser ? currentUser.name : 'Anonymous Resident';
     const citizenEmail = currentUser ? currentUser.email : '';
 
-    const isEmergency = Boolean(emergency);
-    const isEnvCategory = category === 'Environment & Wildlife';
+    // Dynamic Category -> Department Database Routing
+    let assignedDeptId = reqDeptId || '';
+    let assignedDeptName = reqDeptName || '';
+    let defaultSlaHours = 24;
 
-    // Automated Intelligent Routing logic for Environment & Wildlife
-    let assignedDeptId = reqDeptId;
-    let assignedDeptName = reqDeptName;
+    const activeDepts = db.prepare("SELECT * FROM departments WHERE status = 'active'").all() as any[];
 
-    if (isEnvCategory || !assignedDeptId) {
-      if (isEmergency || subcategory === 'Environmental Emergencies') {
-        assignedDeptId = 'dept-eco-disaster';
-        assignedDeptName = 'Environmental Emergency Cell';
-      } else if (subcategory === 'Wildlife Protection' || subcategory === 'Forest & Land Protection' || (title && title.toLowerCase().includes('tree')) || (title && title.toLowerCase().includes('animal'))) {
-        assignedDeptId = 'dept-forest-wildlife';
-        assignedDeptName = 'Forest & Wildlife Protection Department';
-      } else if (subcategory === 'Water & Ecosystem Protection' || subcategory === 'Environmental Pollution') {
-        assignedDeptId = 'dept-pollution-control';
-        assignedDeptName = 'State Pollution Control Board';
-      } else {
-        assignedDeptId = reqDeptId || 'dept-forest-wildlife';
-        assignedDeptName = reqDeptName || 'Forest & Wildlife Protection Department';
+    // 1. Check DB for matching assigned department
+    for (const d of activeDepts) {
+      let catList: string[] = [];
+      try { catList = JSON.parse(d.categories_json); } catch (e) {}
+
+      const matchesEmergency = isEmergency && catList.some(c => 
+        c.toLowerCase().includes('emergency') || c === 'Public Safety & Hazards'
+      );
+      const matchesSubcategory = subcategory && catList.includes(subcategory);
+      const matchesCategory = catList.includes(category);
+
+      if (matchesEmergency || matchesSubcategory || matchesCategory) {
+        assignedDeptId = d.id;
+        assignedDeptName = d.name;
+        defaultSlaHours = d.sla_hours_default || 24;
+        break;
       }
+    }
+
+    // 2. Fallback to static mapping if no specific DB match found
+    if (!assignedDeptId || !assignedDeptName) {
+      const deptInfo = getDepartmentForCategory(category, subcategory, isEmergency);
+      assignedDeptId = deptInfo.departmentId;
+      assignedDeptName = deptInfo.departmentName;
+      defaultSlaHours = deptInfo.defaultSlaHours;
     }
 
     // Determine sensitive wildlife protection status
@@ -214,7 +242,7 @@ export async function POST(req: Request) {
     const approxLat = exactLat + latOffset;
     const approxLng = exactLng + lngOffset;
 
-    const slaTotal = isEmergency ? 4 : (isEnvCategory ? 12 : (slaHoursTotal || 24));
+    const slaTotal = isEmergency ? 4 : (slaHoursTotal || defaultSlaHours || 24);
     const finalVisibility = (visibility === 'PRIVATE') ? 'PRIVATE' : 'PUBLIC';
 
     const timeline = [
@@ -231,10 +259,10 @@ export async function POST(req: Request) {
         id: `tl-${Date.now()}-2`,
         timestamp: now,
         status: 'acknowledged',
-        title: 'AI Classification & Environmental Department Routing',
-        description: `Classified under ${category}${subcategory ? ` (${subcategory})` : ''}. Routed to ${assignedDeptName}.`,
+        title: 'Department Routing & Registration',
+        description: `Ticket ${ticketNumber} categorized under ${category}${subcategory ? ` (${subcategory})` : ''}. Routed to ${assignedDeptName}.`,
         actor: 'ISLAH Core Engine',
-        actorRole: 'ai'
+        actorRole: 'system'
       }
     ];
 
@@ -243,11 +271,12 @@ export async function POST(req: Request) {
         id, ticket_number, citizen_id, citizen_name, citizen_email,
         title, description, category, subcategory, custom_category, address, landmark, ward,
         latitude, longitude, severity, emergency, status, photo_url, voice_note_url,
+        reference_link, video_url, document_url, report_type,
         visibility, is_sensitive_wildlife, approx_latitude, approx_longitude, evidence_files_json,
         upvotes_count, duplicates_count, department_id, department_name,
         sla_hours_total, sla_hours_remaining, ai_confidence, timeline_json, notes_json,
         reported_at, updated_at
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `).run(
       id,
       ticketNumber,
@@ -255,7 +284,7 @@ export async function POST(req: Request) {
       citizenName,
       citizenEmail,
       title,
-      description || 'Environmental hazard report submitted via ISLAH portal.',
+      description || `Report submitted under ${category}`,
       category,
       subcategory || null,
       customCategory || null,
@@ -269,6 +298,10 @@ export async function POST(req: Request) {
       'reported',
       photoUrl || '',
       voiceNoteUrl || '',
+      referenceLink || null,
+      videoUrl || null,
+      documentUrl || null,
+      reportType,
       finalVisibility,
       isSensitiveWildlife ? 1 : 0,
       approxLat,

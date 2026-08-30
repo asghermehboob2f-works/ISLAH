@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { getDb } from '@/lib/server/db';
+import { getDb, hashPassword } from '@/lib/server/db';
 import { getCurrentUser, logAudit } from '@/lib/server/auth';
 
 export async function PATCH(req: Request, context: { params: Promise<{ id: string }> }) {
@@ -14,7 +14,22 @@ export async function PATCH(req: Request, context: { params: Promise<{ id: strin
     }
 
     const body = await req.json();
-    const { name, code, contactEmail, contactPhone, categoriesHandled, slaHoursDefault, leadOfficer, status } = body;
+    const { 
+      name, 
+      code, 
+      type, 
+      description, 
+      contactEmail, 
+      contactPhone, 
+      alternatePhone, 
+      officeLocation, 
+      categoriesHandled, 
+      slaHoursDefault, 
+      leadOfficer, 
+      loginEmail, 
+      password, 
+      status 
+    } = body;
 
     const db = getDb();
     const dept = db.prepare('SELECT * FROM departments WHERE id = ?').get(id) as any;
@@ -27,31 +42,47 @@ export async function PATCH(req: Request, context: { params: Promise<{ id: strin
     }
 
     const categoriesJson = categoriesHandled ? JSON.stringify(categoriesHandled) : dept.categories_json;
+    const passHash = password && password.trim() ? hashPassword(password.trim()) : dept.password_hash;
+    const now = new Date().toISOString();
 
     db.prepare(`
       UPDATE departments
       SET name = COALESCE(?, name),
           code = COALESCE(?, code),
+          type = COALESCE(?, type),
+          description = COALESCE(?, description),
           email = COALESCE(?, email),
           contact = COALESCE(?, contact),
+          alternate_contact = COALESCE(?, alternate_contact),
+          office_location = COALESCE(?, office_location),
           categories_json = ?,
           sla_hours_default = COALESCE(?, sla_hours_default),
           lead_officer = COALESCE(?, lead_officer),
-          status = COALESCE(?, status)
+          login_email = COALESCE(?, login_email),
+          password_hash = ?,
+          status = COALESCE(?, status),
+          updated_at = ?
       WHERE id = ?
     `).run(
       name || null,
       code ? code.toUpperCase() : null,
+      type || null,
+      description !== undefined ? description : null,
       contactEmail || null,
       contactPhone || null,
+      alternatePhone !== undefined ? alternatePhone : null,
+      officeLocation !== undefined ? officeLocation : null,
       categoriesJson,
       slaHoursDefault || null,
       leadOfficer || null,
+      loginEmail || null,
+      passHash,
       status || null,
+      now,
       id
     );
 
-    logAudit(currentUser.name, 'admin', 'UPDATE_DEPARTMENT', id, `Updated department ${dept.code} parameters`);
+    logAudit(currentUser.name, 'admin', 'UPDATE_DEPARTMENT', id, `Updated department ${dept.code} information`);
 
     return NextResponse.json({ success: true, message: 'Department updated successfully.' });
   } catch (err: any) {
@@ -76,13 +107,12 @@ export async function DELETE(req: Request, context: { params: Promise<{ id: stri
     const db = getDb();
     const issueCountQuery = db.prepare('SELECT COUNT(*) as count FROM issues WHERE department_id = ?').get(id) as { count: number };
 
-    // Safe deletion rule: If historical reports exist, soft-delete (archive) instead of deleting DB row
     if (issueCountQuery.count > 0) {
-      db.prepare("UPDATE departments SET status = 'archived' WHERE id = ?").run(id);
-      logAudit(currentUser.name, 'admin', 'ARCHIVE_DEPARTMENT', id, `Archived department ${id} containing ${issueCountQuery.count} historical tickets`);
+      db.prepare("UPDATE departments SET status = 'inactive' WHERE id = ?").run(id);
+      logAudit(currentUser.name, 'admin', 'DISABLE_DEPARTMENT', id, `Disabled department ${id} containing ${issueCountQuery.count} historical tickets`);
       return NextResponse.json({
         success: true,
-        message: 'Department has associated historical tickets. It has been safely archived.'
+        message: 'Department has associated historical tickets. Its status has been safely changed to inactive.'
       });
     }
 

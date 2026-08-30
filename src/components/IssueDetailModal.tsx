@@ -7,18 +7,15 @@ import { formatDate, formatTime } from '@/lib/dateUtils';
 import { 
   X, 
   MapPin, 
-  Clock, 
   CheckCircle2, 
-  AlertTriangle, 
-  Sparkles, 
   Send, 
   ShieldCheck, 
   FileText,
-  User,
   Building,
   Upload,
+  Trash2,
   Check,
-  ChevronRight
+  UserCheck
 } from 'lucide-react';
 
 interface IssueDetailModalProps {
@@ -27,13 +24,16 @@ interface IssueDetailModalProps {
 }
 
 export function IssueDetailModal({ issue, onClose }: IssueDetailModalProps) {
-  const { activeRole, user, updateIssueStatus, addNoteToIssue } = useApp();
+  const { activeRole, user, updateIssueStatus, addNoteToIssue, deleteReport } = useApp();
 
   const [noteInput, setNoteInput] = useState('');
   const [resolutionPhotoInput, setResolutionPhotoInput] = useState('');
   const [isVerifying, setIsVerifying] = useState(false);
 
   if (!issue) return null;
+
+  const isOwner = Boolean(user && (issue.citizenId === user.id || issue.citizenName === user.name));
+  const isAdmin = Boolean(activeRole === 'admin' || user?.role === 'admin');
 
   const handleAddNote = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -58,6 +58,34 @@ export function IssueDetailModal({ issue, onClose }: IssueDetailModalProps) {
       }
     } else {
       await updateIssueStatus(issue.id, newStatus, undefined, `Status updated to ${newStatus} by ${user?.name || 'Officer'}`);
+    }
+  };
+
+  const handleCloseReportByOwner = async () => {
+    if (confirm('Are you sure you want to close and mark this report as resolved?')) {
+      const ok = await updateIssueStatus(issue.id, 'resolved', undefined, 'Report closed and verified resolved by resident.');
+      if (ok) onClose();
+    }
+  };
+
+  const handleDeleteReportByOwner = async () => {
+    if (confirm('Are you sure you want to permanently delete this report? This action cannot be undone.')) {
+      const ok = await deleteReport(issue.id);
+      if (ok) onClose();
+    }
+  };
+
+  const handleCloseReportByAdmin = async () => {
+    if (confirm('Admin Action: Are you sure you want to close this report across the platform?')) {
+      const ok = await updateIssueStatus(issue.id, 'resolved', undefined, 'Report administratively closed and verified resolved by Super Admin.');
+      if (ok) onClose();
+    }
+  };
+
+  const handleDeleteReportByAdmin = async () => {
+    if (confirm('Admin Action: Are you sure you want to permanently delete this report from the platform?')) {
+      const ok = await deleteReport(issue.id);
+      if (ok) onClose();
     }
   };
 
@@ -203,7 +231,77 @@ export function IssueDetailModal({ issue, onClose }: IssueDetailModalProps) {
             </div>
           </div>
 
-          {/* Department Staff Operational Actions (Visible when in Staff Mode) */}
+          {/* SUPER ADMIN REPORT MANAGEMENT PANEL */}
+          {isAdmin && (
+            <div className="bg-purple-50 border border-purple-200 p-4 rounded-xl space-y-3">
+              <div className="flex items-center justify-between">
+                <h3 className="text-xs font-bold text-purple-950 uppercase tracking-wider flex items-center gap-1.5">
+                  <ShieldCheck className="w-4 h-4 text-purple-700" />
+                  Super Admin Platform Governance
+                </h3>
+                <span className="text-[10px] bg-purple-200 text-purple-900 font-bold px-2 py-0.5 rounded font-mono">
+                  ADMIN AUTHORIZATION
+                </span>
+              </div>
+
+              <div className="flex flex-wrap items-center gap-2.5 pt-1">
+                {issue.status !== 'resolved' && (
+                  <button
+                    type="button"
+                    onClick={handleCloseReportByAdmin}
+                    className="bg-purple-700 hover:bg-purple-600 text-white text-xs font-bold px-4 py-2 rounded-xl flex items-center gap-1.5 shadow-xs transition-colors"
+                  >
+                    <Check className="w-4 h-4" /> Admin Close & Resolve Report
+                  </button>
+                )}
+
+                <button
+                  type="button"
+                  onClick={handleDeleteReportByAdmin}
+                  className="bg-white border border-red-300 text-red-700 hover:bg-red-50 text-xs font-bold px-4 py-2 rounded-xl flex items-center gap-1.5 transition-colors"
+                >
+                  <Trash2 className="w-4 h-4 text-red-600" /> Admin Delete Report
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* RESIDENT REPORT MANAGEMENT PANEL */}
+          {isOwner && !isAdmin && (
+            <div className="bg-blue-50/70 border border-blue-200 p-4 rounded-xl space-y-3">
+              <div className="flex items-center justify-between">
+                <h3 className="text-xs font-bold text-blue-950 uppercase tracking-wider flex items-center gap-1.5">
+                  <UserCheck className="w-4 h-4 text-blue-700" />
+                  Manage Your Report
+                </h3>
+                <span className="text-[10px] bg-blue-200 text-blue-900 font-bold px-2 py-0.5 rounded">
+                  Report Owner
+                </span>
+              </div>
+
+              <div className="flex flex-wrap items-center gap-2.5 pt-1">
+                {issue.status !== 'resolved' && (
+                  <button
+                    type="button"
+                    onClick={handleCloseReportByOwner}
+                    className="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold px-4 py-2 rounded-xl flex items-center gap-1.5 shadow-xs transition-colors"
+                  >
+                    <Check className="w-4 h-4" /> Close & Mark Solved
+                  </button>
+                )}
+
+                <button
+                  type="button"
+                  onClick={handleDeleteReportByOwner}
+                  className="bg-white border border-red-300 text-red-700 hover:bg-red-50 text-xs font-bold px-4 py-2 rounded-xl flex items-center gap-1.5 transition-colors"
+                >
+                  <Trash2 className="w-4 h-4 text-red-600" /> Delete Report
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Department Staff Operational Actions */}
           {(activeRole === 'staff' || activeRole === 'admin') && (
             <div className="bg-amber-50/80 border border-amber-200 p-4 rounded-xl space-y-4">
               <div className="flex items-center justify-between">
@@ -320,20 +418,20 @@ export function IssueDetailModal({ issue, onClose }: IssueDetailModalProps) {
                 </div>
               </div>
 
-              {/* Add Note Input Form */}
+              {/* Add Note / Comment Input Form */}
               <form onSubmit={handleAddNote} className="flex gap-2 pt-2">
                 <input
                   type="text"
-                  placeholder="Add note or comment..."
+                  placeholder="Add comment or update note..."
                   value={noteInput}
                   onChange={(e) => setNoteInput(e.target.value)}
-                  className="flex-1 text-xs border border-slate-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="flex-1 text-xs border border-slate-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-900"
                 />
                 <button
                   type="submit"
-                  className="bg-slate-900 text-white text-xs font-bold px-3 py-2 rounded-lg hover:bg-slate-800 transition-colors flex items-center gap-1"
+                  className="bg-slate-900 text-white text-xs font-bold px-3.5 py-2 rounded-lg hover:bg-slate-800 transition-colors flex items-center gap-1"
                 >
-                  <Send className="w-3.5 h-3.5" /> Note
+                  <Send className="w-3.5 h-3.5" /> Post Comment
                 </button>
               </form>
             </div>

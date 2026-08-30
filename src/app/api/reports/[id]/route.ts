@@ -115,6 +115,16 @@ export async function PATCH(req: Request, context: { params: Promise<{ id: strin
       );
     }
 
+    const isOwner = currentUser.id === r.citizen_id;
+    const isStaffOrAdmin = currentUser.role === 'staff' || currentUser.role === 'admin';
+
+    if (!isOwner && !isStaffOrAdmin) {
+      return NextResponse.json(
+        { success: false, error: { code: 'FORBIDDEN', message: 'You can only manage your own reports.' } },
+        { status: 403 }
+      );
+    }
+
     const now = new Date().toISOString();
     const existingTimeline = JSON.parse(r.timeline_json || '[]');
     const existingNotes = JSON.parse(r.notes_json || '[]');
@@ -128,8 +138,8 @@ export async function PATCH(req: Request, context: { params: Promise<{ id: strin
     let aiVerifStatus = r.ai_verification_status;
     let aiVerifScore = r.ai_verification_score;
 
-    // Handle Severity Update
-    if (newSeverity && newSeverity !== r.severity) {
+    // Handle Severity Update (Admin/Staff only)
+    if (newSeverity && newSeverity !== r.severity && isStaffOrAdmin) {
       updatedSeverity = newSeverity;
       existingTimeline.push({
         id: `tl-${Date.now()}`,
@@ -142,7 +152,7 @@ export async function PATCH(req: Request, context: { params: Promise<{ id: strin
       });
     }
 
-    // Handle Status Update Lifecycle
+    // Handle Status Update Lifecycle (Owner closing or Admin/Staff lifecycle)
     if (newStatus && newStatus !== r.status) {
       updatedStatus = newStatus;
 
@@ -152,7 +162,9 @@ export async function PATCH(req: Request, context: { params: Promise<{ id: strin
       if (newStatus === 'assigned') eventTitle = 'Dispatched to Field Officer';
       if (newStatus === 'acknowledged') eventTitle = 'Department Acknowledged';
       if (newStatus === 'in_progress') eventTitle = 'Field Protection Action Underway';
-      if (newStatus === 'resolved') eventTitle = 'Environmental Incident Resolved';
+      if (newStatus === 'resolved') {
+        eventTitle = isOwner ? 'Report Closed & Solved by Resident' : 'Incident Resolved by Department';
+      }
       if (newStatus === 'escalated') eventTitle = 'SLA Escalation Issued';
       if (newStatus === 'rejected') {
         eventTitle = 'Report Marked Invalid / Rejected';
@@ -171,15 +183,17 @@ export async function PATCH(req: Request, context: { params: Promise<{ id: strin
         timestamp: now,
         status: newStatus,
         title: eventTitle,
-        description: newStatus === 'rejected' ? `Reason: ${updatedRejectionReason}` : (note || `Action updated by ${currentUser.name}`),
+        description: isOwner && newStatus === 'resolved' 
+          ? 'Resident verified and closed the report ticket.'
+          : (newStatus === 'rejected' ? `Reason: ${updatedRejectionReason}` : (note || `Action updated by ${currentUser.name}`)),
         actor: currentUser.name,
         actorRole: currentUser.role,
         mediaUrl: resolutionPhotoUrl || undefined
       });
     }
 
-    // Handle Department Reassignment
-    if (newDeptId && newDeptId !== r.department_id) {
+    // Handle Department Reassignment (Admin/Staff only)
+    if (newDeptId && newDeptId !== r.department_id && isStaffOrAdmin) {
       const deptObj = db.prepare('SELECT name FROM departments WHERE id = ?').get(newDeptId) as any;
       if (deptObj) {
         updatedDeptId = newDeptId;
@@ -197,12 +211,12 @@ export async function PATCH(req: Request, context: { params: Promise<{ id: strin
       }
     }
 
-    // Handle Note Addition
+    // Handle Note / Comment Addition
     if (note) {
       existingNotes.push({
         id: `note-${Date.now()}`,
         author: currentUser.name,
-        role: currentUser.role,
+        role: isOwner ? 'Resident' : currentUser.role,
         text: note,
         timestamp: now
       });
@@ -229,11 +243,64 @@ export async function PATCH(req: Request, context: { params: Promise<{ id: strin
       r.id
     );
 
-    logAudit(currentUser.name, currentUser.role, 'UPDATE_REPORT', r.ticket_number, `Updated ticket status=${updatedStatus}, dept=${updatedDeptName}`);
+    logAudit(currentUser.name, currentUser.role, 'UPDATE_REPORT', r.ticket_number, `Updated ticket status=${updatedStatus}`);
 
     return NextResponse.json({
       success: true,
       message: 'Ticket updated successfully.'
+    });
+  } catch (err: any) {
+    return NextResponse.json(
+      { success: false, error: { code: 'SERVER_ERROR', message: err.message } },
+      { status: 500 }
+    );
+  }
+}
+
+export async function DELETE(req: Request, context: { params: Promise<{ id: string }> }) {
+  try {
+    const { id } = await context.params;
+    const currentUser = await getCurrentUser();
+
+    if (!currentUser) {
+      return NextResponse.json(
+        { success: false, error: { code: 'UNAUTHORIZED', message: 'Authentication required to delete report.' } },
+        { status: 401 }
+      );
+    }
+
+    const db = getDb();
+    const r = db.prepare(`
+      SELECT * FROM issues WHERE LOWER(id) = ? OR LOWER(ticket_number) = ?
+    `).get(id.toLowerCase(), id.toLowerCase()) as any;
+
+    if (!r) {
+      return NextResponse.json(
+        { success: false, error: { code: 'NOT_FOUND', message: 'Report ticket not found.' } },
+        { status: 404 }
+      );
+    }
+
+    const isOwner = currentUser.id === r.citizen_id;
+    const isAdmin = currentUser.role === 'admin';
+
+    if (!isOwner && !isAdmin) {
+      return NextResponse.json(
+        { success: false, error: { code: 'FORBIDDEN', message: 'You can only delete your own reports.' } },
+        { status: 403 }
+      );
+    }
+
+    db.prepare('DELETE FROM issues WHERE id = ?').run(r.id);
+
+    // Decrement user report count if logged in
+    db.prepare('UPDATE users SET reports_submitted = MAX(0, reports_submitted - 1) WHERE id = ?').run(r.citizen_id);
+
+    logAudit(currentUser.name, currentUser.role, 'DELETE_REPORT', r.ticket_number, `Deleted report ${r.ticket_number}`);
+
+    return NextResponse.json({
+      success: true,
+      message: 'Report deleted successfully.'
     });
   } catch (err: any) {
     return NextResponse.json(
