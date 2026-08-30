@@ -134,9 +134,9 @@ export function Navbar() {
                     placeholder="Search reports, tickets..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-48 sm:w-64 bg-slate-900 border border-blue-500/60 text-xs text-slate-100 placeholder-slate-400 pl-8 pr-8 py-2 rounded-xl focus:outline-none ring-2 ring-blue-500/20 shadow-lg"
+                    className="w-48 sm:w-64 h-9 sm:h-10 bg-slate-900 border border-blue-500/60 text-xs text-slate-100 placeholder-slate-400 pl-9 pr-8 rounded-xl focus:outline-none ring-2 ring-blue-500/20 shadow-lg"
                   />
-                  <Search className="w-4 h-4 text-blue-400 absolute left-2.5 top-2.5" />
+                  <Search className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-blue-400 absolute left-2.5 top-2.5 sm:top-2.5" />
                   <button
                     type="button"
                     onClick={() => { setSearchOpen(false); setSearchQuery(''); }}
@@ -149,10 +149,10 @@ export function Navbar() {
               ) : (
                 <button
                   onClick={() => setSearchOpen(true)}
-                  className="p-2 text-slate-400 hover:text-blue-400 hover:bg-slate-800/60 rounded-xl transition-all flex items-center justify-center shrink-0 hover:scale-105 active:scale-95"
+                  className="w-9 h-9 sm:w-10 sm:h-10 text-slate-400 hover:text-blue-400 hover:bg-slate-800/60 rounded-xl transition-all flex items-center justify-center shrink-0 hover:scale-105 active:scale-95"
                   title="Search platform reports & tickets"
                 >
-                  <Search className="w-4 h-4 text-blue-400" />
+                  <Search className="w-4.5 h-4.5 sm:w-5 sm:h-5 text-blue-400" />
                 </button>
               )}
             </div>
