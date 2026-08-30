@@ -13,7 +13,9 @@ import {
   CheckCircle2,
   Building,
   ShieldAlert,
-  BarChart3
+  BarChart3,
+  Check,
+  X
 } from 'lucide-react';
 
 export default function DepartmentDashboardPage() {
@@ -23,7 +25,7 @@ export default function DepartmentDashboardPage() {
   const staffDeptId = user?.departmentId;
 
   const [selectedDept, setSelectedDept] = useState<string>('all');
-  const [statusFilter, setStatusFilter] = useState<string>('all');
+  const [statusFilter, setStatusFilter] = useState<string>('active');
   const [severityFilter, setSeverityFilter] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedIssue, setSelectedIssue] = useState<CivicIssue | null>(null);
@@ -36,7 +38,13 @@ export default function DepartmentDashboardPage() {
 
   const filteredTickets = issues.filter((ticket) => {
     if (selectedDept !== 'all' && ticket.departmentId !== selectedDept) return false;
-    if (statusFilter !== 'all' && ticket.status !== statusFilter) return false;
+    if (statusFilter === 'active') {
+      if (ticket.status === 'resolved' || ticket.status === 'rejected') return false;
+    } else if (statusFilter === 'closed') {
+      if (ticket.status !== 'resolved' && ticket.status !== 'rejected') return false;
+    } else if (statusFilter !== 'all' && ticket.status !== statusFilter) {
+      return false;
+    }
     if (severityFilter !== 'all' && ticket.severity !== severityFilter) return false;
     if (searchQuery) {
       const q = searchQuery.toLowerCase();
@@ -83,24 +91,30 @@ export default function DepartmentDashboardPage() {
         </div>
 
         {/* Operational Metrics Cards */}
-        <div className="grid grid-cols-3 gap-2 sm:gap-3 shrink-0">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 shrink-0">
           <div className="bg-slate-800/90 p-3 rounded-xl border border-slate-700/80 text-center">
             <div className="text-lg font-bold font-mono text-amber-400">
-              {filteredTickets.filter(i => i.status === 'reported' || i.status === 'in_progress').length}
+              {issues.filter(i => (selectedDept === 'all' || i.departmentId === selectedDept) && i.status !== 'resolved' && i.status !== 'rejected').length}
             </div>
             <div className="text-[10px] text-slate-400 font-semibold uppercase">Pending Work</div>
           </div>
           <div className="bg-slate-800/90 p-3 rounded-xl border border-slate-700/80 text-center">
             <div className="text-lg font-bold font-mono text-red-400">
-              {filteredTickets.filter(i => i.emergency || i.status === 'escalated').length}
+              {issues.filter(i => (selectedDept === 'all' || i.departmentId === selectedDept) && (i.emergency || i.status === 'escalated') && i.status !== 'resolved' && i.status !== 'rejected').length}
             </div>
             <div className="text-[10px] text-slate-400 font-semibold uppercase">Emergency SLA</div>
           </div>
           <div className="bg-slate-800/90 p-3 rounded-xl border border-slate-700/80 text-center">
             <div className="text-lg font-bold font-mono text-emerald-400">
-              {filteredTickets.filter(i => i.status === 'resolved').length}
+              {issues.filter(i => (selectedDept === 'all' || i.departmentId === selectedDept) && i.status === 'resolved').length}
             </div>
             <div className="text-[10px] text-slate-400 font-semibold uppercase">Verified Solved</div>
+          </div>
+          <div className="bg-slate-800/90 p-3 rounded-xl border border-slate-700/80 text-center">
+            <div className="text-lg font-bold font-mono text-rose-400">
+              {issues.filter(i => (selectedDept === 'all' || i.departmentId === selectedDept) && i.status === 'rejected').length}
+            </div>
+            <div className="text-[10px] text-slate-400 font-semibold uppercase">Rejected / Invalid</div>
           </div>
         </div>
       </div>
@@ -133,11 +147,14 @@ export default function DepartmentDashboardPage() {
               onChange={(e) => setStatusFilter(e.target.value)}
               className="w-full text-xs border border-slate-300 rounded-lg px-3 py-1.5 bg-slate-50 focus:bg-white font-semibold text-slate-800"
             >
+              <option value="active">Active Pending Queue (Excludes Resolved & Rejected)</option>
               <option value="all">All Statuses</option>
               <option value="reported">Reported</option>
               <option value="acknowledged">Acknowledged</option>
               <option value="in_progress">In Progress</option>
               <option value="resolved">Resolved</option>
+              <option value="rejected">Rejected / Invalid</option>
+              <option value="closed">Closed (Resolved & Rejected)</option>
               <option value="escalated">Escalated</option>
             </select>
           </div>
@@ -228,13 +245,21 @@ export default function DepartmentDashboardPage() {
                       </span>
                     </td>
                     <td className="py-3 px-4">
-                      <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase ${
-                        ticket.status === 'resolved' ? 'bg-emerald-100 text-emerald-800' :
-                        ticket.status === 'in_progress' ? 'bg-amber-100 text-amber-800' :
-                        ticket.status === 'escalated' ? 'bg-red-100 text-red-800' : 'bg-blue-100 text-blue-800'
-                      }`}>
-                        {ticket.status.replace('_', ' ')}
-                      </span>
+                      {ticket.status === 'resolved' ? (
+                        <span className="bg-emerald-600 text-white px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider inline-flex items-center gap-1 shadow-xs border border-emerald-700">
+                          <span className="w-3.5 h-3.5 rounded-full bg-white flex items-center justify-center text-emerald-700 shrink-0">
+                            <Check className="w-2.5 h-2.5 text-emerald-700 stroke-[3.5]" />
+                          </span>
+                          Resolved
+                        </span>
+                      ) : (
+                        <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase ${
+                          ticket.status === 'in_progress' ? 'bg-amber-100 text-amber-800' :
+                          ticket.status === 'escalated' ? 'bg-red-100 text-red-800' : 'bg-blue-100 text-blue-800'
+                        }`}>
+                          {ticket.status.replace('_', ' ')}
+                        </span>
+                      )}
                     </td>
                     <td className="py-3 px-4">
                       <button

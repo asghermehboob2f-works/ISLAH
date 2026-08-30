@@ -31,16 +31,20 @@ export function StepEvidence({
 
     setIsUploading(true);
     
-    // Convert files to object URLs for preview and attach
+    // Read files as Base64 Data URLs for persistent display across sessions & DB
     const newFileUrls: string[] = [];
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
-      const localUrl = URL.createObjectURL(file);
-      newFileUrls.push(localUrl);
+      const dataUrl = await new Promise<string>((resolve) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result as string);
+        reader.readAsDataURL(file);
+      });
+      newFileUrls.push(dataUrl);
 
-      // Primary photo preview if none set
-      if (i === 0 && !photoUrl) {
-        onPhotoChange(localUrl);
+      // Set primary cover photo if none set
+      if (i === 0 && (!photoUrl || photoUrl.startsWith('blob:'))) {
+        onPhotoChange(dataUrl);
       }
     }
 
@@ -112,7 +116,7 @@ export function StepEvidence({
               return (
                 <div key={index} className="relative group rounded-xl border border-slate-200 overflow-hidden bg-slate-50 p-2 shadow-xs space-y-1">
                   <div className="h-28 rounded-lg overflow-hidden bg-slate-200 flex items-center justify-center relative">
-                    {fileUrl.startsWith('blob:') || fileUrl.match(/\.(jpeg|jpg|gif|png|webp)/i) || fileUrl.includes('photo') || fileUrl.includes('unsplash') ? (
+                    {fileUrl.startsWith('data:image') || fileUrl.startsWith('blob:') || fileUrl.match(/\.(jpeg|jpg|gif|png|webp)/i) || fileUrl.includes('photo') || fileUrl.includes('unsplash') || fileUrl.startsWith('http') ? (
                       <img src={fileUrl} alt="Evidence preview" className="w-full h-full object-cover" />
                     ) : (
                       <FileText className="w-8 h-8 text-slate-500" />

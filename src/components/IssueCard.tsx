@@ -11,7 +11,9 @@ import {
   ThumbsUp, 
   ArrowRight,
   ShieldAlert,
-  Sparkles
+  Check,
+  Sparkles,
+  X
 } from 'lucide-react';
 
 interface IssueCardProps {
@@ -30,7 +32,23 @@ export function IssueCard({ issue, onSelect, onUpvote }: IssueCardProps) {
       case 'in_progress':
         return <span className="status-badge status-in_progress">In Progress</span>;
       case 'resolved':
-        return <span className="status-badge status-resolved">Resolved</span>;
+        return (
+          <span className="bg-emerald-600 text-white font-bold px-2.5 py-1 rounded-full text-[11px] inline-flex items-center gap-1.5 shadow-xs border border-emerald-700 uppercase tracking-wider">
+            <span className="w-3.5 h-3.5 rounded-full bg-white flex items-center justify-center text-emerald-700 shrink-0">
+              <Check className="w-2.5 h-2.5 text-emerald-700 stroke-[3]" />
+            </span>
+            Resolved
+          </span>
+        );
+      case 'rejected':
+        return (
+          <span className="bg-red-600 text-white font-bold px-2.5 py-1 rounded-full text-[11px] inline-flex items-center gap-1.5 shadow-xs border border-red-700 uppercase tracking-wider">
+            <span className="w-3.5 h-3.5 rounded-full bg-white flex items-center justify-center text-red-600 shrink-0">
+              <X className="w-2.5 h-2.5 text-red-600 stroke-[3]" />
+            </span>
+            Rejected / Invalid
+          </span>
+        );
       case 'escalated':
         return <span className="status-badge status-escalated">Escalated</span>;
     }
@@ -120,14 +138,26 @@ export function IssueCard({ issue, onSelect, onUpvote }: IssueCardProps) {
 
       {/* Card Footer */}
       <div className="px-4 py-3 bg-slate-50 border-t border-slate-100 flex items-center justify-between text-xs">
-        <div className="flex items-center gap-1 text-slate-500">
-          <Clock className="w-3.5 h-3.5 text-slate-400" />
-          <span>
-            {issue.status === 'resolved' 
-              ? 'Resolved' 
-              : `${issue.slaHoursRemaining}h SLA remaining`}
-          </span>
-        </div>
+        {issue.status === 'resolved' ? (
+          <div className="flex items-center gap-1.5 bg-emerald-600 text-white px-2.5 py-1 rounded-full font-bold text-[11px] shadow-xs border border-emerald-700">
+            <span className="w-3.5 h-3.5 rounded-full bg-white flex items-center justify-center text-emerald-700 shrink-0">
+              <Check className="w-2.5 h-2.5 text-emerald-700 stroke-[3]" />
+            </span>
+            <span>Resolved</span>
+          </div>
+        ) : issue.status === 'rejected' ? (
+          <div className="flex items-center gap-1.5 bg-red-600 text-white px-2.5 py-1 rounded-full font-bold text-[11px] shadow-xs border border-red-700">
+            <span className="w-3.5 h-3.5 rounded-full bg-white flex items-center justify-center text-red-600 shrink-0">
+              <X className="w-2.5 h-2.5 text-red-600 stroke-[3]" />
+            </span>
+            <span>Rejected / Invalid</span>
+          </div>
+        ) : (
+          <div className="flex items-center gap-1 text-slate-500">
+            <Clock className="w-3.5 h-3.5 text-slate-400" />
+            <span>{issue.slaHoursRemaining}h SLA remaining</span>
+          </div>
+        )}
 
         <div className="flex items-center gap-3">
           {onUpvote && (

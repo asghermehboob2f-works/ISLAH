@@ -15,7 +15,8 @@ import {
   Upload,
   Trash2,
   Check,
-  UserCheck
+  UserCheck,
+  XCircle
 } from 'lucide-react';
 
 interface IssueDetailModalProps {
@@ -27,10 +28,22 @@ export function IssueDetailModal({ issue, onClose }: IssueDetailModalProps) {
   const { activeRole, user, updateIssueStatus, addNoteToIssue, deleteReport } = useApp();
 
   const [noteInput, setNoteInput] = useState('');
+  const userUploadedPhoto = issue?.photoUrl || (issue?.evidenceFiles && issue?.evidenceFiles[0]) || '';
   const [resolutionPhotoInput, setResolutionPhotoInput] = useState('');
   const [isVerifying, setIsVerifying] = useState(false);
+  const [nextActionDateInput, setNextActionDateInput] = useState(issue?.nextActionDate || '');
+
+  React.useEffect(() => {
+    if (issue?.nextActionDate) setNextActionDateInput(issue.nextActionDate);
+  }, [issue]);
 
   if (!issue) return null;
+
+  const handleUpdateNextActionDate = async () => {
+    if (!nextActionDateInput || !issue) return;
+    await updateIssueStatus(issue.id, issue.status, undefined, `Next action date set to ${nextActionDateInput}`, nextActionDateInput);
+    alert(`Next Action Date scheduled for ${nextActionDateInput}`);
+  };
 
   const isOwner = Boolean(user && (issue.citizenId === user.id || issue.citizenName === user.name));
   const isAdmin = Boolean(activeRole === 'admin' || user?.role === 'admin');
@@ -45,19 +58,21 @@ export function IssueDetailModal({ issue, onClose }: IssueDetailModalProps) {
   const handleStatusChange = async (newStatus: IssueStatus) => {
     if (newStatus === 'resolved') {
       if (!resolutionPhotoInput) {
-        alert('Please select or upload a resolution photo to verify work completion.');
+        alert('Please paste or select a resolution photo to verify completion.');
         return;
       }
       setIsVerifying(true);
-      const success = await updateIssueStatus(issue.id, 'resolved', resolutionPhotoInput, 'Work completed and verified by department staff.');
+      await updateIssueStatus(issue.id, 'resolved', resolutionPhotoInput, 'Work completed and verified by department staff.');
       setIsVerifying(false);
-      if (success) {
-        onClose();
-      } else {
-        alert('Failed to update issue status.');
-      }
+      alert('Ticket marked as RESOLVED and verified!');
+    } else if (newStatus === 'rejected') {
+      const reason = prompt('Please specify the reason for marking this ticket as Invalid / Rejected:', noteInput || 'Marked invalid upon inspection / duplicate / invalid location details.');
+      if (!reason) return;
+      await updateIssueStatus(issue.id, 'rejected', undefined, `Ticket marked invalid/rejected. Reason: ${reason}`, undefined, reason);
+      alert('Ticket marked as INVALID / REJECTED and closed out of active pending queue.');
+      onClose();
     } else {
-      await updateIssueStatus(issue.id, newStatus, undefined, `Status updated to ${newStatus} by ${user?.name || 'Officer'}`);
+      await updateIssueStatus(issue.id, newStatus, undefined, `Status updated to ${newStatus.replace('_', ' ').toUpperCase()} by officer.`);
     }
   };
 
@@ -127,15 +142,43 @@ export function IssueDetailModal({ issue, onClose }: IssueDetailModalProps) {
             </div>
 
             <div className="flex items-center gap-3">
-              <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider ${
-                issue.status === 'resolved' ? 'bg-emerald-100 text-emerald-800 border border-emerald-300' :
-                issue.status === 'in_progress' ? 'bg-amber-100 text-amber-800 border border-amber-300' :
-                issue.status === 'escalated' ? 'bg-red-100 text-red-800 border border-red-300' : 'bg-blue-100 text-blue-800 border border-blue-300'
-              }`}>
-                Status: {issue.status.replace('_', ' ')}
-              </span>
+              {issue.status === 'resolved' ? (
+                <span className="bg-emerald-600 text-white px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 shadow-xs border border-emerald-700">
+                  <span className="w-4 h-4 rounded-full bg-white flex items-center justify-center text-emerald-700 shrink-0">
+                    <Check className="w-2.5 h-2.5 text-emerald-700 stroke-[3.5]" />
+                  </span>
+                  Resolved
+                </span>
+              ) : issue.status === 'rejected' ? (
+                <span className="bg-red-600 text-white px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 shadow-xs border border-red-700">
+                  <span className="w-4 h-4 rounded-full bg-white flex items-center justify-center text-red-600 shrink-0">
+                    <XCircle className="w-2.5 h-2.5 text-red-600 stroke-[3.5]" />
+                  </span>
+                  Rejected / Invalid
+                </span>
+              ) : (
+                <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider ${
+                  issue.status === 'in_progress' ? 'bg-amber-100 text-amber-800 border border-amber-300' :
+                  issue.status === 'escalated' ? 'bg-red-100 text-red-800 border border-red-300' : 'bg-blue-100 text-blue-800 border border-blue-300'
+                }`}>
+                  Status: {issue.status.replace('_', ' ')}
+                </span>
+              )}
             </div>
           </div>
+
+          {/* Rejection Banner */}
+          {(issue.status === 'rejected' || issue.rejectionReason) && (
+            <div className="bg-red-50 border border-red-200 rounded-xl p-4 space-y-1.5 text-red-900 shadow-xs">
+              <div className="flex items-center gap-2 text-red-700 font-bold text-xs uppercase tracking-wider">
+                <XCircle className="w-4 h-4 text-red-600" />
+                Report Marked Invalid / Rejected & Closed
+              </div>
+              <p className="text-xs text-red-800 font-semibold">
+                Rejection Reason: <span className="font-normal text-slate-800">{issue.rejectionReason || 'Marked invalid upon municipal inspection / duplicate / invalid location.'}</span>
+              </p>
+            </div>
+          )}
 
           {/* Photo Section: Original vs Resolution Photo */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -144,17 +187,17 @@ export function IssueDetailModal({ issue, onClose }: IssueDetailModalProps) {
                 <FileText className="w-4 h-4 text-blue-600" />
                 Original Citizen Report Photo
               </span>
-              <div className="h-56 bg-slate-100 rounded-xl overflow-hidden border border-slate-200 flex items-center justify-center">
-                {issue.photoUrl ? (
+              <div className="h-56 bg-slate-100 rounded-xl overflow-hidden border border-slate-200 flex items-center justify-center relative">
+                {userUploadedPhoto ? (
                   <img
-                    src={issue.photoUrl}
-                    alt="Original Issue"
+                    src={userUploadedPhoto}
+                    alt="Original Citizen Report Photo"
                     className="w-full h-full object-cover"
                   />
                 ) : (
                   <div className="text-center p-6 text-slate-400">
                     <FileText className="w-8 h-8 mx-auto mb-1 text-slate-300" />
-                    <span className="text-xs font-semibold">No Image Attached</span>
+                    <span className="text-xs font-semibold">No Image Uploaded by Citizen</span>
                   </div>
                 )}
               </div>
@@ -208,6 +251,14 @@ export function IssueDetailModal({ issue, onClose }: IssueDetailModalProps) {
                 <div className="pt-2">
                   <div className="text-[10px] font-bold text-purple-700 uppercase">Attached Voice Note:</div>
                   <audio controls src={issue.voiceNoteUrl} className="w-full h-8 mt-1" />
+                </div>
+              )}
+              {issue.nextActionDate && (
+                <div className="pt-2 flex items-center gap-2">
+                  <span className="text-[10px] font-bold text-amber-800 uppercase">Scheduled Next Action Date:</span>
+                  <span className="bg-amber-100 text-amber-900 border border-amber-300 font-mono text-xs font-bold px-2 py-0.5 rounded-md">
+                    {issue.nextActionDate}
+                  </span>
                 </div>
               )}
             </div>
@@ -303,55 +354,133 @@ export function IssueDetailModal({ issue, onClose }: IssueDetailModalProps) {
 
           {/* Department Staff Operational Actions */}
           {(activeRole === 'staff' || activeRole === 'admin') && (
-            <div className="bg-amber-50/80 border border-amber-200 p-4 rounded-xl space-y-4">
-              <div className="flex items-center justify-between">
-                <h3 className="text-xs font-bold text-amber-900 uppercase tracking-wider flex items-center gap-1.5">
+            <div className="bg-amber-50/80 border border-amber-200 p-4.5 rounded-xl space-y-4 shadow-xs">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-amber-200/60 pb-3">
+                <h3 className="text-xs font-bold text-amber-950 uppercase tracking-wider flex items-center gap-1.5">
                   <Building className="w-4 h-4 text-amber-700" />
                   Department Officer Operations ({issue.departmentName})
                 </h3>
-                <span className="text-[11px] text-amber-700 font-semibold font-mono">
-                  SLA Remaining: {issue.slaHoursRemaining} hrs
-                </span>
+                <div className="flex items-center gap-2">
+                  <span className="text-[11px] text-amber-800 font-bold font-mono bg-amber-100 px-2 py-0.5 rounded border border-amber-300">
+                    SLA Remaining: {issue.slaHoursRemaining} hrs
+                  </span>
+                </div>
               </div>
 
-              <div className="flex flex-wrap gap-2">
-                {issue.status === 'reported' && (
+              {/* Status Change Lifecycle Toolbar */}
+              <div className="space-y-2">
+                <label className="text-[11px] font-bold text-slate-800 uppercase tracking-wider block">
+                  Update Ticket Workflow Status
+                </label>
+                <div className="flex flex-wrap gap-2">
                   <button
+                    type="button"
                     onClick={() => handleStatusChange('acknowledged')}
-                    className="bg-blue-600 text-white text-xs font-bold px-3.5 py-2 rounded-lg hover:bg-blue-500 transition-colors"
+                    className={`text-xs font-bold px-3 py-1.5 rounded-lg border transition-all ${
+                      issue.status === 'acknowledged'
+                        ? 'bg-blue-600 text-white border-blue-600 shadow-xs'
+                        : 'bg-white text-blue-700 border-blue-300 hover:bg-blue-50'
+                    }`}
                   >
-                    Acknowledge Ticket
+                    Acknowledge
                   </button>
-                )}
 
-                {(issue.status === 'reported' || issue.status === 'acknowledged') && (
                   <button
-                    onClick={() => handleStatusChange('in_progress')}
-                    className="bg-amber-600 text-white text-xs font-bold px-3.5 py-2 rounded-lg hover:bg-amber-500 transition-colors"
+                    type="button"
+                    onClick={() => handleStatusChange('under_review')}
+                    className={`text-xs font-bold px-3 py-1.5 rounded-lg border transition-all ${
+                      issue.status === 'under_review'
+                        ? 'bg-purple-600 text-white border-purple-600 shadow-xs'
+                        : 'bg-white text-purple-700 border-purple-300 hover:bg-purple-50'
+                    }`}
                   >
-                    Dispatch Team (In Progress)
+                    Under Inspection
                   </button>
-                )}
+
+                  <button
+                    type="button"
+                    onClick={() => handleStatusChange('in_progress')}
+                    className={`text-xs font-bold px-3 py-1.5 rounded-lg border transition-all ${
+                      issue.status === 'in_progress'
+                        ? 'bg-amber-600 text-white border-amber-600 shadow-xs'
+                        : 'bg-white text-amber-800 border-amber-300 hover:bg-amber-100'
+                    }`}
+                  >
+                    Dispatch Field Team
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => handleStatusChange('resolved')}
+                    className={`text-xs font-bold px-3 py-1.5 rounded-lg border transition-all ${
+                      issue.status === 'resolved'
+                        ? 'bg-emerald-600 text-white border-emerald-600 shadow-xs'
+                        : 'bg-white text-emerald-700 border-emerald-300 hover:bg-emerald-50'
+                    }`}
+                  >
+                    Mark Resolved
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => handleStatusChange('rejected')}
+                    className={`text-xs font-bold px-3 py-1.5 rounded-lg border transition-all ${
+                      issue.status === 'rejected'
+                        ? 'bg-red-600 text-white border-red-600 shadow-xs'
+                        : 'bg-white text-red-700 border-red-300 hover:bg-red-50'
+                    }`}
+                  >
+                    Mark Invalid / Reject
+                  </button>
+                </div>
+              </div>
+
+              {/* Next Action Date Scheduler */}
+              <div className="pt-3 border-t border-amber-200/80 space-y-2">
+                <label className="text-xs font-bold text-slate-800 flex items-center justify-between">
+                  <span>Schedule Next Operational Action Date</span>
+                  {issue.nextActionDate && (
+                    <span className="text-[11px] font-mono text-purple-700 font-bold bg-purple-50 border border-purple-200 px-2 py-0.5 rounded">
+                      Current: {issue.nextActionDate}
+                    </span>
+                  )}
+                </label>
+                <div className="flex gap-2">
+                  <input
+                    type="date"
+                    value={nextActionDateInput}
+                    onChange={(e) => setNextActionDateInput(e.target.value)}
+                    className="text-xs border border-slate-300 rounded-lg px-3 py-2 bg-white font-mono font-medium text-slate-900 focus:ring-2 focus:ring-amber-500/20"
+                  />
+                  <button
+                    type="button"
+                    onClick={handleUpdateNextActionDate}
+                    className="bg-amber-700 hover:bg-amber-600 text-white text-xs font-bold px-4 py-2 rounded-lg shadow-xs transition-colors"
+                  >
+                    Save Action Date
+                  </button>
+                </div>
               </div>
 
               {/* Resolution Photo Upload Form */}
               {issue.status !== 'resolved' && (
                 <div className="pt-3 border-t border-amber-200/80 space-y-2">
                   <label className="text-xs font-bold text-slate-800 block">
-                    Upload Resolution Photo & Complete AI Verification
+                    Upload Resolution Evidence Photo (Preserves Citizen Original)
                   </label>
                   <div className="flex gap-2">
                     <input
                       type="text"
-                      placeholder="Paste Resolution Image URL..."
+                      placeholder="Paste Resolution / After-Action Image URL..."
                       value={resolutionPhotoInput}
                       onChange={(e) => setResolutionPhotoInput(e.target.value)}
                       className="flex-1 text-xs border border-slate-300 rounded-lg px-3 py-2 bg-white"
                     />
                     <button
+                      type="button"
                       onClick={() => handleStatusChange('resolved')}
                       disabled={isVerifying}
-                      className="bg-emerald-600 text-white text-xs font-bold px-4 py-2 rounded-lg hover:bg-emerald-500 disabled:opacity-50 flex items-center gap-1.5"
+                      className="bg-emerald-600 text-white text-xs font-bold px-4 py-2 rounded-lg hover:bg-emerald-500 disabled:opacity-50 flex items-center gap-1.5 shadow-xs"
                     >
                       <Upload className="w-3.5 h-3.5" />
                       {isVerifying ? 'AI Verifying...' : 'Submit & Verify'}

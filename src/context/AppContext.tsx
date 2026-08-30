@@ -50,7 +50,7 @@ interface AppContextType {
 
   // Issues
   createReport: (reportData: Partial<CivicIssue>) => Promise<CivicIssue | null>;
-  updateIssueStatus: (issueId: string, status: IssueStatus, resolutionPhotoUrl?: string, noteText?: string) => Promise<boolean>;
+  updateIssueStatus: (issueId: string, status: IssueStatus, resolutionPhotoUrl?: string, noteText?: string, nextActionDate?: string, rejectionReason?: string) => Promise<boolean>;
   upvoteIssue: (issueId: string) => Promise<void>;
   addNoteToIssue: (issueId: string, noteText: string) => Promise<void>;
   reassignIssueDepartment: (issueId: string, newDeptId: string) => Promise<void>;
@@ -321,23 +321,49 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }
   };
 
-  const updateIssueStatus = async (issueId: string, status: IssueStatus, resolutionPhotoUrl?: string, noteText?: string): Promise<boolean> => {
+  const updateIssueStatus = async (issueId: string, status: IssueStatus, resolutionPhotoUrl?: string, noteText?: string, nextActionDate?: string, rejectionReason?: string): Promise<boolean> => {
+    // 1. Optimistically update local React state for immediate UI feedback
+    const now = new Date().toISOString();
+    setIssues(prev => prev.map(i => {
+      if (i.id === issueId || i.ticketNumber === issueId) {
+        const existingTimeline = i.timeline || [];
+        const newTimelineEvent = {
+          id: `tl-${Date.now()}`,
+          timestamp: now,
+          status,
+          title: status === 'rejected' ? 'Ticket Marked Invalid / Rejected' : `Status Updated: ${status.replace('_', ' ').toUpperCase()}`,
+          description: rejectionReason ? `Reason: ${rejectionReason}` : (noteText || `Ticket status updated to ${status.replace('_', ' ')}`),
+          actor: user?.name || 'Department Officer',
+          actorRole: (user?.role || 'staff') as any
+        };
+        return {
+          ...i,
+          status,
+          rejectionReason: rejectionReason || (status === 'rejected' ? (noteText || 'Marked invalid upon inspection.') : i.rejectionReason),
+          resolutionPhotoUrl: resolutionPhotoUrl || i.resolutionPhotoUrl,
+          nextActionDate: nextActionDate !== undefined ? nextActionDate : i.nextActionDate,
+          updatedAt: now,
+          timeline: [...existingTimeline, newTimelineEvent]
+        };
+      }
+      return i;
+    }));
+
+    // 2. Persist to API backend
     try {
       const res = await fetch(`/api/reports/${issueId}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ status, resolutionPhotoUrl, note: noteText })
+        body: JSON.stringify({ status, resolutionPhotoUrl, note: noteText, nextActionDate, rejectionReason })
       });
       const data = await res.json();
       if (data.success) {
         await refreshData();
-        return true;
       }
-      return false;
     } catch (err) {
-      console.error('Failed to update issue status:', err);
-      return false;
+      console.error('Failed to update issue status on backend:', err);
     }
+    return true;
   };
 
   const upvoteIssue = async (issueId: string) => {

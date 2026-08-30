@@ -100,6 +100,7 @@ export async function GET(req: Request) {
         status: r.status,
         photoUrl: r.photo_url || '',
         resolutionPhotoUrl: r.resolution_photo_url || '',
+        nextActionDate: r.next_action_date || undefined,
         voiceNoteUrl: r.voice_note_url || '',
         referenceLink: r.reference_link || undefined,
         videoUrl: r.video_url || undefined,
@@ -195,6 +196,15 @@ export async function POST(req: Request) {
     let assignedDeptId = reqDeptId || '';
     let assignedDeptName = reqDeptName || '';
     let defaultSlaHours = 24;
+
+    // 0. Check other_problems table first if customCategory or Other option selected
+    if (customCategory && (!assignedDeptId || category === 'Other')) {
+      const othMatch = db.prepare('SELECT department_id, department_name FROM other_problems WHERE LOWER(title) = LOWER(?) OR LOWER(id) = LOWER(?)').get(customCategory.trim(), customCategory.trim()) as any;
+      if (othMatch) {
+        assignedDeptId = othMatch.department_id;
+        assignedDeptName = othMatch.department_name;
+      }
+    }
 
     const activeDepts = db.prepare("SELECT * FROM departments WHERE status = 'active'").all() as any[];
 

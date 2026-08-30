@@ -193,7 +193,7 @@ export default function MyReportsPage() {
 
       {/* Reports Dashboard Status Filter Toolbar */}
       <div className="flex items-center gap-2 overflow-x-auto pb-1 border-b border-slate-200">
-        {['all', 'reported', 'in_progress', 'resolved', 'escalated'].map((st) => (
+        {['all', 'reported', 'in_progress', 'resolved', 'rejected', 'escalated'].map((st) => (
           <button
             key={st}
             onClick={() => setStatusFilter(st)}

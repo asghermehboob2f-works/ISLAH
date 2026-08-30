@@ -14,7 +14,9 @@ import {
   ArrowLeft, 
   FileText, 
   Building,
-  Sparkles
+  Sparkles,
+  Check,
+  XCircle
 } from 'lucide-react';
 import { TimelineEvent } from '@/lib/types';
 
@@ -66,15 +68,39 @@ export default function PublicTicketTrackerPage() {
             <p className="text-xs text-slate-500 mt-1 flex items-center gap-1">
               <MapPin className="w-3.5 h-3.5" /> {ticket.location.address} ({ticket.location.ward})
             </p>
+            <p className="text-xs text-slate-600 font-semibold mt-1">
+              Assigned Department: <span className="text-purple-700 font-bold">{ticket.departmentName}</span>
+            </p>
           </div>
 
-          <div>
-            <span className={`px-4 py-1.5 rounded-full text-xs font-extrabold uppercase tracking-wider ${
-              ticket.status === 'resolved' ? 'bg-emerald-100 text-emerald-800 border border-emerald-300' :
-              ticket.status === 'in_progress' ? 'bg-amber-100 text-amber-800 border border-amber-300' : 'bg-blue-100 text-blue-800 border border-blue-300'
-            }`}>
-              Status: {ticket.status.replace('_', ' ')}
-            </span>
+          <div className="flex flex-col items-end gap-2">
+            {ticket.status === 'resolved' ? (
+              <span className="bg-emerald-600 text-white px-4 py-1.5 rounded-full text-xs font-extrabold uppercase tracking-wider flex items-center gap-2 shadow-xs border border-emerald-700">
+                <span className="w-4 h-4 rounded-full bg-white flex items-center justify-center text-emerald-700 shrink-0">
+                  <Check className="w-2.5 h-2.5 text-emerald-700 stroke-[3.5]" />
+                </span>
+                Resolved
+              </span>
+            ) : ticket.status === 'rejected' ? (
+              <span className="bg-red-600 text-white px-4 py-1.5 rounded-full text-xs font-extrabold uppercase tracking-wider flex items-center gap-2 shadow-xs border border-red-700">
+                <span className="w-4 h-4 rounded-full bg-white flex items-center justify-center text-red-600 shrink-0">
+                  <XCircle className="w-2.5 h-2.5 text-red-600 stroke-[3.5]" />
+                </span>
+                Rejected / Invalid
+              </span>
+            ) : (
+              <span className={`px-4 py-1.5 rounded-full text-xs font-extrabold uppercase tracking-wider ${
+                ticket.status === 'in_progress' ? 'bg-amber-100 text-amber-800 border border-amber-300' : 'bg-blue-100 text-blue-800 border border-blue-300'
+              }`}>
+                Status: {ticket.status.replace('_', ' ')}
+              </span>
+            )}
+
+            {ticket.nextActionDate && (
+              <span className="text-[11px] bg-amber-50 text-amber-900 border border-amber-300 font-mono font-bold px-3 py-1 rounded-lg">
+                Next Action: {ticket.nextActionDate}
+              </span>
+            )}
           </div>
         </div>
 

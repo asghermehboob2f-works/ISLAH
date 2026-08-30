@@ -157,6 +157,7 @@ function initTables(db: any) {
   try { db.exec(`ALTER TABLE issues ADD COLUMN video_url TEXT;`); } catch (e) {}
   try { db.exec(`ALTER TABLE issues ADD COLUMN document_url TEXT;`); } catch (e) {}
   try { db.exec(`ALTER TABLE issues ADD COLUMN report_type TEXT;`); } catch (e) {}
+  try { db.exec(`ALTER TABLE issues ADD COLUMN next_action_date TEXT;`); } catch (e) {}
 
   // Departments schema migrations
   try { db.exec(`ALTER TABLE departments ADD COLUMN type TEXT DEFAULT 'Civic';`); } catch (e) {}
@@ -166,6 +167,18 @@ function initTables(db: any) {
   try { db.exec(`ALTER TABLE departments ADD COLUMN login_email TEXT;`); } catch (e) {}
   try { db.exec(`ALTER TABLE departments ADD COLUMN password_hash TEXT;`); } catch (e) {}
   try { db.exec(`ALTER TABLE departments ADD COLUMN updated_at TEXT;`); } catch (e) {}
+
+  // Other Problems Table
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS other_problems (
+      id TEXT PRIMARY KEY,
+      title TEXT NOT NULL,
+      department_id TEXT NOT NULL,
+      department_name TEXT NOT NULL,
+      created_at TEXT NOT NULL,
+      updated_at TEXT NOT NULL
+    );
+  `);
 
   // CMS Content Table
   db.exec(`
@@ -519,6 +532,39 @@ function seedDefaults(db: any) {
 
     for (const f of initialFaqs) {
       insertFaq.run(f.id, f.question, f.answer, f.category, f.display_order, f.created_at);
+    }
+  }
+
+  // Seed default Other Problem options if none exist
+  const otherQuery = db.prepare('SELECT COUNT(*) as count FROM other_problems');
+  const otherCount = (otherQuery.get() as { count: number }).count;
+
+  if (otherCount === 0) {
+    const now = new Date().toISOString();
+    const defaultOtherOptions = [
+      { id: 'oth-1', title: 'Stray Animal / Cattle Nuisance', deptId: 'dept-sanitation', deptName: 'Waste Management & Sanitation' },
+      { id: 'oth-2', title: 'Unauthorized Banners & Illegal Hoardings', deptId: 'dept-roads', deptName: 'Roads & Public Infrastructure' },
+      { id: 'oth-3', title: 'Late Night Noise Pollution / Loudspeakers', deptId: 'dept-safety', deptName: 'Public Safety & Disaster Cell' },
+      { id: 'oth-4', title: 'Damaged Public Park Equipment / Playground Hazard', deptId: 'dept-roads', deptName: 'Roads & Public Infrastructure' },
+      { id: 'oth-5', title: 'Illegal Footpath / Sidewalk Encroachment', deptId: 'dept-roads', deptName: 'Roads & Public Infrastructure' },
+      { id: 'oth-6', title: 'Dead Animal Carcass Removal Alert', deptId: 'dept-sanitation', deptName: 'Waste Management & Sanitation' },
+      { id: 'oth-7', title: 'Damaged Street Signboard or Traffic Sign', deptId: 'dept-roads', deptName: 'Roads & Public Infrastructure' },
+      { id: 'oth-8', title: 'Fallen Tree Branch / Blocked Pathway', deptId: 'dept-forest-wildlife', deptName: 'Forest & Wildlife Protection Department' },
+      { id: 'oth-9', title: 'Damaged Public Bus Stop Shelter', deptId: 'dept-roads', deptName: 'Roads & Public Infrastructure' },
+      { id: 'oth-10', title: 'Open or Broken Manhole Cover Hazard', deptId: 'dept-water', deptName: 'Water Supply & Sewerage Board' },
+      { id: 'oth-11', title: 'Severe Alley Waterlogging / Overflowing Drain', deptId: 'dept-water', deptName: 'Water Supply & Sewerage Board' },
+      { id: 'oth-12', title: 'Illegal Commercial Chemical / Plastic Waste Dumping', deptId: 'dept-pollution-control', deptName: 'State Pollution Control Board' },
+      { id: 'oth-13', title: 'Leaking Public Drinking Fountain / Water Standpost', deptId: 'dept-water', deptName: 'Water Supply & Sewerage Board' },
+      { id: 'oth-14', title: 'Water Hyacinth / Weed Overgrowth in Water Body', deptId: 'dept-pollution-control', deptName: 'State Pollution Control Board' }
+    ];
+
+    const insertOther = db.prepare(`
+      INSERT INTO other_problems (id, title, department_id, department_name, created_at, updated_at)
+      VALUES (?, ?, ?, ?, ?, ?)
+    `);
+
+    for (const opt of defaultOtherOptions) {
+      insertOther.run(opt.id, opt.title, opt.deptId, opt.deptName, now, now);
     }
   }
 }

@@ -62,6 +62,7 @@ export async function GET(req: Request, context: { params: Promise<{ id: string 
       status: r.status,
       photoUrl: r.photo_url || '',
       resolutionPhotoUrl: r.resolution_photo_url || '',
+      nextActionDate: r.next_action_date || undefined,
       voiceNoteUrl: r.voice_note_url || '',
       visibility: r.visibility || 'PUBLIC',
       upvotesCount: r.upvotes_count || 1,
@@ -101,7 +102,7 @@ export async function PATCH(req: Request, context: { params: Promise<{ id: strin
     }
 
     const body = await req.json();
-    const { status: newStatus, resolutionPhotoUrl, note, departmentId: newDeptId, severity: newSeverity, rejectionReason } = body;
+    const { status: newStatus, resolutionPhotoUrl, nextActionDate, note, departmentId: newDeptId, severity: newSeverity, rejectionReason } = body;
 
     const db = getDb();
     const r = db.prepare(`
@@ -133,7 +134,8 @@ export async function PATCH(req: Request, context: { params: Promise<{ id: strin
     let updatedDeptId = r.department_id;
     let updatedDeptName = r.department_name;
     let updatedSeverity = r.severity;
-    let updatedResolutionPhoto = r.resolution_photo_url;
+    let updatedResolutionPhoto = resolutionPhotoUrl || r.resolution_photo_url;
+    let updatedNextActionDate = nextActionDate !== undefined ? nextActionDate : r.next_action_date;
     let updatedRejectionReason = r.rejection_reason;
     let aiVerifStatus = r.ai_verification_status;
     let aiVerifScore = r.ai_verification_score;
@@ -142,11 +144,24 @@ export async function PATCH(req: Request, context: { params: Promise<{ id: strin
     if (newSeverity && newSeverity !== r.severity && isStaffOrAdmin) {
       updatedSeverity = newSeverity;
       existingTimeline.push({
-        id: `tl-${Date.now()}`,
+        id: `tl-${Date.now()}-sev`,
         timestamp: now,
         status: updatedStatus,
         title: `Severity Changed to ${newSeverity.toUpperCase()}`,
         description: `Severity adjusted by ${currentUser.name}`,
+        actor: currentUser.name,
+        actorRole: currentUser.role
+      });
+    }
+
+    // Handle Next Action Date Update
+    if (nextActionDate && nextActionDate !== r.next_action_date && isStaffOrAdmin) {
+      existingTimeline.push({
+        id: `tl-${Date.now()}-nad`,
+        timestamp: now,
+        status: updatedStatus,
+        title: 'Next Action Date Scheduled',
+        description: `Scheduled action for ${nextActionDate} by ${currentUser.name}`,
         actor: currentUser.name,
         actorRole: currentUser.role
       });
@@ -171,15 +186,14 @@ export async function PATCH(req: Request, context: { params: Promise<{ id: strin
         updatedRejectionReason = rejectionReason || note || 'Marked invalid upon inspection.';
       }
 
-      if (newStatus === 'resolved' && resolutionPhotoUrl) {
-        updatedResolutionPhoto = resolutionPhotoUrl;
-        const vResult = await verifyResolution(r.photo_url || '', resolutionPhotoUrl);
+      if (newStatus === 'resolved' && updatedResolutionPhoto) {
+        const vResult = await verifyResolution(r.photo_url || '', updatedResolutionPhoto);
         aiVerifStatus = vResult.status;
         aiVerifScore = vResult.verificationScore;
       }
 
       existingTimeline.push({
-        id: `tl-${Date.now()}`,
+        id: `tl-${Date.now()}-st`,
         timestamp: now,
         status: newStatus,
         title: eventTitle,
@@ -188,7 +202,7 @@ export async function PATCH(req: Request, context: { params: Promise<{ id: strin
           : (newStatus === 'rejected' ? `Reason: ${updatedRejectionReason}` : (note || `Action updated by ${currentUser.name}`)),
         actor: currentUser.name,
         actorRole: currentUser.role,
-        mediaUrl: resolutionPhotoUrl || undefined
+        mediaUrl: updatedResolutionPhoto || undefined
       });
     }
 
@@ -200,7 +214,7 @@ export async function PATCH(req: Request, context: { params: Promise<{ id: strin
         updatedDeptName = deptObj.name;
 
         existingTimeline.push({
-          id: `tl-${Date.now()}`,
+          id: `tl-${Date.now()}-dept`,
           timestamp: now,
           status: updatedStatus,
           title: 'Department Reassigned',
@@ -225,7 +239,7 @@ export async function PATCH(req: Request, context: { params: Promise<{ id: strin
     db.prepare(`
       UPDATE issues
       SET status = ?, severity = ?, department_id = ?, department_name = ?, resolution_photo_url = ?,
-          rejection_reason = ?, ai_verification_status = ?, ai_verification_score = ?,
+          next_action_date = ?, rejection_reason = ?, ai_verification_status = ?, ai_verification_score = ?,
           timeline_json = ?, notes_json = ?, updated_at = ?
       WHERE id = ?
     `).run(
@@ -234,6 +248,7 @@ export async function PATCH(req: Request, context: { params: Promise<{ id: strin
       updatedDeptId,
       updatedDeptName,
       updatedResolutionPhoto || null,
+      updatedNextActionDate || null,
       updatedRejectionReason || null,
       aiVerifStatus || null,
       aiVerifScore || null,

@@ -156,21 +156,86 @@ export function StepSelectCategory({
         })}
       </div>
 
-      {/* Manual Input for 'Other' Option (Spec #3) */}
-      {!isEnv && selectedCategory === 'Other' && (
-        <div className="bg-slate-50 border border-slate-200 p-4 rounded-xl space-y-2 mt-4 animate-in fade-in duration-200">
-          <label className="text-xs font-bold text-slate-800 block">
-            Other Civic Problem
+      {/* Dynamic Selector & Manual Input for 'Other' Option */}
+      {((!isEnv && selectedCategory === 'Other') || (isEnv && selectedSubcategory === 'Other Environmental Issue')) && (
+        <OtherCategorySelector
+          customCategory={customCategory}
+          onCustomCategoryChange={onCustomCategoryChange}
+          isEnv={isEnv}
+        />
+      )}
+    </div>
+  );
+}
+
+function OtherCategorySelector({
+  customCategory,
+  onCustomCategoryChange,
+  isEnv
+}: {
+  customCategory: string;
+  onCustomCategoryChange?: (val: string) => void;
+  isEnv: boolean;
+}) {
+  const [options, setOptions] = React.useState<any[]>([]);
+  const [loading, setLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    fetch('/api/other-options')
+      .then(res => res.json())
+      .then(data => {
+        if (data.success && Array.isArray(data.data)) {
+          setOptions(data.data);
+        }
+      })
+      .catch(console.error)
+      .finally(() => setLoading(false));
+  }, []);
+
+  return (
+    <div className="bg-slate-50 border border-slate-200 p-4 rounded-xl space-y-3 mt-4 animate-in fade-in duration-200">
+      <div>
+        <label className="text-xs font-bold text-slate-800 block mb-1">
+          Select or Specify Special Problem Category
+        </label>
+        <p className="text-[11px] text-slate-500 mb-2">
+          Choose a specific issue type to ensure accurate dynamic routing to the responsible department.
+        </p>
+      </div>
+
+      {!loading && options.length > 0 && (
+        <div>
+          <label className="text-[11px] font-semibold text-slate-600 block mb-1">
+            Common Unlisted Issues:
           </label>
-          <input
-            type="text"
+          <select
             value={customCategory}
             onChange={(e) => onCustomCategoryChange && onCustomCategoryChange(e.target.value)}
-            placeholder="Enter the issue here..."
-            className="w-full border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs bg-white text-slate-900 font-medium focus:ring-2 focus:ring-blue-500/20"
-          />
+            className="w-full border border-slate-300 rounded-xl px-3.5 py-2 text-xs bg-white text-slate-900 font-medium focus:ring-2 focus:ring-blue-500/20"
+          >
+            <option value="">-- Choose from preset issue options --</option>
+            {options.map((opt) => (
+              <option key={opt.id} value={opt.title}>
+                {opt.title} ({opt.departmentName})
+              </option>
+            ))}
+            <option value="CUSTOM_OTHER">Custom / Unlisted Issue (Enter details below)</option>
+          </select>
         </div>
       )}
+
+      <div>
+        <label className="text-[11px] font-semibold text-slate-600 block mb-1">
+          {options.length > 0 ? 'Or Type Custom Problem Description:' : 'Problem Details:'}
+        </label>
+        <input
+          type="text"
+          value={customCategory === 'CUSTOM_OTHER' ? '' : customCategory}
+          onChange={(e) => onCustomCategoryChange && onCustomCategoryChange(e.target.value)}
+          placeholder="e.g. Stray Cattle Hazard near market, Illegal Hoarding blocking traffic signal..."
+          className="w-full border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs bg-white text-slate-900 font-medium focus:ring-2 focus:ring-blue-500/20"
+        />
+      </div>
     </div>
   );
 }

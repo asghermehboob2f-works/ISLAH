@@ -79,6 +79,7 @@ export interface CivicIssue {
   citizenAvatar?: string;
   photoUrl: string;
   resolutionPhotoUrl?: string;
+  nextActionDate?: string;
   aiConfidence: number; // 0-100
   aiCategoryDetected?: string;
   aiVerificationScore?: number; // 0-100 for resolution verification
@@ -95,11 +96,20 @@ export interface CivicIssue {
   upvotesCount: number;
 }
 
+export interface OtherProblemOption {
+  id: string;
+  title: string;
+  departmentId: string;
+  departmentName: string;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
 export interface Department {
   id: string;
   name: string;
   code: string;
-  type?: 'Civic' | 'Environmental' | 'Wildlife' | 'Emergency';
+  type?: 'Civic' | 'Environmental' | 'Wildlife' | 'Emergency' | 'Environmental / Wildlife';
   description?: string;
   iconName?: string;
   categoriesHandled?: string[];

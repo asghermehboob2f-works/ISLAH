@@ -127,6 +127,7 @@ export default function PublicReportsPage() {
               <option value="acknowledged">Acknowledged</option>
               <option value="in_progress">In Progress</option>
               <option value="resolved">Resolved</option>
+              <option value="rejected">Rejected / Invalid</option>
               <option value="escalated">Escalated</option>
             </select>
           </div>
