@@ -149,7 +149,7 @@ export function Navbar() {
               ) : (
                 <button
                   onClick={() => setSearchOpen(true)}
-                  className="p-2.5 text-slate-300 hover:text-white bg-slate-900 hover:bg-slate-800 rounded-xl border border-slate-800 hover:border-slate-700 transition-all flex items-center justify-center shrink-0 shadow-sm hover:scale-105 active:scale-95"
+                  className="p-2 text-slate-400 hover:text-blue-400 hover:bg-slate-800/60 rounded-xl transition-all flex items-center justify-center shrink-0 hover:scale-105 active:scale-95"
                   title="Search platform reports & tickets"
                 >
                   <Search className="w-4 h-4 text-blue-400" />
