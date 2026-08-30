@@ -133,12 +133,26 @@ function initTables(db: any) {
       ai_confidence INTEGER DEFAULT 95,
       ai_verification_status TEXT,
       ai_verification_score INTEGER,
+      subcategory TEXT,
+      is_sensitive_wildlife INTEGER DEFAULT 0,
+      approx_latitude REAL,
+      approx_longitude REAL,
+      rejection_reason TEXT,
+      evidence_files_json TEXT DEFAULT '[]',
       timeline_json TEXT NOT NULL,
       notes_json TEXT NOT NULL DEFAULT '[]',
       reported_at TEXT NOT NULL,
       updated_at TEXT NOT NULL
     );
   `);
+
+  // Backwards-compatible schema migrations for existing databases
+  try { db.exec(`ALTER TABLE issues ADD COLUMN subcategory TEXT;`); } catch (e) {}
+  try { db.exec(`ALTER TABLE issues ADD COLUMN is_sensitive_wildlife INTEGER DEFAULT 0;`); } catch (e) {}
+  try { db.exec(`ALTER TABLE issues ADD COLUMN approx_latitude REAL;`); } catch (e) {}
+  try { db.exec(`ALTER TABLE issues ADD COLUMN approx_longitude REAL;`); } catch (e) {}
+  try { db.exec(`ALTER TABLE issues ADD COLUMN rejection_reason TEXT;`); } catch (e) {}
+  try { db.exec(`ALTER TABLE issues ADD COLUMN evidence_files_json TEXT DEFAULT '[]';`); } catch (e) {}
 
   // CMS Content Table
   db.exec(`
@@ -325,6 +339,42 @@ function seedDefaults(db: any) {
         lead_officer: 'Director Gulzar Wani',
         status: 'active',
         created_at: now
+      },
+      {
+        id: 'dept-forest-wildlife',
+        name: 'Forest & Wildlife Protection Department',
+        code: 'FWD-PROT',
+        email: 'wildlife@islah.gov.in',
+        contact: '+91 194 245 2001',
+        categories_json: JSON.stringify(['Environment & Wildlife', 'Wildlife Protection', 'Forest & Land Protection']),
+        sla_hours_default: 12,
+        lead_officer: 'Conservator Javaid Mir',
+        status: 'active',
+        created_at: now
+      },
+      {
+        id: 'dept-pollution-control',
+        name: 'State Pollution Control Board',
+        code: 'SPCB-ENV',
+        email: 'pollution@islah.gov.in',
+        contact: '+91 194 245 2002',
+        categories_json: JSON.stringify(['Water & Ecosystem Protection', 'Environmental Pollution']),
+        sla_hours_default: 18,
+        lead_officer: 'Officer Dr. Nasir Bhatt',
+        status: 'active',
+        created_at: now
+      },
+      {
+        id: 'dept-eco-disaster',
+        name: 'Environmental Emergency Cell',
+        code: 'EER-CELL',
+        email: 'ecoemergency@islah.gov.in',
+        contact: '+91 194 245 2003',
+        categories_json: JSON.stringify(['Environmental Emergencies']),
+        sla_hours_default: 2,
+        lead_officer: 'Chief Coordinator Irfan Sheikh',
+        status: 'active',
+        created_at: now
       }
     ];
 
@@ -335,6 +385,59 @@ function seedDefaults(db: any) {
 
     for (const d of defaultDepts) {
       insertDept.run(d.id, d.name, d.code, d.email, d.contact, d.categories_json, d.sla_hours_default, d.lead_officer, d.status, d.created_at);
+    }
+  } else {
+    // Ensure environmental departments exist even if standard DB was previously seeded
+    const envDeptCheck = db.prepare('SELECT id FROM departments WHERE id = ?');
+    const insertDept = db.prepare(`
+      INSERT OR IGNORE INTO departments (id, name, code, email, contact, categories_json, sla_hours_default, lead_officer, status, created_at)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `);
+
+    const now = new Date().toISOString();
+    const envDepts = [
+      {
+        id: 'dept-forest-wildlife',
+        name: 'Forest & Wildlife Protection Department',
+        code: 'FWD-PROT',
+        email: 'wildlife@islah.gov.in',
+        contact: '+91 194 245 2001',
+        categories_json: JSON.stringify(['Environment & Wildlife', 'Wildlife Protection', 'Forest & Land Protection']),
+        sla_hours_default: 12,
+        lead_officer: 'Conservator Javaid Mir',
+        status: 'active',
+        created_at: now
+      },
+      {
+        id: 'dept-pollution-control',
+        name: 'State Pollution Control Board',
+        code: 'SPCB-ENV',
+        email: 'pollution@islah.gov.in',
+        contact: '+91 194 245 2002',
+        categories_json: JSON.stringify(['Water & Ecosystem Protection', 'Environmental Pollution']),
+        sla_hours_default: 18,
+        lead_officer: 'Officer Dr. Nasir Bhatt',
+        status: 'active',
+        created_at: now
+      },
+      {
+        id: 'dept-eco-disaster',
+        name: 'Environmental Emergency Cell',
+        code: 'EER-CELL',
+        email: 'ecoemergency@islah.gov.in',
+        contact: '+91 194 245 2003',
+        categories_json: JSON.stringify(['Environmental Emergencies']),
+        sla_hours_default: 2,
+        lead_officer: 'Chief Coordinator Irfan Sheikh',
+        status: 'active',
+        created_at: now
+      }
+    ];
+
+    for (const d of envDepts) {
+      if (!envDeptCheck.get(d.id)) {
+        insertDept.run(d.id, d.name, d.code, d.email, d.contact, d.categories_json, d.sla_hours_default, d.lead_officer, d.status, d.created_at);
+      }
     }
   }
 

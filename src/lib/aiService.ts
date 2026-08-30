@@ -43,17 +43,49 @@ export async function classifyImage(
   // Check if string matches known patterns or sample images
   const srcStr = typeof imageSource === 'string' ? imageSource.toLowerCase() : imageSource.name.toLowerCase();
 
-  if (srcStr.includes('waste') || srcStr.includes('garbage') || srcStr.includes('sanitation') || srcStr.includes('dump')) {
-    category = 'Waste & Sanitation';
-    detectedLabel = 'Solid Waste & Overflow Accumulation';
+  if (srcStr.includes('tree') || srcStr.includes('forest') || srcStr.includes('deforest') || srcStr.includes('wood') || srcStr.includes('logging')) {
+    category = 'Environment & Wildlife';
+    detectedLabel = 'AI Assessment: Possible Illegal Tree Cutting';
+    confidence = 92;
+    suggestedSeverity = 'high';
+    departmentId = 'dept-forest-wildlife';
+    departmentName = 'Forest & Wildlife Protection Department';
+    reasoning = 'Computer vision detected vegetation canopy loss and timber extraction signatures.';
+  } else if (srcStr.includes('fire') || srcStr.includes('smoke') || srcStr.includes('wildfire') || srcStr.includes('blaze')) {
+    category = 'Environment & Wildlife';
+    detectedLabel = 'AI Assessment: Possible Forest Fire';
+    confidence = 96;
+    suggestedSeverity = 'critical';
+    departmentId = 'dept-eco-disaster';
+    departmentName = 'Environmental Emergency Cell';
+    reasoning = 'Thermal and smoke visual indicators indicate active vegetation combustion emergency.';
+  } else if (srcStr.includes('animal') || srcStr.includes('wildlife') || srcStr.includes('poach') || srcStr.includes('bird') || srcStr.includes('deer') || srcStr.includes('bear') || srcStr.includes('snare') || srcStr.includes('trap')) {
+    category = 'Environment & Wildlife';
+    detectedLabel = 'AI Assessment: Possible Wildlife Injury / Threat';
+    confidence = 91;
+    suggestedSeverity = 'high';
+    departmentId = 'dept-forest-wildlife';
+    departmentName = 'Forest & Wildlife Protection Department';
+    reasoning = 'Visual indicators suggest distressed fauna or habitat intrusion risk.';
+  } else if (srcStr.includes('pollut') || srcStr.includes('river') || srcStr.includes('lake') || srcStr.includes('chemical') || srcStr.includes('oil') || srcStr.includes('spill') || srcStr.includes('toxic') || srcStr.includes('fish')) {
+    category = 'Environment & Wildlife';
+    detectedLabel = 'AI Assessment: Possible Water Pollution';
     confidence = 94;
+    suggestedSeverity = 'critical';
+    departmentId = 'dept-pollution-control';
+    departmentName = 'State Pollution Control Board';
+    reasoning = 'High visual discolouration and chemical effluent plume detected in aquatic ecosystem.';
+  } else if (srcStr.includes('plastic') || srcStr.includes('eco') || srcStr.includes('env') || srcStr.includes('waste') || srcStr.includes('garbage') || srcStr.includes('sanitation') || srcStr.includes('dump')) {
+    category = 'Environment & Wildlife';
+    detectedLabel = 'AI Assessment: Possible Illegal Dumping';
+    confidence = 93;
     suggestedSeverity = 'medium';
-    departmentId = 'dept-sanitation';
-    departmentName = 'Waste Management & Sanitation';
-    reasoning = 'Computer vision identified overflowing refuse bins and solid waste accumulation.';
+    departmentId = 'dept-pollution-control';
+    departmentName = 'State Pollution Control Board';
+    reasoning = 'Unsanctioned refuse accumulation in natural ecological buffer zone.';
   } else if (srcStr.includes('electric') || srcStr.includes('light') || srcStr.includes('lamp') || srcStr.includes('cable')) {
     category = 'Streetlights & Electrical';
-    detectedLabel = 'Luminaire & Electrical Line Defect';
+    detectedLabel = 'AI Assessment: Possible Luminaire & Electrical Defect';
     confidence = 93;
     suggestedSeverity = 'medium';
     departmentId = 'dept-electrical';
@@ -61,7 +93,7 @@ export async function classifyImage(
     reasoning = 'Computer vision detected unlit public luminaire and loose electrical wiring.';
   } else if (srcStr.includes('water') || srcStr.includes('pipe') || srcStr.includes('leak') || srcStr.includes('sewage') || srcStr.includes('drain')) {
     category = 'Water Supply';
-    detectedLabel = 'Pressurized Pipeline & Hydrological Leakage';
+    detectedLabel = 'AI Assessment: Possible Pipeline Leak';
     confidence = 96;
     suggestedSeverity = 'high';
     departmentId = 'dept-water';
@@ -69,7 +101,7 @@ export async function classifyImage(
     reasoning = 'Computer vision detected active water pipe leak and surface accumulation.';
   } else if (srcStr.includes('hazard') || srcStr.includes('wire') || srcStr.includes('danger') || srcStr.includes('emergency')) {
     category = 'Public Safety & Hazards';
-    detectedLabel = 'Urgent Public Safety Risk Exposure';
+    detectedLabel = 'AI Assessment: Possible Urgent Safety Risk';
     confidence = 98;
     suggestedSeverity = 'critical';
     departmentId = 'dept-safety';

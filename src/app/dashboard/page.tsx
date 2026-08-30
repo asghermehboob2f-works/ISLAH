@@ -25,7 +25,9 @@ import {
   Lock,
   LogOut,
   Bell,
-  Check
+  Check,
+  Building2,
+  Trees
 } from 'lucide-react';
 
 export default function CitizenDashboardPage() {
@@ -214,26 +216,45 @@ export default function CitizenDashboardPage() {
       {activeTab === 'overview' && (
         <div className="space-y-8">
           
-          {/* Quick Action Navigation Grid */}
+          {/* Quick Action Navigation Grid: Two Separate Reporting Tracks (Spec #2) */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            
+            {/* Track 1: Civic Issue */}
             <Link
-              href="/report"
+              href="/report/civic"
               className="bg-blue-600 hover:bg-blue-500 text-white p-5 rounded-2xl shadow-md transition-all group flex flex-col justify-between space-y-3"
             >
               <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center">
-                <PlusCircle className="w-6 h-6 text-white" />
+                <Building2 className="w-6 h-6 text-white" />
               </div>
               <div>
                 <h3 className="font-bold text-base flex items-center justify-between">
-                  Report an Issue
+                  Report Civic Issue
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </h3>
-                <p className="text-xs text-blue-100 mt-1">Snap a photo and submit a civic problem to city departments.</p>
+                <p className="text-xs text-blue-100 mt-1">Submit road, streetlight, sanitation & water infrastructure issues.</p>
+              </div>
+            </Link>
+
+            {/* Track 2: Environment & Wildlife */}
+            <Link
+              href="/report/environmental"
+              className="bg-emerald-600 hover:bg-emerald-500 text-white p-5 rounded-2xl shadow-md transition-all group flex flex-col justify-between space-y-3"
+            >
+              <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center">
+                <Trees className="w-6 h-6 text-white" />
+              </div>
+              <div>
+                <h3 className="font-bold text-base flex items-center justify-between">
+                  Report Environmental Issue
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </h3>
+                <p className="text-xs text-emerald-100 mt-1">Report tree cutting, poaching, pollution & wildlife emergencies.</p>
               </div>
             </Link>
 
             <Link
-              href="/report?emergency=true"
+              href="/report/civic?emergency=true"
               className="bg-red-600 hover:bg-red-500 text-white p-5 rounded-2xl shadow-md transition-all group flex flex-col justify-between space-y-3"
             >
               <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center">
@@ -241,26 +262,10 @@ export default function CitizenDashboardPage() {
               </div>
               <div>
                 <h3 className="font-bold text-base flex items-center justify-between">
-                  Emergency Report
+                  Emergency Hazard Flag
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </h3>
                 <p className="text-xs text-red-100 mt-1">Trigger priority 4-hour SLA routing for dangerous hazards.</p>
-              </div>
-            </Link>
-
-            <Link
-              href="/reports"
-              className="bg-white border border-slate-200 hover:border-blue-400 p-5 rounded-2xl shadow-xs transition-all group flex flex-col justify-between space-y-3"
-            >
-              <div className="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center text-slate-700">
-                <MapPin className="w-5 h-5 text-emerald-600" />
-              </div>
-              <div>
-                <h3 className="font-bold text-slate-900 text-base flex items-center justify-between group-hover:text-emerald-600">
-                  Nearby Reports
-                  <ArrowRight className="w-4 h-4 text-slate-400 group-hover:translate-x-1 transition-transform" />
-                </h3>
-                <p className="text-xs text-slate-500 mt-1">Explore public civic issues reported by neighbors nearby.</p>
               </div>
             </Link>
 

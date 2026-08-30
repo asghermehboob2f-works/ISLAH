@@ -66,44 +66,56 @@ export async function GET(req: Request) {
 
     const rows = db.prepare(sql).all(...params) as any[];
 
-    const data = rows.map((r) => ({
-      id: r.id,
-      ticketNumber: r.ticket_number,
-      citizenId: r.citizen_id,
-      citizenName: r.citizen_name,
-      citizenEmail: r.citizen_email,
-      title: r.title,
-      description: r.description,
-      category: r.category,
-      customCategory: r.custom_category,
-      location: {
-        lat: r.latitude,
-        lng: r.longitude,
-        address: r.address,
-        landmark: r.landmark || '',
-        ward: r.ward || ''
-      },
-      severity: r.severity,
-      emergency: Boolean(r.emergency),
-      status: r.status,
-      photoUrl: r.photo_url || '',
-      resolutionPhotoUrl: r.resolution_photo_url || '',
-      voiceNoteUrl: r.voice_note_url || '',
-      visibility: r.visibility || 'PUBLIC',
-      upvotesCount: r.upvotes_count || 1,
-      duplicatesCount: r.duplicates_count || 0,
-      departmentId: r.department_id,
-      departmentName: r.department_name,
-      slaHoursTotal: r.sla_hours_total,
-      slaHoursRemaining: r.sla_hours_remaining,
-      aiConfidence: r.ai_confidence,
-      aiVerificationStatus: r.ai_verification_status,
-      aiVerificationScore: r.ai_verification_score,
-      reportedAt: r.reported_at,
-      updatedAt: r.updated_at,
-      timeline: JSON.parse(r.timeline_json || '[]'),
-      notes: JSON.parse(r.notes_json || '[]')
-    }));
+    const data = rows.map((r) => {
+      const isSensitive = Boolean(r.is_sensitive_wildlife);
+      // Protect sensitive wildlife coordinates: if not staff/admin and sensitive, replace exact lat/lng with approx coords
+      const displayLat = (!isStaffOrAdmin && isSensitive && r.approx_latitude) ? r.approx_latitude : r.latitude;
+      const displayLng = (!isStaffOrAdmin && isSensitive && r.approx_longitude) ? r.approx_longitude : r.longitude;
+
+      return {
+        id: r.id,
+        ticketNumber: r.ticket_number,
+        citizenId: r.citizen_id,
+        citizenName: r.citizen_name,
+        citizenEmail: r.citizen_email,
+        title: r.title,
+        description: r.description,
+        category: r.category,
+        subcategory: r.subcategory || undefined,
+        customCategory: r.custom_category,
+        isSensitiveWildlife: isSensitive,
+        approxLocation: r.approx_latitude ? { lat: r.approx_latitude, lng: r.approx_longitude } : undefined,
+        rejectionReason: r.rejection_reason || undefined,
+        evidenceFiles: JSON.parse(r.evidence_files_json || '[]'),
+        location: {
+          lat: displayLat,
+          lng: displayLng,
+          address: isSensitive && !isStaffOrAdmin ? `${r.ward || 'Protected Ecological Zone'} (Approximate Area)` : r.address,
+          landmark: isSensitive && !isStaffOrAdmin ? 'Location masked for wildlife protection' : (r.landmark || ''),
+          ward: r.ward || ''
+        },
+        severity: r.severity,
+        emergency: Boolean(r.emergency),
+        status: r.status,
+        photoUrl: r.photo_url || '',
+        resolutionPhotoUrl: r.resolution_photo_url || '',
+        voiceNoteUrl: r.voice_note_url || '',
+        visibility: r.visibility || 'PUBLIC',
+        upvotesCount: r.upvotes_count || 1,
+        duplicatesCount: r.duplicates_count || 0,
+        departmentId: r.department_id,
+        departmentName: r.department_name,
+        slaHoursTotal: r.sla_hours_total,
+        slaHoursRemaining: r.sla_hours_remaining,
+        aiConfidence: r.ai_confidence,
+        aiVerificationStatus: r.ai_verification_status,
+        aiVerificationScore: r.ai_verification_score,
+        reportedAt: r.reported_at,
+        updatedAt: r.updated_at,
+        timeline: JSON.parse(r.timeline_json || '[]'),
+        notes: JSON.parse(r.notes_json || '[]')
+      };
+    });
 
     return NextResponse.json({ success: true, data });
   } catch (err: any) {
@@ -117,22 +129,33 @@ export async function GET(req: Request) {
 export async function POST(req: Request) {
   try {
     const currentUser = await getCurrentUser();
+    
+    if (!currentUser) {
+      return NextResponse.json(
+        { success: false, error: { code: 'UNAUTHORIZED', message: 'Authentication required. Please log in to submit a report.' } },
+        { status: 401 }
+      );
+    }
+
     const body = await req.json();
 
     const {
       title,
       category,
+      subcategory,
       customCategory,
       description,
       location,
       severity,
       emergency,
-      departmentId,
-      departmentName,
+      departmentId: reqDeptId,
+      departmentName: reqDeptName,
       photoUrl,
       voiceNoteUrl,
       visibility,
-      slaHoursTotal
+      slaHoursTotal,
+      isSensitiveWildlife: reqSensitive,
+      evidenceFiles
     } = body;
 
     if (!title || !category || !location || !location.address) {
@@ -152,7 +175,46 @@ export async function POST(req: Request) {
     const citizenEmail = currentUser ? currentUser.email : '';
 
     const isEmergency = Boolean(emergency);
-    const slaTotal = isEmergency ? 4 : (slaHoursTotal || 24);
+    const isEnvCategory = category === 'Environment & Wildlife';
+
+    // Automated Intelligent Routing logic for Environment & Wildlife
+    let assignedDeptId = reqDeptId;
+    let assignedDeptName = reqDeptName;
+
+    if (isEnvCategory || !assignedDeptId) {
+      if (isEmergency || subcategory === 'Environmental Emergencies') {
+        assignedDeptId = 'dept-eco-disaster';
+        assignedDeptName = 'Environmental Emergency Cell';
+      } else if (subcategory === 'Wildlife Protection' || subcategory === 'Forest & Land Protection' || (title && title.toLowerCase().includes('tree')) || (title && title.toLowerCase().includes('animal'))) {
+        assignedDeptId = 'dept-forest-wildlife';
+        assignedDeptName = 'Forest & Wildlife Protection Department';
+      } else if (subcategory === 'Water & Ecosystem Protection' || subcategory === 'Environmental Pollution') {
+        assignedDeptId = 'dept-pollution-control';
+        assignedDeptName = 'State Pollution Control Board';
+      } else {
+        assignedDeptId = reqDeptId || 'dept-forest-wildlife';
+        assignedDeptName = reqDeptName || 'Forest & Wildlife Protection Department';
+      }
+    }
+
+    // Determine sensitive wildlife protection status
+    const isSensitiveWildlife = Boolean(
+      reqSensitive ||
+      (isEnvCategory && (
+        subcategory === 'Wildlife Protection' ||
+        (description && (description.toLowerCase().includes('nest') || description.toLowerCase().includes('den') || description.toLowerCase().includes('endangered') || description.toLowerCase().includes('poach')))
+      ))
+    );
+
+    // Calculate approximate coordinates for sensitive wildlife privacy (offset ~400-600m)
+    const exactLat = location.lat || 28.6139;
+    const exactLng = location.lng || 77.2090;
+    const latOffset = (Math.random() - 0.5) * 0.008; // ~400-500m
+    const lngOffset = (Math.random() - 0.5) * 0.008;
+    const approxLat = exactLat + latOffset;
+    const approxLng = exactLng + lngOffset;
+
+    const slaTotal = isEmergency ? 4 : (isEnvCategory ? 12 : (slaHoursTotal || 24));
     const finalVisibility = (visibility === 'PRIVATE') ? 'PRIVATE' : 'PUBLIC';
 
     const timeline = [
@@ -169,8 +231,8 @@ export async function POST(req: Request) {
         id: `tl-${Date.now()}-2`,
         timestamp: now,
         status: 'acknowledged',
-        title: 'AI Verification & Department Routing',
-        description: `Classified as ${category}. Routed to ${departmentName || 'Target Department'}.`,
+        title: 'AI Classification & Environmental Department Routing',
+        description: `Classified under ${category}${subcategory ? ` (${subcategory})` : ''}. Routed to ${assignedDeptName}.`,
         actor: 'ISLAH Core Engine',
         actorRole: 'ai'
       }
@@ -179,12 +241,13 @@ export async function POST(req: Request) {
     db.prepare(`
       INSERT INTO issues (
         id, ticket_number, citizen_id, citizen_name, citizen_email,
-        title, description, category, custom_category, address, landmark, ward,
+        title, description, category, subcategory, custom_category, address, landmark, ward,
         latitude, longitude, severity, emergency, status, photo_url, voice_note_url,
-        visibility, upvotes_count, duplicates_count, department_id, department_name,
+        visibility, is_sensitive_wildlife, approx_latitude, approx_longitude, evidence_files_json,
+        upvotes_count, duplicates_count, department_id, department_name,
         sla_hours_total, sla_hours_remaining, ai_confidence, timeline_json, notes_json,
         reported_at, updated_at
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `).run(
       id,
       ticketNumber,
@@ -192,24 +255,29 @@ export async function POST(req: Request) {
       citizenName,
       citizenEmail,
       title,
-      description || 'Civic infrastructure report submitted via ISLAH portal.',
+      description || 'Environmental hazard report submitted via ISLAH portal.',
       category,
+      subcategory || null,
       customCategory || null,
       location.address,
       location.landmark || null,
       location.ward || null,
-      location.lat || 28.6139,
-      location.lng || 77.2090,
+      exactLat,
+      exactLng,
       isEmergency ? 'critical' : (severity || 'high'),
       isEmergency ? 1 : 0,
       'reported',
       photoUrl || '',
       voiceNoteUrl || '',
       finalVisibility,
+      isSensitiveWildlife ? 1 : 0,
+      approxLat,
+      approxLng,
+      JSON.stringify(evidenceFiles || []),
       1,
       0,
-      departmentId || 'dept-roads',
-      departmentName || 'Roads & Public Infrastructure',
+      assignedDeptId,
+      assignedDeptName,
       slaTotal,
       slaTotal,
       95,
@@ -228,7 +296,7 @@ export async function POST(req: Request) {
       `).run(now, currentUser.id);
     }
 
-    logAudit(citizenName, 'citizen', 'CREATE_REPORT', ticketNumber, `New ${finalVisibility} issue reported in ${category}`);
+    logAudit(citizenName, 'citizen', 'CREATE_REPORT', ticketNumber, `New ${finalVisibility} report in ${category} (${subcategory || 'General'})`);
 
     const createdReport = {
       id,
@@ -239,7 +307,11 @@ export async function POST(req: Request) {
       title,
       description,
       category,
+      subcategory,
       customCategory,
+      isSensitiveWildlife,
+      approxLocation: { lat: approxLat, lng: approxLng },
+      evidenceFiles: evidenceFiles || [],
       location,
       severity: isEmergency ? 'critical' : (severity || 'high'),
       emergency: isEmergency,
@@ -249,8 +321,8 @@ export async function POST(req: Request) {
       visibility: finalVisibility,
       upvotesCount: 1,
       duplicatesCount: 0,
-      departmentId: departmentId || 'dept-roads',
-      departmentName: departmentName || 'Roads & Public Infrastructure',
+      departmentId: assignedDeptId,
+      departmentName: assignedDeptName,
       slaHoursTotal: slaTotal,
       slaHoursRemaining: slaTotal,
       aiConfidence: 95,

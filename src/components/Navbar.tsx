@@ -19,7 +19,9 @@ import {
   Info,
   Shield,
   LogOut,
-  LogIn
+  LogIn,
+  Trees,
+  Leaf
 } from 'lucide-react';
 
 export function Navbar() {
@@ -154,7 +156,7 @@ export function Navbar() {
 
             {/* Primary Action: Report Issue Button */}
             <Link
-              href="/report"
+              href={user ? '/report' : '/login?returnUrl=/report'}
               className="flex items-center gap-1.5 bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold px-3.5 py-2 rounded-xl shadow-md shadow-blue-600/30 hover:shadow-blue-600/50 transition-all active:scale-[0.98] shrink-0"
             >
               <PlusCircle className="w-4 h-4" />

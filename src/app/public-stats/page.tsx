@@ -11,7 +11,9 @@ import {
   Users, 
   TrendingUp, 
   Sparkles,
-  AlertTriangle
+  AlertTriangle,
+  Trees,
+  Leaf
 } from 'lucide-react';
 
 export default function PublicStatsPage() {
@@ -60,6 +62,93 @@ export default function PublicStatsPage() {
           <p className="text-[11px] text-purple-600 font-semibold">On-time resolution</p>
         </div>
       </div>
+
+      {/* Environmental & Wildlife Protection Widget */}
+      {(() => {
+        const envIssues = issues.filter(i => i.category === 'Environment & Wildlife');
+        const envTotal = envIssues.length;
+        const envResolved = envIssues.filter(i => i.status === 'resolved').length;
+        const envEmergencies = envIssues.filter(i => i.emergency || i.subcategory === 'Environmental Emergencies').length;
+        const wildlifeCount = envIssues.filter(i => i.subcategory === 'Wildlife Protection' || i.title.toLowerCase().includes('wildlife') || i.title.toLowerCase().includes('animal')).length;
+        const forestCount = envIssues.filter(i => i.subcategory === 'Forest & Land Protection' || i.title.toLowerCase().includes('tree') || i.title.toLowerCase().includes('forest')).length;
+        const waterCount = envIssues.filter(i => i.subcategory === 'Water & Ecosystem Protection' || i.title.toLowerCase().includes('water') || i.title.toLowerCase().includes('river')).length;
+        const pollutionCount = envIssues.filter(i => i.subcategory === 'Environmental Pollution' || i.title.toLowerCase().includes('dump') || i.title.toLowerCase().includes('pollut')).length;
+
+        return (
+          <div className="bg-slate-900 text-white rounded-3xl p-6 sm:p-8 border border-emerald-500/30 space-y-6 shadow-xl relative overflow-hidden">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-5">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 rounded-2xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 flex items-center justify-center shrink-0">
+                  <Trees className="w-6 h-6" />
+                </div>
+                <div>
+                  <h2 className="text-xl font-extrabold text-white tracking-tight flex items-center gap-2">
+                    Environment & Wildlife Safeguard Dashboard
+                    <span className="text-[10px] bg-emerald-500/20 text-emerald-300 font-mono px-2.5 py-0.5 rounded-full border border-emerald-500/30">
+                      Live Ecological Telemetry
+                    </span>
+                  </h2>
+                  <p className="text-xs text-slate-400">Tracking threats to forests, wildlife habitats, water bodies, and environmental emergencies</p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2 bg-slate-800/80 px-4 py-2 rounded-2xl border border-slate-700">
+                <Leaf className="w-4 h-4 text-emerald-400" />
+                <span className="text-xs font-bold text-slate-200">
+                  Resolution Rate: <strong className="text-emerald-400">{envTotal > 0 ? Math.round((envResolved / envTotal) * 100) : 100}%</strong>
+                </span>
+              </div>
+            </div>
+
+            {/* Environmental Metric Cards */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3.5">
+              <div className="bg-slate-800/60 border border-slate-700/80 p-4 rounded-2xl space-y-1">
+                <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">Total Eco Incidents</span>
+                <div className="text-2xl font-black text-emerald-400 font-mono">{envTotal}</div>
+                <div className="text-[10px] text-slate-400">Logged across all zones</div>
+              </div>
+
+              <div className="bg-slate-800/60 border border-slate-700/80 p-4 rounded-2xl space-y-1">
+                <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">Wildlife Protection</span>
+                <div className="text-2xl font-black text-purple-400 font-mono">{wildlifeCount}</div>
+                <div className="text-[10px] text-purple-300/80">Fauna & habitat reports</div>
+              </div>
+
+              <div className="bg-slate-800/60 border border-slate-700/80 p-4 rounded-2xl space-y-1">
+                <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">Forest & Canopy</span>
+                <div className="text-2xl font-black text-teal-400 font-mono">{forestCount}</div>
+                <div className="text-[10px] text-teal-300/80">Tree cutting & logging</div>
+              </div>
+
+              <div className="bg-slate-800/60 border border-slate-700/80 p-4 rounded-2xl space-y-1">
+                <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">Eco Emergencies</span>
+                <div className="text-2xl font-black text-rose-400 font-mono">{envEmergencies}</div>
+                <div className="text-[10px] text-rose-300/80">Dispatched in &lt;4h</div>
+              </div>
+            </div>
+
+            {/* Environmental Subcategory Pills */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 pt-2 text-xs">
+              <div className="bg-slate-950 p-3 rounded-xl border border-slate-800 flex items-center justify-between">
+                <span className="text-slate-400 font-medium">Water & Ecosystems</span>
+                <span className="font-mono font-bold text-cyan-400">{waterCount} reports</span>
+              </div>
+              <div className="bg-slate-950 p-3 rounded-xl border border-slate-800 flex items-center justify-between">
+                <span className="text-slate-400 font-medium">Environmental Dumping</span>
+                <span className="font-mono font-bold text-amber-400">{pollutionCount} reports</span>
+              </div>
+              <div className="bg-slate-950 p-3 rounded-xl border border-slate-800 flex items-center justify-between">
+                <span className="text-slate-400 font-medium">Verified Cleared</span>
+                <span className="font-mono font-bold text-emerald-400">{envResolved} reports</span>
+              </div>
+              <div className="bg-slate-950 p-3 rounded-xl border border-slate-800 flex items-center justify-between">
+                <span className="text-slate-400 font-medium">Active Response Queue</span>
+                <span className="font-mono font-bold text-blue-400">{envTotal - envResolved} tickets</span>
+              </div>
+            </div>
+          </div>
+        );
+      })()}
 
       {/* Department SLA Breakdown */}
       <div className="bg-white border border-slate-200 rounded-2xl p-6 space-y-4 shadow-xs">

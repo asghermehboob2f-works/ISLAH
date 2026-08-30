@@ -24,10 +24,10 @@ export function Footer() {
             <p className="text-xs text-slate-400 max-w-sm leading-relaxed">
               ISLAH is a modern civic technology infrastructure platform empowering citizens to report local issues in seconds and enabling municipal departments to transparently track, resolve, and verify them.
             </p>
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-900 border border-slate-800 text-[11px] text-slate-300">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              <span>All Municipal SLA & AI Engines Operational</span>
-            </div>
+            <p className="text-[11px] text-slate-500 flex items-center gap-2 pt-1">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+              <span>Municipal SLA & AI engine services operational.</span>
+            </p>
           </div>
 
           {/* Nav Group 1 */}

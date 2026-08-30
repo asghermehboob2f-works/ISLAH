@@ -179,10 +179,24 @@ export function InteractiveMap({
 
       let pinBg = 'bg-blue-600';
       let ringColor = 'ring-blue-300';
+      let pinEmoji = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>';
+
+      if (issue.category === 'Environment & Wildlife') {
+        pinBg = 'bg-emerald-600';
+        ringColor = 'ring-emerald-300';
+        pinEmoji = '🌲';
+      }
+
+      if (issue.isSensitiveWildlife) {
+        pinBg = 'bg-purple-600';
+        ringColor = 'ring-purple-300';
+        pinEmoji = '🛡️';
+      }
 
       if (issue.emergency) {
         pinBg = 'bg-red-600 animate-bounce';
         ringColor = 'ring-red-400';
+        pinEmoji = '🚨';
       } else if (issue.status === 'resolved') {
         pinBg = 'bg-emerald-600';
         ringColor = 'ring-emerald-300';
@@ -199,7 +213,7 @@ export function InteractiveMap({
         html: `
           <div class="relative group cursor-pointer">
             <div class="w-7 h-7 rounded-full ${pinBg} ring-4 ${ringColor} text-white flex items-center justify-center shadow-lg transition-transform hover:scale-125">
-              ${issue.emergency ? '🚨' : '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>'}
+              ${pinEmoji}
             </div>
           </div>
         `,
@@ -210,6 +224,10 @@ export function InteractiveMap({
       const marker = L.marker([lat, lng], { icon: pinIcon });
       const reportedDateStr = new Date(issue.reportedAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
       const photoHtml = issue.photoUrl ? `<img src="${issue.photoUrl}" alt="Issue photo" class="w-full h-24 object-cover rounded-lg my-1.5 border border-slate-200" />` : '';
+
+      const sensitiveBadge = issue.isSensitiveWildlife
+        ? `<div class="bg-purple-100 text-purple-800 text-[9px] font-bold px-2 py-0.5 rounded my-1 border border-purple-200">🛡️ Protected Wildlife Zone (~500m Approx)</div>`
+        : '';
 
       const popupContent = document.createElement('div');
       popupContent.className = 'p-1 font-sans max-w-[240px]';
@@ -222,6 +240,7 @@ export function InteractiveMap({
             issue.status === 'in_progress' ? 'bg-amber-100 text-amber-700' : 'bg-blue-100 text-blue-700'
           }">${issue.status.replace('_', ' ')}</span>
         </div>
+        ${sensitiveBadge}
         <h4 class="font-extrabold text-xs text-slate-900 leading-snug">${issue.title}</h4>
         <p class="text-[10px] text-slate-500 line-clamp-1 mt-0.5">${issue.location.address}</p>
         ${photoHtml}

@@ -1,6 +1,14 @@
-export type IssueStatus = 'reported' | 'acknowledged' | 'in_progress' | 'resolved' | 'escalated';
+export type IssueStatus = 'reported' | 'under_review' | 'verified' | 'assigned' | 'acknowledged' | 'in_progress' | 'resolved' | 'escalated' | 'rejected';
 
 export type IssueSeverity = 'low' | 'medium' | 'high' | 'critical';
+
+export type EnvironmentalSubcategory = 
+  | 'Wildlife Protection'
+  | 'Forest & Land Protection'
+  | 'Water & Ecosystem Protection'
+  | 'Environmental Pollution'
+  | 'Environmental Emergencies'
+  | 'Other Environmental Issue';
 
 export type IssueCategory = 
   | 'Roads & Potholes'
@@ -11,6 +19,7 @@ export type IssueCategory =
   | 'Water Supply'
   | 'Public Infrastructure'
   | 'Public Safety & Hazards'
+  | 'Environment & Wildlife'
   | 'Other';
 
 export type UserRole = 'guest' | 'citizen' | 'staff' | 'admin';
@@ -33,10 +42,18 @@ export interface CivicIssue {
   ticketNumber: string;
   title: string;
   category: IssueCategory;
+  subcategory?: EnvironmentalSubcategory;
   customCategory?: string;
   description: string;
   voiceNoteUrl?: string;
   visibility?: 'PUBLIC' | 'PRIVATE';
+  isSensitiveWildlife?: boolean;
+  approxLocation?: {
+    lat: number;
+    lng: number;
+  };
+  rejectionReason?: string;
+  evidenceFiles?: string[];
   location: {
     lat: number;
     lng: number;

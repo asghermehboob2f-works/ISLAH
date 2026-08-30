@@ -31,6 +31,10 @@ export async function GET(req: Request, context: { params: Promise<{ id: string 
       );
     }
 
+    const isSensitive = Boolean(r.is_sensitive_wildlife);
+    const displayLat = (!isStaffOrAdmin && isSensitive && r.approx_latitude) ? r.approx_latitude : r.latitude;
+    const displayLng = (!isStaffOrAdmin && isSensitive && r.approx_longitude) ? r.approx_longitude : r.longitude;
+
     const data = {
       id: r.id,
       ticketNumber: r.ticket_number,
@@ -40,12 +44,17 @@ export async function GET(req: Request, context: { params: Promise<{ id: string 
       title: r.title,
       description: r.description,
       category: r.category,
+      subcategory: r.subcategory || undefined,
       customCategory: r.custom_category,
+      isSensitiveWildlife: isSensitive,
+      approxLocation: r.approx_latitude ? { lat: r.approx_latitude, lng: r.approx_longitude } : undefined,
+      rejectionReason: r.rejection_reason || undefined,
+      evidenceFiles: JSON.parse(r.evidence_files_json || '[]'),
       location: {
-        lat: r.latitude,
-        lng: r.longitude,
-        address: r.address,
-        landmark: r.landmark || '',
+        lat: displayLat,
+        lng: displayLng,
+        address: isSensitive && !isStaffOrAdmin ? `${r.ward || 'Protected Ecological Zone'} (Approximate Coordinates)` : r.address,
+        landmark: isSensitive && !isStaffOrAdmin ? 'Protected wildlife location coordinates masked' : (r.landmark || ''),
         ward: r.ward || ''
       },
       severity: r.severity,
@@ -92,7 +101,7 @@ export async function PATCH(req: Request, context: { params: Promise<{ id: strin
     }
 
     const body = await req.json();
-    const { status: newStatus, resolutionPhotoUrl, note, departmentId: newDeptId } = body;
+    const { status: newStatus, resolutionPhotoUrl, note, departmentId: newDeptId, severity: newSeverity, rejectionReason } = body;
 
     const db = getDb();
     const r = db.prepare(`
@@ -113,23 +122,46 @@ export async function PATCH(req: Request, context: { params: Promise<{ id: strin
     let updatedStatus = r.status;
     let updatedDeptId = r.department_id;
     let updatedDeptName = r.department_name;
+    let updatedSeverity = r.severity;
     let updatedResolutionPhoto = r.resolution_photo_url;
+    let updatedRejectionReason = r.rejection_reason;
     let aiVerifStatus = r.ai_verification_status;
     let aiVerifScore = r.ai_verification_score;
 
-    // Handle Status Update
+    // Handle Severity Update
+    if (newSeverity && newSeverity !== r.severity) {
+      updatedSeverity = newSeverity;
+      existingTimeline.push({
+        id: `tl-${Date.now()}`,
+        timestamp: now,
+        status: updatedStatus,
+        title: `Severity Changed to ${newSeverity.toUpperCase()}`,
+        description: `Severity adjusted by ${currentUser.name}`,
+        actor: currentUser.name,
+        actorRole: currentUser.role
+      });
+    }
+
+    // Handle Status Update Lifecycle
     if (newStatus && newStatus !== r.status) {
       updatedStatus = newStatus;
 
       let eventTitle = `Status updated to ${newStatus.toUpperCase()}`;
+      if (newStatus === 'under_review') eventTitle = 'Report Under Initial Review';
+      if (newStatus === 'verified') eventTitle = 'Incident & Location Verified';
+      if (newStatus === 'assigned') eventTitle = 'Dispatched to Field Officer';
       if (newStatus === 'acknowledged') eventTitle = 'Department Acknowledged';
-      if (newStatus === 'in_progress') eventTitle = 'Field Work Underway';
-      if (newStatus === 'resolved') eventTitle = 'Issue Solved & Verified';
+      if (newStatus === 'in_progress') eventTitle = 'Field Protection Action Underway';
+      if (newStatus === 'resolved') eventTitle = 'Environmental Incident Resolved';
       if (newStatus === 'escalated') eventTitle = 'SLA Escalation Issued';
+      if (newStatus === 'rejected') {
+        eventTitle = 'Report Marked Invalid / Rejected';
+        updatedRejectionReason = rejectionReason || note || 'Marked invalid upon inspection.';
+      }
 
       if (newStatus === 'resolved' && resolutionPhotoUrl) {
         updatedResolutionPhoto = resolutionPhotoUrl;
-        const vResult = await verifyResolution(r.photo_url, resolutionPhotoUrl);
+        const vResult = await verifyResolution(r.photo_url || '', resolutionPhotoUrl);
         aiVerifStatus = vResult.status;
         aiVerifScore = vResult.verificationScore;
       }
@@ -139,7 +171,7 @@ export async function PATCH(req: Request, context: { params: Promise<{ id: strin
         timestamp: now,
         status: newStatus,
         title: eventTitle,
-        description: note || `Action updated by ${currentUser.name}`,
+        description: newStatus === 'rejected' ? `Reason: ${updatedRejectionReason}` : (note || `Action updated by ${currentUser.name}`),
         actor: currentUser.name,
         actorRole: currentUser.role,
         mediaUrl: resolutionPhotoUrl || undefined
@@ -178,15 +210,17 @@ export async function PATCH(req: Request, context: { params: Promise<{ id: strin
 
     db.prepare(`
       UPDATE issues
-      SET status = ?, department_id = ?, department_name = ?, resolution_photo_url = ?,
-          ai_verification_status = ?, ai_verification_score = ?,
+      SET status = ?, severity = ?, department_id = ?, department_name = ?, resolution_photo_url = ?,
+          rejection_reason = ?, ai_verification_status = ?, ai_verification_score = ?,
           timeline_json = ?, notes_json = ?, updated_at = ?
       WHERE id = ?
     `).run(
       updatedStatus,
+      updatedSeverity,
       updatedDeptId,
       updatedDeptName,
       updatedResolutionPhoto || null,
+      updatedRejectionReason || null,
       aiVerifStatus || null,
       aiVerifScore || null,
       JSON.stringify(existingTimeline),
