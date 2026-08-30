@@ -36,12 +36,16 @@ export function Navbar() {
 
   const loginRef = useRef<HTMLDivElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
+  const searchContainerRef = useRef<HTMLDivElement>(null);
 
-  // Close dropdown on click outside
+  // Close dropdown & search on click outside
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (loginRef.current && !loginRef.current.contains(event.target as Node)) {
         setLoginDropdownOpen(false);
+      }
+      if (searchContainerRef.current && !searchContainerRef.current.contains(event.target as Node)) {
+        setSearchOpen(false);
       }
     }
     document.addEventListener('mousedown', handleClickOutside);
@@ -121,7 +125,7 @@ export function Navbar() {
           <div className="flex items-center gap-2.5 sm:gap-3 shrink-0 z-10">
 
             {/* Expandable Search Input / Button */}
-            <div className="relative flex items-center">
+            <div className="relative flex items-center" ref={searchContainerRef}>
               {searchOpen ? (
                 <form onSubmit={handleSearchSubmit} className="flex items-center relative animate-in fade-in zoom-in-95 duration-200">
                   <input
@@ -130,25 +134,25 @@ export function Navbar() {
                     placeholder="Search reports, tickets..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-48 sm:w-64 bg-slate-900 border border-blue-500/60 text-xs text-slate-100 placeholder-slate-400 pl-8 pr-8 py-1.5 rounded-xl focus:outline-none ring-2 ring-blue-500/20"
+                    className="w-48 sm:w-64 bg-slate-900 border border-blue-500/60 text-xs text-slate-100 placeholder-slate-400 pl-8 pr-8 py-2 rounded-xl focus:outline-none ring-2 ring-blue-500/20 shadow-lg"
                   />
-                  <Search className="w-3.5 h-3.5 text-blue-400 absolute left-2.5 top-2.5" />
+                  <Search className="w-4 h-4 text-blue-400 absolute left-2.5 top-2.5" />
                   <button
                     type="button"
                     onClick={() => { setSearchOpen(false); setSearchQuery(''); }}
-                    className="absolute right-2 top-2 text-slate-400 hover:text-white"
+                    className="absolute right-2.5 top-2.5 text-slate-400 hover:text-white transition-colors"
+                    title="Close search"
                   >
-                    <X className="w-3.5 h-3.5" />
+                    <X className="w-4 h-4" />
                   </button>
                 </form>
               ) : (
                 <button
                   onClick={() => setSearchOpen(true)}
-                  className="p-2 text-slate-300 hover:text-white bg-slate-900 hover:bg-slate-800 rounded-xl border border-slate-800 transition-colors flex items-center gap-1.5 text-xs font-semibold"
-                  title="Search platform reports"
+                  className="p-2.5 text-slate-300 hover:text-white bg-slate-900 hover:bg-slate-800 rounded-xl border border-slate-800 hover:border-slate-700 transition-all flex items-center justify-center shrink-0 shadow-sm hover:scale-105 active:scale-95"
+                  title="Search platform reports & tickets"
                 >
                   <Search className="w-4 h-4 text-blue-400" />
-                  <span className="hidden xl:inline text-slate-400">Search</span>
                 </button>
               )}
             </div>
