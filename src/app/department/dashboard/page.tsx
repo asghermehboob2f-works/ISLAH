@@ -120,18 +120,18 @@ export default function DepartmentDashboardPage() {
       </div>
 
       {/* Filter Toolbar */}
-      <div className="bg-white rounded-xl border border-slate-200 p-4 space-y-3 shadow-xs">
+      <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-4 space-y-3 shadow-xs transition-colors">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
           
           <div>
-            <label className="text-[10px] font-bold uppercase tracking-wider text-slate-500 block mb-1">
-              Department {isStaffUser && staffDeptId && <span className="text-purple-700 font-extrabold">(Assigned Only)</span>}
+            <label className="text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 block mb-1">
+              Department {isStaffUser && staffDeptId && <span className="text-purple-700 dark:text-purple-400 font-extrabold">(Assigned Only)</span>}
             </label>
             <select
               value={selectedDept}
               disabled={Boolean(isStaffUser && staffDeptId && staffDeptId !== 'dept-all')}
               onChange={(e) => setSelectedDept(e.target.value)}
-              className="w-full text-xs border border-slate-300 rounded-lg px-3 py-1.5 bg-slate-50 focus:bg-white font-semibold text-slate-800 disabled:opacity-80 disabled:bg-slate-100 cursor-not-allowed"
+              className="w-full text-xs border border-slate-300 dark:border-slate-800 rounded-lg px-3 py-1.5 bg-slate-50 dark:bg-slate-950 focus:bg-white dark:focus:bg-slate-900 font-semibold text-slate-800 dark:text-slate-100 disabled:opacity-80 disabled:bg-slate-100 dark:disabled:bg-slate-900 cursor-not-allowed"
             >
               {(!isStaffUser || !staffDeptId) && <option value="all">All Departments ({departments.length})</option>}
               {departments.map((d) => (
@@ -141,11 +141,11 @@ export default function DepartmentDashboardPage() {
           </div>
 
           <div>
-            <label className="text-[10px] font-bold uppercase tracking-wider text-slate-500 block mb-1">Status</label>
+            <label className="text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 block mb-1">Status</label>
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="w-full text-xs border border-slate-300 rounded-lg px-3 py-1.5 bg-slate-50 focus:bg-white font-semibold text-slate-800"
+              className="w-full text-xs border border-slate-300 dark:border-slate-800 rounded-lg px-3 py-1.5 bg-slate-50 dark:bg-slate-950 focus:bg-white dark:focus:bg-slate-900 font-semibold text-slate-800 dark:text-slate-100"
             >
               <option value="active">Active Pending Queue (Excludes Resolved & Rejected)</option>
               <option value="all">All Statuses</option>
@@ -160,11 +160,11 @@ export default function DepartmentDashboardPage() {
           </div>
 
           <div>
-            <label className="text-[10px] font-bold uppercase tracking-wider text-slate-500 block mb-1">Severity</label>
+            <label className="text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 block mb-1">Severity</label>
             <select
               value={severityFilter}
               onChange={(e) => setSeverityFilter(e.target.value)}
-              className="w-full text-xs border border-slate-300 rounded-lg px-3 py-1.5 bg-slate-50 focus:bg-white font-semibold text-slate-800"
+              className="w-full text-xs border border-slate-300 dark:border-slate-800 rounded-lg px-3 py-1.5 bg-slate-50 dark:bg-slate-950 focus:bg-white dark:focus:bg-slate-900 font-semibold text-slate-800 dark:text-slate-100"
             >
               <option value="all">All Severities</option>
               <option value="critical">Critical (Emergency)</option>
@@ -175,16 +175,16 @@ export default function DepartmentDashboardPage() {
           </div>
 
           <div>
-            <label className="text-[10px] font-bold uppercase tracking-wider text-slate-500 block mb-1">Search</label>
+            <label className="text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 block mb-1">Search</label>
             <div className="relative">
               <input
                 type="text"
                 placeholder="Ticket ID or Ward..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full text-xs border border-slate-300 rounded-lg pl-8 pr-3 py-1.5 bg-slate-50 focus:bg-white"
+                className="w-full text-xs border border-slate-300 dark:border-slate-800 rounded-lg pl-8 pr-3 py-1.5 bg-slate-50 dark:bg-slate-950 focus:bg-white dark:focus:bg-slate-900 text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500"
               />
-              <Search className="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2.5" />
+              <Search className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500 absolute left-2.5 top-2.5" />
             </div>
           </div>
 
@@ -192,10 +192,10 @@ export default function DepartmentDashboardPage() {
       </div>
 
       {/* Operational Ticket Data Table */}
-      <div className="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-xs">
+      <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-xs">
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs text-slate-700">
-            <thead className="bg-slate-900 text-slate-300 uppercase text-[10px] font-bold tracking-wider border-b border-slate-800">
+          <table className="w-full text-left text-xs text-slate-700 dark:text-slate-300">
+            <thead className="bg-slate-900 dark:bg-slate-950 text-slate-300 uppercase text-[10px] font-bold tracking-wider border-b border-slate-800">
               <tr>
                 <th className="py-3 px-4">Ticket ID</th>
                 <th className="py-3 px-4">Category & Title</th>
@@ -205,10 +205,10 @@ export default function DepartmentDashboardPage() {
                 <th className="py-3 px-4">Action</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-200 font-medium">
+            <tbody className="divide-y divide-slate-200 dark:divide-slate-800 font-medium">
               {filteredTickets.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="py-8 text-center text-slate-400 italic">
+                  <td colSpan={6} className="py-8 text-center text-slate-400 dark:text-slate-500 italic">
                     No active tickets available for this department.
                   </td>
                 </tr>
@@ -216,31 +216,31 @@ export default function DepartmentDashboardPage() {
                 filteredTickets.map((ticket) => (
                   <tr 
                     key={ticket.id} 
-                    className={`hover:bg-slate-50 transition-colors ${
-                      ticket.emergency ? 'bg-red-50/50' : ''
+                    className={`hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors ${
+                      ticket.emergency ? 'bg-red-50/50 dark:bg-red-950/20' : ''
                     }`}
                   >
-                    <td className="py-3 px-4 font-mono font-bold text-slate-900">
+                    <td className="py-3 px-4 font-mono font-bold text-slate-900 dark:text-slate-100">
                       {ticket.ticketNumber}
                       {ticket.emergency && (
-                        <span className="block text-[9px] text-red-600 font-extrabold uppercase">Emergency</span>
+                        <span className="block text-[9px] text-red-600 dark:text-red-400 font-extrabold uppercase">Emergency</span>
                       )}
                     </td>
                     <td className="py-3 px-4 max-w-xs">
-                      <div className="font-bold text-slate-900 truncate">{ticket.title}</div>
-                      <div className="text-[10px] text-slate-500 truncate">{ticket.location.address}</div>
+                      <div className="font-bold text-slate-900 dark:text-slate-100 truncate">{ticket.title}</div>
+                      <div className="text-[10px] text-slate-500 dark:text-slate-400 truncate">{ticket.location.address}</div>
                     </td>
-                    <td className="py-3 px-4 text-xs font-semibold text-slate-800">
+                    <td className="py-3 px-4 text-xs font-semibold text-slate-800 dark:text-slate-200">
                       {ticket.departmentName}
                     </td>
                     <td className="py-3 px-4">
                       <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase ${
                         ticket.severity === 'critical' ? 'bg-red-600 text-white' :
-                        ticket.severity === 'high' ? 'bg-orange-100 text-orange-800' : 'bg-slate-100 text-slate-700'
+                        ticket.severity === 'high' ? 'bg-orange-100 text-orange-800 dark:bg-orange-950/80 dark:text-orange-300' : 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300'
                       }`}>
                         {ticket.severity}
                       </span>
-                      <span className="block text-[10px] text-slate-500 font-mono mt-0.5">
+                      <span className="block text-[10px] text-slate-500 dark:text-slate-400 font-mono mt-0.5">
                         {ticket.slaHoursRemaining}h remaining
                       </span>
                     </td>
@@ -252,10 +252,17 @@ export default function DepartmentDashboardPage() {
                           </span>
                           Resolved
                         </span>
+                      ) : ticket.status === 'rejected' ? (
+                        <span className="bg-red-600 text-white px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider inline-flex items-center gap-1 shadow-xs border border-red-700">
+                          <span className="w-3.5 h-3.5 rounded-full bg-white flex items-center justify-center text-red-600 shrink-0">
+                            <X className="w-2.5 h-2.5 text-red-600 stroke-[3.5]" />
+                          </span>
+                          Rejected / Invalid
+                        </span>
                       ) : (
                         <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase ${
-                          ticket.status === 'in_progress' ? 'bg-amber-100 text-amber-800' :
-                          ticket.status === 'escalated' ? 'bg-red-100 text-red-800' : 'bg-blue-100 text-blue-800'
+                          ticket.status === 'in_progress' ? 'bg-amber-100 text-amber-800 dark:bg-amber-950/80 dark:text-amber-300' :
+                          ticket.status === 'escalated' ? 'bg-red-100 text-red-800 dark:bg-red-950/80 dark:text-red-300' : 'bg-blue-100 text-blue-800 dark:bg-blue-950/80 dark:text-blue-300'
                         }`}>
                           {ticket.status.replace('_', ' ')}
                         </span>
@@ -264,7 +271,7 @@ export default function DepartmentDashboardPage() {
                     <td className="py-3 px-4">
                       <button
                         onClick={() => setSelectedIssue(ticket)}
-                        className="bg-slate-900 hover:bg-slate-800 text-white text-[11px] font-bold px-3 py-1.5 rounded-md flex items-center gap-1 transition-colors"
+                        className="bg-slate-900 hover:bg-slate-800 dark:bg-blue-600 dark:hover:bg-blue-500 text-white text-[11px] font-bold px-3 py-1.5 rounded-md flex items-center gap-1 transition-colors"
                       >
                         <Eye className="w-3.5 h-3.5" /> Manage Ticket
                       </button>

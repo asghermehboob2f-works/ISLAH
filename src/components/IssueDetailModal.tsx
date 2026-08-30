@@ -106,7 +106,7 @@ export function IssueDetailModal({ issue, onClose }: IssueDetailModalProps) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm overflow-y-auto font-sans">
-      <div className="bg-white w-full max-w-4xl rounded-2xl shadow-2xl border border-slate-200 overflow-hidden my-8 max-h-[90vh] flex flex-col">
+      <div className="bg-white dark:bg-slate-900 w-full max-w-4xl rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden my-8 max-h-[90vh] flex flex-col transition-colors">
         
         {/* Modal Top Header */}
         <div className="bg-slate-950 text-white px-6 py-4 flex items-center justify-between border-b border-slate-800 shrink-0">
@@ -126,17 +126,17 @@ export function IssueDetailModal({ issue, onClose }: IssueDetailModalProps) {
         </div>
 
         {/* Modal Content Scroll Area */}
-        <div className="p-6 overflow-y-auto space-y-6 flex-1 text-slate-900">
+        <div className="p-6 overflow-y-auto space-y-6 flex-1 text-slate-900 dark:text-slate-100">
           
           {/* Main Title & Status Row */}
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-slate-100">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-slate-100 dark:border-slate-800">
             <div>
               <div className="flex items-center gap-2 mb-1">
-                <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider" suppressHydrationWarning>
+                <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider" suppressHydrationWarning>
                   Reported by {issue.citizenName} • {formatDate(issue.reportedAt)}
                 </span>
               </div>
-              <h2 className="text-xl font-bold text-slate-900 leading-tight">
+              <h2 className="text-xl font-bold text-slate-900 dark:text-slate-100 leading-tight">
                 {issue.title}
               </h2>
             </div>

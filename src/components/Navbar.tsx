@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import { useApp } from '@/context/AppContext';
+import { useTheme } from '@/context/ThemeContext';
 import { 
   PlusCircle, 
   MapPin, 
@@ -21,13 +22,16 @@ import {
   LogOut,
   LogIn,
   Trees,
-  Leaf
+  Leaf,
+  Sun,
+  Moon
 } from 'lucide-react';
 
 export function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
   const { user, activeRole, logout, issues } = useApp();
+  const { theme, toggleTheme } = useTheme();
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
@@ -153,6 +157,19 @@ export function Navbar() {
                 </button>
               )}
             </div>
+
+            {/* Theme Mode Toggle (Dark / Light) */}
+            <button
+              onClick={toggleTheme}
+              className="p-2 text-slate-300 hover:text-white bg-slate-900 hover:bg-slate-800 rounded-xl border border-slate-800 transition-colors flex items-center justify-center shrink-0"
+              title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+            >
+              {theme === 'dark' ? (
+                <Sun className="w-4 h-4 text-amber-400" />
+              ) : (
+                <Moon className="w-4 h-4 text-sky-400" />
+              )}
+            </button>
 
             {/* Primary Action: Report Issue Button */}
             <Link
@@ -290,6 +307,23 @@ export function Navbar() {
                 </Link>
               );
             })}
+
+            <button
+              onClick={toggleTheme}
+              className="w-full text-left flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:bg-slate-900 transition-colors"
+            >
+              {theme === 'dark' ? (
+                <>
+                  <Sun className="w-4 h-4 text-amber-400" />
+                  <span>Switch to Light Mode</span>
+                </>
+              ) : (
+                <>
+                  <Moon className="w-4 h-4 text-sky-400" />
+                  <span>Switch to Dark Mode</span>
+                </>
+              )}
+            </button>
 
             {user ? (
               <div className="pt-2 border-t border-slate-800 space-y-1">

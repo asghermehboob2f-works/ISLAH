@@ -70,13 +70,13 @@ export function IssueCard({ issue, onSelect, onUpvote }: IssueCardProps) {
   return (
     <div 
       onClick={() => onSelect(issue)}
-      className={`bg-white rounded-xl border transition-all duration-200 hover:shadow-xl hover:-translate-y-0.5 cursor-pointer overflow-hidden flex flex-col justify-between ${
-        issue.emergency ? 'border-red-300 shadow-red-100/50 emergency-pulse' : 'border-slate-200 shadow-sm'
+      className={`bg-white dark:bg-slate-900 rounded-xl border transition-all duration-200 hover:shadow-xl hover:-translate-y-0.5 cursor-pointer overflow-hidden flex flex-col justify-between ${
+        issue.emergency ? 'border-red-300 dark:border-red-800/80 shadow-red-100/50 dark:shadow-red-950/30 emergency-pulse' : 'border-slate-200 dark:border-slate-800 shadow-sm'
       }`}
     >
       <div>
         {/* Card Header & Photo */}
-        <div className="relative h-44 w-full bg-slate-100 overflow-hidden">
+        <div className="relative h-44 w-full bg-slate-100 dark:bg-slate-950 overflow-hidden">
           {issue.photoUrl ? (
             <img
               src={issue.photoUrl}
@@ -85,9 +85,9 @@ export function IssueCard({ issue, onSelect, onUpvote }: IssueCardProps) {
               loading="lazy"
             />
           ) : (
-            <div className="w-full h-full flex flex-col items-center justify-center bg-slate-100 text-slate-400">
-              <Sparkles className="w-8 h-8 mb-1 text-slate-300" />
-              <span className="text-[10px] font-semibold text-slate-400">Civic Issue Ticket</span>
+            <div className="w-full h-full flex flex-col items-center justify-center bg-slate-100 dark:bg-slate-950 text-slate-400 dark:text-slate-600">
+              <Sparkles className="w-8 h-8 mb-1 text-slate-300 dark:text-slate-700" />
+              <span className="text-[10px] font-semibold text-slate-400 dark:text-slate-500">Civic Issue Ticket</span>
             </div>
           )}
 
@@ -114,30 +114,30 @@ export function IssueCard({ issue, onSelect, onUpvote }: IssueCardProps) {
         {/* Card Body */}
         <div className="p-4 space-y-3">
           <div className="flex items-center justify-between gap-2">
-            <span className="text-[11px] font-mono font-bold text-slate-400 uppercase">
+            <span className="text-[11px] font-mono font-bold text-slate-400 dark:text-slate-500 uppercase">
               {issue.ticketNumber}
             </span>
             {getSeverityBadge(issue.severity)}
           </div>
 
-          <h3 className="text-sm font-bold text-slate-900 line-clamp-1 hover:text-blue-600 transition-colors">
+          <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100 line-clamp-1 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
             {issue.title}
           </h3>
 
-          <p className="text-xs text-slate-600 line-clamp-2 leading-relaxed">
+          <p className="text-xs text-slate-600 dark:text-slate-300 line-clamp-2 leading-relaxed">
             {issue.description}
           </p>
 
           {/* Location */}
-          <div className="flex items-center gap-1.5 text-xs text-slate-500 pt-1 border-t border-slate-100">
-            <MapPin className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+          <div className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400 pt-1 border-t border-slate-100 dark:border-slate-800/80">
+            <MapPin className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500 shrink-0" />
             <span className="truncate">{issue.location.address}</span>
           </div>
         </div>
       </div>
 
       {/* Card Footer */}
-      <div className="px-4 py-3 bg-slate-50 border-t border-slate-100 flex items-center justify-between text-xs">
+      <div className="px-4 py-3 bg-slate-50 dark:bg-slate-950/60 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between text-xs">
         {issue.status === 'resolved' ? (
           <div className="flex items-center gap-1.5 bg-emerald-600 text-white px-2.5 py-1 rounded-full font-bold text-[11px] shadow-xs border border-emerald-700">
             <span className="w-3.5 h-3.5 rounded-full bg-white flex items-center justify-center text-emerald-700 shrink-0">
@@ -153,8 +153,8 @@ export function IssueCard({ issue, onSelect, onUpvote }: IssueCardProps) {
             <span>Rejected / Invalid</span>
           </div>
         ) : (
-          <div className="flex items-center gap-1 text-slate-500">
-            <Clock className="w-3.5 h-3.5 text-slate-400" />
+          <div className="flex items-center gap-1 text-slate-500 dark:text-slate-400">
+            <Clock className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500" />
             <span>{issue.slaHoursRemaining}h SLA remaining</span>
           </div>
         )}
@@ -166,7 +166,7 @@ export function IssueCard({ issue, onSelect, onUpvote }: IssueCardProps) {
                 e.stopPropagation();
                 onUpvote(e, issue.ticketNumber);
               }}
-              className="flex items-center gap-1 text-slate-600 hover:text-blue-600 font-semibold px-2 py-1 rounded hover:bg-white transition-colors"
+              className="flex items-center gap-1 text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 font-semibold px-2 py-1 rounded hover:bg-white dark:hover:bg-slate-800 transition-colors"
               title="Upvote/confirm this issue"
             >
               <ThumbsUp className="w-3.5 h-3.5 text-blue-500" />
@@ -174,7 +174,7 @@ export function IssueCard({ issue, onSelect, onUpvote }: IssueCardProps) {
             </button>
           )}
 
-          <span className="text-blue-600 font-bold text-xs flex items-center gap-0.5 group-hover:translate-x-0.5 transition-transform">
+          <span className="text-blue-600 dark:text-blue-400 font-bold text-xs flex items-center gap-0.5 group-hover:translate-x-0.5 transition-transform">
             Details <ArrowRight className="w-3.5 h-3.5" />
           </span>
         </div>
