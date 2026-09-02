@@ -13,9 +13,16 @@ export function Footer() {
           
           {/* Brand Col */}
           <div className="lg:col-span-2 space-y-4">
-            <Link href="/" className="inline-flex items-center gap-3 focus:outline-none">
-              <div className="relative w-9 h-9 flex items-center justify-center shrink-0">
-                <Image src="/logo.png?v=3" alt="ISLAH Logo" width={36} height={36} className="w-full h-full object-contain" unoptimized />
+            <Link href="/" className="inline-flex items-center gap-2.5 focus:outline-none group">
+              <div className="relative flex items-center justify-center shrink-0">
+                <Image
+                  src="/logo.png?v=4"
+                  alt="ISLAH Logo"
+                  width={38}
+                  height={30}
+                  className="h-8 w-auto object-contain transition-transform duration-200 group-hover:scale-105 drop-shadow-2xs"
+                  unoptimized
+                />
               </div>
               <span className="brand-font text-lg sm:text-xl text-slate-900 leading-none translate-y-[1px]">
                 Islah

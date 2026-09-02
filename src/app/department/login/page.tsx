@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useApp } from '@/context/AppContext';
 import { 
@@ -44,16 +45,29 @@ export default function DepartmentLoginPage() {
   return (
     <div className="w-full max-w-md mx-auto px-4 py-12 space-y-6 font-sans">
       
-      <div className="text-center space-y-2">
-        <div className="w-12 h-12 rounded-2xl bg-amber-600 flex items-center justify-center text-white mx-auto shadow-lg shadow-amber-600/30">
-          <Briefcase className="w-6 h-6 stroke-[2.2]" />
+      <div className="text-center space-y-3">
+        <Link href="/" className="inline-flex items-center justify-center gap-2 focus:outline-none group">
+          <Image 
+            src="/logo.png?v=4" 
+            alt="ISLAH Logo" 
+            width={56} 
+            height={44} 
+            className="h-12 w-auto object-contain transition-transform duration-200 group-hover:scale-105" 
+            unoptimized 
+          />
+        </Link>
+        <div>
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-amber-50 border border-amber-200 rounded-full text-amber-800 text-xs font-semibold mb-2">
+            <Briefcase className="w-3.5 h-3.5 text-amber-600" />
+            <span>Department Staff Portal</span>
+          </div>
+          <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">
+            Staff Authentication
+          </h1>
+          <p className="text-xs text-slate-500 mt-1">
+            Authorized municipal department officers & field dispatch personnel
+          </p>
         </div>
-        <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">
-          Department Staff Portal
-        </h1>
-        <p className="text-xs text-slate-500">
-          Authorized municipal department officers & field dispatch personnel
-        </p>
       </div>
 
       <div className="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 space-y-5 shadow-sm">

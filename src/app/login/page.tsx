@@ -53,16 +53,27 @@ function LoginContent() {
     <div className="w-full max-w-md mx-auto px-4 py-12 space-y-6 font-sans">
       
       {/* Brand Header */}
-      <div className="text-center space-y-2">
-        <div className="relative w-14 h-14 flex items-center justify-center mx-auto shrink-0">
-          <Image src="/logo.png?v=3" alt="ISLAH Logo" width={56} height={56} className="w-full h-full object-contain" unoptimized />
+      <div className="text-center space-y-3">
+        <Link href="/" className="inline-flex items-center justify-center gap-2 focus:outline-none group">
+          <div className="relative flex items-center justify-center shrink-0">
+            <Image
+              src="/logo.png?v=4"
+              alt="ISLAH Logo"
+              width={70}
+              height={56}
+              className="h-14 sm:h-16 w-auto object-contain transition-transform duration-200 group-hover:scale-105"
+              unoptimized
+            />
+          </div>
+        </Link>
+        <div>
+          <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">
+            Welcome Back
+          </h1>
+          <p className="text-xs text-slate-500 mt-1">
+            Log in to your citizen account to track reports and manage civic actions
+          </p>
         </div>
-        <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">
-          Welcome Back
-        </h1>
-        <p className="text-xs text-slate-500">
-          Log in to your citizen account to track reports and manage civic actions
-        </p>
       </div>
 
       {/* Login Form Card */}

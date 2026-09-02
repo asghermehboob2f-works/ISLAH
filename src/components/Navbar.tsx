@@ -85,8 +85,15 @@ export function Navbar() {
           {/* 1. Left: Logo & Brand Wordmark */}
           <div className="flex items-center shrink-0">
             <Link href="/" className="flex items-center gap-2.5 focus:outline-none group">
-              <div className="relative w-10 h-10 flex items-center justify-center shrink-0">
-                <Image src="/logo.png?v=3" alt="Islah Logo" width={40} height={40} className="w-full h-full object-contain" unoptimized />
+              <div className="relative flex items-center justify-center shrink-0">
+                <Image
+                  src="/logo.png?v=4"
+                  alt="Islah Logo"
+                  width={42}
+                  height={34}
+                  className="h-8 sm:h-9 w-auto object-contain transition-transform duration-200 group-hover:scale-105 drop-shadow-2xs"
+                  unoptimized
+                />
               </div>
               <span className="brand-font text-lg sm:text-xl text-slate-900 leading-none translate-y-[1px]">
                 Islah
