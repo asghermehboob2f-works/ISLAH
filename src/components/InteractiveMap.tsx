@@ -132,7 +132,7 @@ export function InteractiveMap({
         className: 'custom-picker-pin',
         html: `
           <div class="relative flex items-center justify-center">
-            <div class="w-8 h-8 rounded-full bg-blue-600 border-2 border-white shadow-xl flex items-center justify-center text-white animate-pulse">
+            <div class="w-8 h-8 rounded-full bg-blue-600 border-2 border-white shadow-xl flex items-center justify-center text-white">
               <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
             </div>
             <div class="absolute -bottom-1 w-2 h-2 bg-blue-600 rotate-45"></div>
@@ -194,7 +194,7 @@ export function InteractiveMap({
       }
 
       if (issue.emergency) {
-        pinBg = 'bg-red-600 animate-bounce';
+        pinBg = 'bg-red-600';
         ringColor = 'ring-red-400';
         pinEmoji = '🚨';
       } else if (issue.status === 'resolved') {
@@ -339,7 +339,7 @@ export function InteractiveMap({
           <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-blue-500" /> Reported</span>
           <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-amber-500" /> In Progress</span>
           <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-emerald-500" /> Resolved</span>
-          <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-red-600 animate-pulse" /> Emergency</span>
+          <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-red-600" /> Emergency</span>
         </div>
       )}
 

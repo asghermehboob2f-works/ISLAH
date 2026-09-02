@@ -7,21 +7,14 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useApp } from '@/context/AppContext';
 import {
   PlusCircle,
-  MapPin,
   Search,
   User,
   Briefcase,
-  BarChart3,
-  ShieldCheck,
+  Shield,
   Menu,
   X,
-  FileText,
-  Info,
-  Shield,
   LogOut,
   LogIn,
-  Trees,
-  Leaf
 } from 'lucide-react';
 
 export function Navbar() {
@@ -64,7 +57,9 @@ export function Navbar() {
     if (!searchQuery.trim()) return;
 
     const trimmed = searchQuery.trim();
-    const found = issues.find(i => i.ticketNumber.toLowerCase() === trimmed.toLowerCase() || i.id.toLowerCase() === trimmed.toLowerCase());
+    const found = issues.find(
+      (i) => i.ticketNumber.toLowerCase() === trimmed.toLowerCase() || i.id.toLowerCase() === trimmed.toLowerCase()
+    );
 
     setSearchOpen(false);
     if (found) {
@@ -75,101 +70,93 @@ export function Navbar() {
   };
 
   const navLinks = [
-    { name: 'Live Map', href: '/live-map', icon: MapPin },
-    { name: 'Reports', href: '/reports', icon: FileText },
-    { name: 'Public Stats', href: '/public-stats', icon: BarChart3 },
-    { name: 'About', href: '/about', icon: Info },
+    { name: 'Home', href: '/' },
+    { name: 'Map', href: '/live-map' },
+    { name: 'Reports', href: '/reports' },
+    { name: 'Public Stats', href: '/public-stats' },
+    { name: 'About Us', href: '/about' },
   ];
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-slate-950/90 backdrop-blur-md border-b border-slate-800 text-white shadow-md font-sans transition-all">
+    <header className="sticky top-0 z-50 w-full bg-white/95 backdrop-blur-md border-b border-slate-200/90 text-slate-900 font-sans transition-all">
       <div className="w-full max-w-[1800px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 relative">
         <div className="flex items-center justify-between h-16">
 
-          {/* 1. Left: Logo & Brand Identity */}
-          <div className="flex items-center shrink-0 z-10">
-            <Link href="/" className="flex items-center gap-3 focus:outline-none">
+          {/* 1. Left: Logo & Brand Wordmark */}
+          <div className="flex items-center shrink-0">
+            <Link href="/" className="flex items-center gap-2.5 focus:outline-none group">
               <div className="relative w-10 h-10 flex items-center justify-center shrink-0">
-                <Image src="/logo.png?v=3" alt="ISLAH Logo" width={40} height={40} className="w-full h-full object-contain" unoptimized />
+                <Image src="/logo.png?v=3" alt="Islah Logo" width={40} height={40} className="w-full h-full object-contain" unoptimized />
               </div>
-              <span className="brand-font text-2xl font-normal uppercase tracking-[0.1em] leading-none translate-y-[2.5px] bg-gradient-to-r from-emerald-400 via-teal-200 to-white bg-clip-text text-transparent">
-                ISLAH
+              <span className="brand-font text-lg sm:text-xl text-slate-900 leading-none translate-y-[1px]">
+                Islah
               </span>
             </Link>
           </div>
 
-          {/* 2. Exact Optical & Geometric Viewport Center: Primary Navigation */}
-          <nav className="hidden lg:flex items-center justify-center absolute left-1/2 -translate-x-1/2 z-0">
-            <div className="inline-flex items-center justify-center gap-1 bg-slate-900/90 p-1.5 rounded-xl border border-slate-800 shadow-inner">
-              {navLinks.map((link) => {
-                const Icon = link.icon;
-                const isActive = pathname === link.href || (link.href === '/live-map' && pathname === '/heatmap') || (link.href === '/public-stats' && pathname === '/department-stats');
-                return (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all ${isActive
-                        ? 'bg-blue-600 text-white shadow-sm'
-                        : 'text-slate-300 hover:text-white hover:bg-slate-800'
-                      }`}
-                  >
-                    <Icon className="w-3.5 h-3.5" />
-                    {link.name}
-                  </Link>
-                );
-              })}
-            </div>
+          {/* 2. Absolute Centered Main Navigation Links */}
+          <nav className="hidden lg:flex items-center gap-1 xl:gap-2 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
+            {navLinks.map((link) => {
+              const isActive =
+                pathname === link.href ||
+                (link.href === '/' && pathname === '/') ||
+                (link.href === '/live-map' && pathname === '/heatmap') ||
+                (link.href === '/public-stats' && pathname === '/department-stats');
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={`px-3.5 py-1.5 rounded-md text-xs sm:text-sm font-medium transition-all ${
+                    isActive
+                      ? 'text-blue-600 font-semibold bg-blue-50/70 border border-blue-100/60 shadow-2xs'
+                      : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+                  }`}
+                >
+                  {link.name}
+                </Link>
+              );
+            })}
           </nav>
 
-          {/* 3. Right: Search + Report Issue CTA + Click-Driven User Login */}
-          <div className="flex items-center gap-2.5 sm:gap-3 shrink-0 z-10">
+          {/* 3. Right Actions: Search + User Login + Primary Blue CTA */}
+          <div className="flex items-center gap-2.5 shrink-0">
 
-            {/* Expandable Search Input / Button */}
+            {/* Expandable Search Input / Icon */}
             <div className="relative flex items-center" ref={searchContainerRef}>
               {searchOpen ? (
-                <form onSubmit={handleSearchSubmit} className="flex items-center relative animate-in fade-in zoom-in-95 duration-200">
+                <form onSubmit={handleSearchSubmit} className="flex items-center relative animate-in fade-in duration-150">
                   <input
                     ref={searchInputRef}
                     type="text"
-                    placeholder="Search reports, tickets..."
+                    placeholder="Search ticket # or topic..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-48 sm:w-64 h-9 sm:h-10 bg-slate-900 border border-blue-500/60 text-xs text-slate-100 placeholder-slate-400 pl-9 pr-8 rounded-xl focus:outline-none ring-2 ring-blue-500/20 shadow-lg"
+                    className="w-48 sm:w-60 h-9 bg-slate-50 border border-slate-300 text-xs text-slate-900 placeholder-slate-400 pl-8 pr-7 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 shadow-2xs"
                   />
-                  <Search className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-blue-400 absolute left-2.5 top-2.5 sm:top-2.5" />
+                  <Search className="w-3.5 h-3.5 text-blue-600 absolute left-2.5 top-2.5" />
                   <button
                     type="button"
                     onClick={() => { setSearchOpen(false); setSearchQuery(''); }}
-                    className="absolute right-2.5 top-2.5 text-slate-400 hover:text-white transition-colors"
+                    className="absolute right-2 text-slate-400 hover:text-slate-700 transition-colors"
                     title="Close search"
                   >
-                    <X className="w-4 h-4" />
+                    <X className="w-3.5 h-3.5" />
                   </button>
                 </form>
               ) : (
                 <button
                   onClick={() => setSearchOpen(true)}
-                  className="w-9 h-9 sm:w-10 sm:h-10 text-slate-400 hover:text-blue-400 hover:bg-slate-800/60 rounded-xl transition-all flex items-center justify-center shrink-0 hover:scale-105 active:scale-95"
-                  title="Search platform reports & tickets"
+                  className="w-9 h-9 text-slate-500 hover:text-slate-900 hover:bg-slate-100/80 rounded-lg border border-transparent hover:border-slate-200 transition-all flex items-center justify-center shrink-0"
+                  title="Search platform reports"
                 >
-                  <Search className="w-4.5 h-4.5 sm:w-5 sm:h-5 text-blue-400" />
+                  <Search className="w-4 h-4" />
                 </button>
               )}
             </div>
 
-            {/* Primary Action: Report Issue Button */}
-            <Link
-              href={user ? '/report' : '/login?returnUrl=/report'}
-              className="flex items-center gap-1.5 bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold px-3.5 py-2 rounded-xl shadow-md shadow-blue-600/30 hover:shadow-blue-600/50 transition-all active:scale-[0.98] shrink-0"
-            >
-              <PlusCircle className="w-4 h-4" />
-              <span className="hidden sm:inline">Report Issue</span>
-              <span className="sm:hidden">Report</span>
-            </Link>
-
             {/* User Account / Click-Activated Portal Login */}
             {user ? (
-              <div className="flex items-center gap-1.5">
+              <div className="flex items-center gap-2">
                 <Link
                   href={
                     activeRole === 'admin'
@@ -178,19 +165,20 @@ export function Navbar() {
                         ? '/department/dashboard'
                         : '/dashboard'
                   }
-                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold border transition-all ${activeRole === 'admin'
-                      ? 'bg-purple-950/80 border-purple-500/50 text-purple-300 hover:bg-purple-900'
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border transition-all ${
+                    activeRole === 'admin'
+                      ? 'bg-purple-50 border-purple-200 text-purple-800 hover:bg-purple-100'
                       : activeRole === 'staff'
-                        ? 'bg-amber-950/80 border-amber-500/50 text-amber-300 hover:bg-amber-900'
-                        : 'bg-blue-950/80 border-blue-500/50 text-blue-300 hover:bg-blue-900'
-                    }`}
+                        ? 'bg-amber-50 border-amber-200 text-amber-800 hover:bg-amber-100'
+                        : 'bg-blue-50 border-blue-200 text-blue-800 hover:bg-blue-100'
+                  }`}
                 >
                   {activeRole === 'admin' ? (
-                    <Shield className="w-3.5 h-3.5 text-purple-400 shrink-0" />
+                    <Shield className="w-3.5 h-3.5 text-purple-600 shrink-0" />
                   ) : activeRole === 'staff' ? (
-                    <Briefcase className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+                    <Briefcase className="w-3.5 h-3.5 text-amber-600 shrink-0" />
                   ) : (
-                    <User className="w-3.5 h-3.5 text-blue-400 shrink-0" />
+                    <User className="w-3.5 h-3.5 text-blue-600 shrink-0" />
                   )}
                   <span className="max-w-[100px] truncate">{user.name.split(' ')[0]}</span>
                 </Link>
@@ -201,54 +189,49 @@ export function Navbar() {
                     router.push('/');
                   }}
                   title="Logout"
-                  className="p-2 text-slate-400 hover:text-white bg-slate-900 hover:bg-slate-800 rounded-xl border border-slate-800 transition-colors"
+                  className="p-2 text-slate-500 hover:text-slate-900 bg-slate-50 hover:bg-slate-100 rounded-lg border border-slate-200 transition-colors"
                 >
-                  <LogOut className="w-4 h-4" />
+                  <LogOut className="w-3.5 h-3.5" />
                 </button>
               </div>
             ) : (
-              /* Click-Activated Login Dropdown Selector */
               <div className="relative" ref={loginRef}>
                 <button
                   type="button"
                   onClick={() => setLoginDropdownOpen(!loginDropdownOpen)}
-                  className="flex items-center gap-1.5 bg-slate-900 hover:bg-slate-800 text-slate-100 border border-slate-800 text-xs font-bold px-3.5 py-2 rounded-xl transition-all focus:outline-none focus:ring-2 focus:ring-blue-500/40"
+                  className="flex items-center gap-1.5 bg-slate-50 hover:bg-slate-100/80 text-slate-700 hover:text-slate-900 border border-slate-200 text-xs font-medium px-3.5 py-2 rounded-lg transition-all shadow-2xs"
                 >
-                  <LogIn className="w-3.5 h-3.5 text-blue-400" />
+                  <LogIn className="w-3.5 h-3.5 text-blue-600" />
                   <span>Login</span>
                 </button>
 
                 {loginDropdownOpen && (
-                  <div className="absolute right-0 top-full mt-2 w-64 bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl p-2 z-50 space-y-1 animate-in fade-in slide-in-from-top-2">
-                    <div className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 px-3 py-1.5">
+                  <div className="absolute right-0 top-full mt-2 w-60 bg-white border border-slate-200 rounded-xl shadow-xl p-1.5 z-50 space-y-1 animate-in fade-in duration-100">
+                    <div className="text-[10px] font-semibold uppercase tracking-wider text-slate-400 px-3 py-1">
                       Select Access Portal
                     </div>
 
                     <Link
                       href="/login"
                       onClick={() => setLoginDropdownOpen(false)}
-                      className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-slate-800 transition-colors group"
+                      className="flex items-center gap-2.5 p-2 rounded-lg hover:bg-slate-50 transition-colors group"
                     >
-                      <div className="w-8 h-8 rounded-lg bg-blue-600/20 text-blue-400 flex items-center justify-center shrink-0 border border-blue-500/30 group-hover:bg-blue-600 group-hover:text-white transition-colors">
-                        <User className="w-4 h-4" />
-                      </div>
+                      <User className="w-4 h-4 text-blue-600 group-hover:text-blue-700" />
                       <div>
-                        <div className="text-xs font-bold text-slate-100">Citizen Portal</div>
-                        <div className="text-[10px] text-slate-400">Report & track civic issues</div>
+                        <div className="text-xs font-medium text-slate-900">Citizen Portal</div>
+                        <div className="text-[10px] text-slate-500">Report &amp; track civic issues</div>
                       </div>
                     </Link>
 
                     <Link
                       href="/department/login"
                       onClick={() => setLoginDropdownOpen(false)}
-                      className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-slate-800 transition-colors group"
+                      className="flex items-center gap-2.5 p-2 rounded-lg hover:bg-slate-50 transition-colors group"
                     >
-                      <div className="w-8 h-8 rounded-lg bg-amber-600/20 text-amber-400 flex items-center justify-center shrink-0 border border-amber-500/30 group-hover:bg-amber-600 group-hover:text-white transition-colors">
-                        <Briefcase className="w-4 h-4" />
-                      </div>
+                      <Briefcase className="w-4 h-4 text-amber-600 group-hover:text-amber-700" />
                       <div>
-                        <div className="text-xs font-bold text-slate-100">Staff / Department</div>
-                        <div className="text-[10px] text-slate-400">Manage departmental work queue</div>
+                        <div className="text-xs font-medium text-slate-900">Staff / Department</div>
+                        <div className="text-[10px] text-slate-500">Manage work queues</div>
                       </div>
                     </Link>
                   </div>
@@ -256,12 +239,21 @@ export function Navbar() {
               </div>
             )}
 
-            {/* Mobile Drawer Toggle */}
+            {/* Primary Action: Blue Report Issue CTA */}
+            <Link
+              href={user ? '/report' : '/login?returnUrl=/report'}
+              className="flex items-center gap-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-sm font-semibold px-4 py-2 rounded-lg transition-all active:scale-[0.98] shrink-0 shadow-xs"
+            >
+              <PlusCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+              <span>Report an Issue</span>
+            </Link>
+
+            {/* Mobile Menu Toggle */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-2 rounded-xl text-slate-300 hover:text-white bg-slate-900 border border-slate-800"
+              className="lg:hidden p-2 rounded-lg text-slate-600 hover:text-slate-900 bg-slate-50 border border-slate-200"
             >
-              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              {mobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
             </button>
 
           </div>
@@ -269,31 +261,28 @@ export function Navbar() {
         </div>
       </div>
 
-      {/* Mobile Drawer Menu */}
+      {/* Mobile Navigation Drawer */}
       {mobileMenuOpen && (
-        <div className="lg:hidden bg-slate-950 border-b border-slate-800 px-4 pt-3 pb-5 space-y-3">
+        <div className="lg:hidden bg-white border-b border-slate-200 px-4 pt-3 pb-5 space-y-2 font-sans">
           <nav className="space-y-1">
             {navLinks.map((link) => {
-              const Icon = link.icon;
               const isActive = pathname === link.href;
               return (
                 <Link
                   key={link.href}
                   href={link.href}
                   onClick={() => setMobileMenuOpen(false)}
-                  className={`flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-colors ${isActive
-                      ? 'bg-blue-600 text-white'
-                      : 'text-slate-300 hover:bg-slate-900'
-                    }`}
+                  className={`block px-3 py-2 rounded-lg text-xs font-medium transition-colors ${
+                    isActive ? 'bg-blue-50 text-blue-600 font-semibold' : 'text-slate-600 hover:bg-slate-50'
+                  }`}
                 >
-                  <Icon className="w-4 h-4 text-blue-400" />
                   {link.name}
                 </Link>
               );
             })}
 
             {user ? (
-              <div className="pt-2 border-t border-slate-800 space-y-1">
+              <div className="pt-2 border-t border-slate-100 space-y-1">
                 <Link
                   href={
                     activeRole === 'admin'
@@ -303,42 +292,36 @@ export function Navbar() {
                         : '/dashboard'
                   }
                   onClick={() => setMobileMenuOpen(false)}
-                  className="flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-xs font-bold text-blue-300 bg-slate-900 border border-slate-800"
+                  className="block px-3 py-2 rounded-lg text-xs font-medium text-blue-600 bg-blue-50"
                 >
-                  <User className="w-4 h-4" />
                   Dashboard ({user.name})
                 </Link>
-
                 <button
                   onClick={() => {
                     logout();
                     setMobileMenuOpen(false);
                     router.push('/');
                   }}
-                  className="w-full text-left flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-red-400 hover:bg-red-950/30"
+                  className="w-full text-left px-3 py-2 rounded-lg text-xs font-medium text-red-600 hover:bg-red-50"
                 >
-                  <LogOut className="w-4 h-4" />
                   Sign Out
                 </button>
               </div>
             ) : (
-              <div className="pt-2 border-t border-slate-800 space-y-2">
-                <div className="text-[10px] uppercase font-extrabold text-slate-400 tracking-wider">Access Portals</div>
+              <div className="pt-2 border-t border-slate-100 space-y-1">
                 <Link
                   href="/login"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-xs font-bold text-white bg-blue-600"
+                  className="block px-3 py-2 rounded-lg text-xs font-medium text-slate-900 hover:bg-slate-50"
                 >
-                  <User className="w-4 h-4" />
-                  <span>Citizen Login</span>
+                  Citizen Login
                 </Link>
                 <Link
                   href="/department/login"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-xs font-bold text-amber-300 bg-amber-950/60 border border-amber-500/40"
+                  className="block px-3 py-2 rounded-lg text-xs font-medium text-slate-900 hover:bg-slate-50"
                 >
-                  <Briefcase className="w-4 h-4 text-amber-400" />
-                  <span>Staff / Department Login</span>
+                  Department Login
                 </Link>
               </div>
             )}

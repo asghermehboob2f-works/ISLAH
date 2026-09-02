@@ -375,7 +375,7 @@ export default function AdminPage() {
                   <p className="text-xs text-slate-500">Live operational metrics, active SLA counts, and system status</p>
                 </div>
                 <div className="inline-flex items-center gap-2 bg-emerald-50 text-emerald-700 border border-emerald-200 px-3 py-1.5 rounded-lg text-xs font-bold">
-                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                  <span className="w-2 h-2 rounded-full bg-emerald-500" />
                   <span>Database Connected</span>
                 </div>
               </div>
@@ -443,7 +443,7 @@ export default function AdminPage() {
               <div className="flex items-center justify-between border-b border-red-200 pb-4 bg-red-50/50 p-4 rounded-2xl border">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-xl bg-red-600 text-white flex items-center justify-center font-bold shadow-sm">
-                    <ShieldAlert className="w-6 h-6 animate-pulse" />
+                    <ShieldAlert className="w-6 h-6" />
                   </div>
                   <div>
                     <h1 className="text-xl font-black text-red-950 tracking-tight flex items-center gap-2">
