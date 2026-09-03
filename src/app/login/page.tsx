@@ -54,17 +54,15 @@ function LoginContent() {
       
       {/* Brand Header */}
       <div className="text-center space-y-3">
-        <Link href="/" className="inline-flex items-center justify-center gap-2 focus:outline-none group">
-          <div className="relative flex items-center justify-center shrink-0">
-            <Image
-              src="/logo.png?v=4"
-              alt="ISLAH Logo"
-              width={70}
-              height={56}
-              className="h-14 sm:h-16 w-auto object-contain transition-transform duration-200 group-hover:scale-105"
-              unoptimized
-            />
-          </div>
+        <Link href="/" className="inline-flex items-center justify-center gap-2 focus:outline-none">
+          <Image
+            src="/logo.png?v=4"
+            alt="ISLAH Logo"
+            width={56}
+            height={44}
+            className="h-12 w-auto object-contain"
+            unoptimized
+          />
         </Link>
         <div>
           <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">

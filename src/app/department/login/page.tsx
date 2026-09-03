@@ -46,21 +46,17 @@ export default function DepartmentLoginPage() {
     <div className="w-full max-w-md mx-auto px-4 py-12 space-y-6 font-sans">
       
       <div className="text-center space-y-3">
-        <Link href="/" className="inline-flex items-center justify-center gap-2 focus:outline-none group">
+        <Link href="/" className="inline-flex items-center justify-center gap-2 focus:outline-none">
           <Image 
             src="/logo.png?v=4" 
             alt="ISLAH Logo" 
             width={56} 
             height={44} 
-            className="h-12 w-auto object-contain transition-transform duration-200 group-hover:scale-105" 
+            className="h-12 w-auto object-contain" 
             unoptimized 
           />
         </Link>
         <div>
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-amber-50 border border-amber-200 rounded-full text-amber-800 text-xs font-semibold mb-2">
-            <Briefcase className="w-3.5 h-3.5 text-amber-600" />
-            <span>Department Staff Portal</span>
-          </div>
           <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">
             Staff Authentication
           </h1>
