@@ -24,9 +24,9 @@ export default function PublicStatsPage() {
       
       {/* Header */}
       <div className="text-center max-w-3xl mx-auto space-y-2">
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 text-blue-700 border border-blue-200 text-xs font-extrabold uppercase tracking-wider">
+        <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-blue-600">
           <BarChart3 className="w-4 h-4 text-blue-600" />
-          Public Municipal Metrics
+          <span>Public Municipal Metrics</span>
         </div>
         <h1 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
           Public Transparency & Performance Stats

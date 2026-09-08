@@ -57,9 +57,9 @@ export default function PublicReportsPage() {
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200 pb-5">
         <div>
-          <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200 text-[10px] font-bold uppercase tracking-wider mb-2">
-            <FileText className="w-3.5 h-3.5" />
-            Public Transparency Feed
+          <div className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-blue-600 mb-2">
+            <FileText className="w-4 h-4 text-blue-600" />
+            <span>Public Transparency Feed</span>
           </div>
           <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
             Public Civic Reports

@@ -8,10 +8,12 @@ export default function AboutPage() {
       
       {/* Brand Identity & Meaning Header */}
       <div className="text-center space-y-4 max-w-3xl mx-auto">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-blue-700 border border-blue-200 text-xs font-extrabold uppercase tracking-wider">
+        <div className="inline-flex items-center gap-2.5 text-xs font-bold uppercase tracking-widest text-blue-600">
           <ShieldCheck className="w-4 h-4 text-blue-600" />
-          The Meaning of ISLAH
+          <span className="h-3.5 w-px bg-blue-300/80" />
+          <span>The Meaning of ISLAH</span>
         </div>
+        <hr className="my-4 border-t border-slate-300" />
 
         <h1 className="text-4xl sm:text-5xl font-black text-slate-900 tracking-tight">
           ISLAH
@@ -25,6 +27,8 @@ export default function AboutPage() {
           In Arabic and traditional civic discourse, <strong className="text-slate-900">Islah (إصلاح)</strong> signifies repair, improvement, reconciliation, and reform. It represents the active transformation of a degraded condition into a state of wholeness and progress.
         </p>
       </div>
+
+
 
       {/* Core Philosophy Section */}
       <div className="bg-white rounded-2xl p-8 border border-slate-200 shadow-sm space-y-6">
@@ -56,6 +60,8 @@ export default function AboutPage() {
           </div>
         </div>
       </div>
+
+
 
       {/* Architectural Pillars */}
       <div className="space-y-6">
