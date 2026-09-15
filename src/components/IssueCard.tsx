@@ -1,20 +1,8 @@
 'use client';
 
 import React from 'react';
-import Image from 'next/image';
 import { CivicIssue } from '@/lib/types';
-import {
-  MapPin,
-  Clock,
-  AlertTriangle,
-  CheckCircle2,
-  ThumbsUp,
-  ArrowRight,
-  ShieldAlert,
-  Check,
-  Sparkles,
-  X
-} from 'lucide-react';
+import { MapPin, Clock, ThumbsUp, ArrowRight, ShieldAlert, Check, Sparkles } from 'lucide-react';
 
 interface IssueCardProps {
   issue: CivicIssue;
@@ -22,142 +10,110 @@ interface IssueCardProps {
   onUpvote?: (e: React.MouseEvent, ticketId: string) => void;
 }
 
-export function IssueCard({ issue, onSelect, onUpvote }: IssueCardProps) {
-  const getStatusBadge = (status: CivicIssue['status']) => {
-    switch (status) {
-      case 'reported':
-        return <span className="status-badge status-reported">Reported</span>;
-      case 'acknowledged':
-        return <span className="status-badge status-acknowledged">Acknowledged</span>;
-      case 'in_progress':
-        return <span className="status-badge status-in_progress">In Progress</span>;
-      case 'resolved':
-        return (
-          <span className="bg-emerald-600 text-white font-bold px-2.5 py-1 rounded-full text-[11px] inline-flex items-center gap-1.5 shadow-xs border border-emerald-700 uppercase tracking-wider">
-            <span className="w-3.5 h-3.5 rounded-full bg-white flex items-center justify-center text-emerald-700 shrink-0">
-              <Check className="w-2.5 h-2.5 text-emerald-700 stroke-[3]" />
-            </span>
-            Resolved
-          </span>
-        );
-      case 'escalated':
-        return <span className="status-badge status-escalated">Escalated</span>;
-    }
+function SeverityDot({ severity }: { severity: CivicIssue['severity'] }) {
+  const map: Record<string, string> = {
+    critical: 'bg-red-500',
+    high:     'bg-orange-400',
+    medium:   'bg-yellow-400',
+    low:      'bg-zinc-400',
   };
+  return (
+    <span className={`inline-block w-2 h-2 rounded-full ${map[severity] ?? 'bg-zinc-400'}`} title={severity} />
+  );
+}
 
-  const getSeverityBadge = (severity: CivicIssue['severity']) => {
-    switch (severity) {
-      case 'critical':
-        return <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-red-600 text-white uppercase tracking-wider">Critical</span>;
-      case 'high':
-        return <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-orange-100 text-orange-800 border border-orange-200">High Severity</span>;
-      case 'medium':
-        return <span className="px-2 py-0.5 rounded text-[10px] font-medium bg-amber-50 text-amber-700 border border-amber-200">Medium</span>;
-      case 'low':
-        return <span className="px-2 py-0.5 rounded text-[10px] font-medium bg-slate-100 text-slate-600 border border-slate-200">Low</span>;
-    }
+export function IssueCard({ issue, onSelect, onUpvote }: IssueCardProps) {
+  const statusLabel: Record<string, string> = {
+    reported:     'Reported',
+    acknowledged: 'Acknowledged',
+    in_progress:  'In Progress',
+    resolved:     'Resolved',
+    escalated:    'Escalated',
   };
 
   return (
     <div
       onClick={() => onSelect(issue)}
-      className={`bg-white rounded-xl border transition-all duration-200 hover:shadow-xl hover:-translate-y-0.5 cursor-pointer overflow-hidden flex flex-col justify-between ${issue.emergency ? 'border-red-300 shadow-red-100/50 emergency-pulse' : 'border-slate-200 shadow-sm'
-        }`}
+      className={`bg-[--bg-surface] rounded-2xl border transition-all duration-150 hover:border-[--border-subtle] cursor-pointer overflow-hidden flex flex-col group ${
+        issue.emergency ? 'border-red-400/60 emergency-pulse' : 'border-[--border]'
+      }`}
     >
-      <div>
-        {/* Card Header & Photo */}
-        <div className="relative h-44 w-full bg-slate-100 overflow-hidden">
-          {issue.photoUrl ? (
-            <img
-              src={issue.photoUrl}
-              alt={issue.title}
-              className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
-              loading="lazy"
-            />
-          ) : (
-            <div className="w-full h-full flex flex-col items-center justify-center bg-slate-100 text-slate-400">
-              <Sparkles className="w-8 h-8 mb-1 text-slate-300" />
-              <span className="text-[10px] font-semibold text-slate-400">Civic Issue Ticket</span>
-            </div>
-          )}
-
-          {/* Emergency Tag */}
-          {issue.emergency && (
-            <div className="absolute top-3 left-3 bg-red-600 text-white px-2.5 py-1 rounded-md text-[10px] font-extrabold uppercase tracking-wider flex items-center gap-1 shadow-lg">
-              <ShieldAlert className="w-3.5 h-3.5" />
-              Emergency Hazard
-            </div>
-          )}
-
-          {/* Status Overlay */}
-          <div className="absolute top-3 right-3 shadow-md">
-            {getStatusBadge(issue.status)}
-          </div>
-
-          {/* AI Category Tag Overlay */}
-          <div className="absolute bottom-3 left-3 bg-slate-900/80 backdrop-blur-md text-slate-100 text-[11px] font-semibold px-2.5 py-1 rounded-md flex items-center gap-1.5 border border-slate-700">
-            <Sparkles className="w-3 h-3 text-blue-400" />
-            <span>{issue.category}</span>
-          </div>
-        </div>
-
-        {/* Card Body */}
-        <div className="p-4 space-y-3">
-          <div className="flex items-center justify-between gap-2">
-            <span className="text-[11px] font-mono font-bold text-slate-400 uppercase">
-              {issue.ticketNumber}
-            </span>
-            {getSeverityBadge(issue.severity)}
-          </div>
-
-          <h3 className="text-sm font-bold text-slate-900 line-clamp-1 hover:text-blue-600 transition-colors">
-            {issue.title}
-          </h3>
-
-          <p className="text-xs text-slate-600 line-clamp-2 leading-relaxed">
-            {issue.description}
-          </p>
-
-          {/* Location */}
-          <div className="flex items-center gap-1.5 text-xs text-slate-500 pt-1 border-t border-slate-100">
-            <MapPin className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-            <span className="truncate">{issue.location.address}</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Card Footer */}
-      <div className="px-4 py-3 bg-slate-50 border-t border-slate-100 flex items-center justify-between text-xs">
-        {issue.status === 'resolved' ? (
-          <div className="flex items-center gap-1.5 bg-emerald-600 text-white px-2.5 py-1 rounded-full font-bold text-[11px] shadow-xs border border-emerald-700">
-            <span className="w-3.5 h-3.5 rounded-full bg-white flex items-center justify-center text-emerald-700 shrink-0">
-              <Check className="w-2.5 h-2.5 text-emerald-700 stroke-[3]" />
-            </span>
-            <span>Resolved</span>
-          </div>
+      {/* Photo */}
+      <div className="relative h-44 w-full bg-[--bg-subtle] overflow-hidden">
+        {issue.photoUrl ? (
+          <img
+            src={issue.photoUrl}
+            alt={issue.title}
+            className="w-full h-full object-cover"
+            loading="lazy"
+          />
         ) : (
-          <div className="flex items-center gap-1 text-slate-500">
-            <Clock className="w-3.5 h-3.5 text-slate-400" />
-            <span>{issue.slaHoursRemaining}h SLA remaining</span>
+          <div className="w-full h-full flex flex-col items-center justify-center">
+            <Sparkles className="w-7 h-7 mb-1 text-[--text-muted]" />
+            <span className="text-[10px] font-medium text-[--text-muted]">Civic Issue Ticket</span>
           </div>
         )}
 
-        <div className="flex items-center gap-3">
+        {issue.emergency && (
+          <div className="absolute top-3 left-3 bg-red-600 text-white px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider flex items-center gap-1">
+            <ShieldAlert className="w-3 h-3" />
+            Emergency
+          </div>
+        )}
+
+        <div className="absolute top-3 right-3">
+          <span className={`status-badge status-${issue.status}`}>
+            {issue.status === 'resolved' ? (
+              <><Check className="w-3 h-3" />Resolved</>
+            ) : statusLabel[issue.status]}
+          </span>
+        </div>
+
+        <div className="absolute bottom-3 left-3 bg-[--bg-base]/80 backdrop-blur-md text-[--text-secondary] text-[11px] font-medium px-2.5 py-1 rounded-full flex items-center gap-1.5 border border-[--border]">
+          <span>{issue.category}</span>
+        </div>
+      </div>
+
+      {/* Body */}
+      <div className="p-4 space-y-2.5 flex-1">
+        <div className="flex items-center justify-between">
+          <span className="text-[10px] font-mono text-[--text-muted]">{issue.ticketNumber}</span>
+          <SeverityDot severity={issue.severity} />
+        </div>
+
+        <h3 className="text-sm font-semibold text-[--text-primary] line-clamp-1">{issue.title}</h3>
+        <p className="text-xs text-[--text-secondary] line-clamp-2 leading-relaxed">{issue.description}</p>
+
+        <div className="flex items-center gap-1.5 text-xs text-[--text-muted] pt-2 border-t border-[--border]">
+          <MapPin className="w-3.5 h-3.5 shrink-0" />
+          <span className="truncate">{issue.location.address}</span>
+        </div>
+      </div>
+
+      {/* Footer */}
+      <div className="px-4 py-3 bg-[--bg-subtle] border-t border-[--border] flex items-center justify-between text-xs">
+        {issue.status === 'resolved' ? (
+          <span className="text-emerald-600 dark:text-emerald-400 font-medium flex items-center gap-1">
+            <Check className="w-3.5 h-3.5" /> Resolved
+          </span>
+        ) : (
+          <span className="flex items-center gap-1 text-[--text-muted]">
+            <Clock className="w-3.5 h-3.5" />
+            {issue.slaHoursRemaining}h remaining
+          </span>
+        )}
+
+        <div className="flex items-center gap-2.5">
           {onUpvote && (
             <button
-              onClick={(e) => {
-                e.stopPropagation();
-                onUpvote(e, issue.ticketNumber);
-              }}
-              className="flex items-center gap-1 text-slate-600 hover:text-blue-600 font-semibold px-2 py-1 rounded hover:bg-white transition-colors"
-              title="Upvote/confirm this issue"
+              onClick={(e) => { e.stopPropagation(); onUpvote(e, issue.ticketNumber); }}
+              className="flex items-center gap-1 text-[--text-muted] hover:text-[--text-primary] transition-colors"
             >
-              <ThumbsUp className="w-3.5 h-3.5 text-blue-500" />
+              <ThumbsUp className="w-3.5 h-3.5" />
               <span>{issue.upvotesCount}</span>
             </button>
           )}
-
-          <span className="text-blue-600 font-bold text-xs flex items-center gap-0.5 group-hover:translate-x-0.5 transition-transform">
+          <span className="text-[--text-primary] font-medium flex items-center gap-0.5 group-hover:gap-1 transition-all">
             Details <ArrowRight className="w-3.5 h-3.5" />
           </span>
         </div>

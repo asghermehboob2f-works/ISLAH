@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import { AppProvider } from '@/context/AppContext';
+import { ThemeProvider } from '@/context/ThemeContext';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 
@@ -15,23 +16,23 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className="min-h-screen flex flex-col bg-slate-50 text-slate-900 selection:bg-blue-600 selection:text-white" suppressHydrationWarning>
-        <AppProvider>
-          <Navbar />
-          <main className="flex-1">
-            {children}
-          </main>
-          <Footer />
-        </AppProvider>
+      <body
+        className="min-h-screen flex flex-col bg-[--bg-base] text-[--text-primary] selection:bg-zinc-800 selection:text-white"
+        suppressHydrationWarning
+      >
+        <ThemeProvider>
+          <AppProvider>
+            <Navbar />
+            <main className="flex-1 bg-[--bg-base]">
+              {children}
+            </main>
+            <Footer />
+          </AppProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
 }
-
