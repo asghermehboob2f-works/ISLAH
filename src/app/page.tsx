@@ -30,7 +30,7 @@ export default function HomePage() {
 
       {/* Trust Metrics Bar */}
       <section className="w-full border-b border-[--border] py-10 sm:py-12 bg-[--bg-surface]">
-        <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12">
+        <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
           <div className="bg-[--bg-surface] rounded-xl border border-[--border] p-5 md:p-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 text-center divide-y sm:divide-y-0 sm:divide-x divide-[--border] shadow-xs">
             {[
               { icon: <Users className="w-5 h-5 text-blue-600 dark:text-blue-400 mx-auto mb-2" />, title: '100% Transparent', desc: 'Every ticket is publicly trackable' },
@@ -50,7 +50,7 @@ export default function HomePage() {
 
       {/* Categories */}
       <section className="w-full py-12 sm:py-16 border-b border-[--border]">
-        <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 space-y-6">
+        <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 space-y-6">
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 border-b border-[--border] pb-4">
             <div>
               <p className="text-xs font-bold text-[--text-secondary] uppercase tracking-widest mb-1">Coverage Scope</p>
@@ -78,7 +78,7 @@ export default function HomePage() {
 
       {/* Emergency Lane */}
       <section className="w-full py-12 sm:py-14 border-b border-[--border] bg-red-50/50 dark:bg-[#160b0e]/80">
-        <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12">
+        <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
           <div className="bg-[--bg-surface] border border-red-200 dark:border-red-900/80 rounded-xl p-6 sm:p-8 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center shadow-xs">
             <div className="lg:col-span-8 space-y-2.5">
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-red-100 dark:bg-red-950 text-red-700 dark:text-red-300 border border-red-200 dark:border-red-800 text-[11px] font-bold uppercase tracking-wider">
@@ -104,7 +104,7 @@ export default function HomePage() {
 
       {/* Recent Reports Feed */}
       <section className="w-full py-14 sm:py-16">
-        <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 space-y-6">
+        <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 space-y-6">
           <div className="flex items-center justify-between border-b border-[--border] pb-4">
             <div>
               <p className="text-xs font-bold text-[--text-secondary] uppercase tracking-widest mb-1">Real-Time Feed</p>

@@ -51,7 +51,7 @@ export default function DepartmentDashboardPage() {
   const staffDepartment = departments.find((d) => d.id === staffDeptId);
 
   return (
-    <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 py-8 space-y-6 font-sans">
+    <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 py-8 space-y-6 font-sans">
 
       {/* Staff Identity & Operational Header */}
       <div className="bg-[--bg-surface] text-[--text-primary] rounded-xl p-6 sm:p-8 border border-[--border] shadow-xs flex flex-col lg:flex-row lg:items-center justify-between gap-6">

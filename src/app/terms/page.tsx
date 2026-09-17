@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function TermsPage() {
   return (
-    <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 py-12 space-y-6 font-sans">
+    <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 py-12 space-y-6 font-sans">
       <h1 className="text-3xl sm:text-4xl font-extrabold text-[--text-primary] tracking-tight">Terms of Service</h1>
       <p className="text-xs text-[--text-secondary]">Effective Date: January 1, 2026</p>
       <div className="space-y-4 text-xs leading-relaxed bg-[--bg-surface] border border-[--border] p-6 sm:p-8 rounded-xl shadow-xs text-[--text-secondary]">

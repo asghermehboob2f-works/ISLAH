@@ -312,7 +312,7 @@ export default function AdminPage() {
   }
 
   return (
-    <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 py-8 font-sans overflow-x-hidden">
+    <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 py-8 font-sans overflow-x-hidden">
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
 

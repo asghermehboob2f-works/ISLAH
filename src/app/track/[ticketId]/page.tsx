@@ -25,7 +25,7 @@ export default function PublicTicketTrackerPage() {
 
   if (!ticket) {
     return (
-      <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 py-20 text-center space-y-4 font-sans">
+      <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 py-20 text-center space-y-4 font-sans">
         <FileText className="w-12 h-12 text-[--text-muted] mx-auto opacity-60" />
         <h1 className="text-xl font-bold text-[--text-primary]">Ticket Not Found</h1>
         <p className="text-xs text-[--text-secondary]">
@@ -39,7 +39,7 @@ export default function PublicTicketTrackerPage() {
   }
 
   return (
-    <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 py-10 space-y-8 font-sans overflow-x-hidden">
+    <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 py-10 space-y-8 font-sans overflow-x-hidden">
 
       {/* Top Header */}
       <div className="flex items-center justify-between border-b border-[--border] pb-4">

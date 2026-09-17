@@ -14,10 +14,10 @@ export function HeroSection() {
 
   return (
     <section className="relative w-full min-h-[calc(100vh-4rem)] flex flex-col justify-center py-8 sm:py-10 lg:py-12 border-b border-[--border] font-sans bg-[--bg-base]">
-      <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 space-y-8 lg:space-y-10 flex flex-col items-center">
+      <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 space-y-8 lg:space-y-10 flex flex-col items-center">
 
         {/* Hero Central Header — Perfectly Balanced & Symmetrical */}
-        <div className="max-w-3xl mx-auto text-center space-y-4 sm:space-y-5">
+        <div className="max-w-4xl mx-auto text-center space-y-4 sm:space-y-5">
 
           {/* Eyebrow */}
           <p className="text-[11px] sm:text-xs font-bold uppercase tracking-widest text-[--text-muted]">
@@ -31,7 +31,7 @@ export function HeroSection() {
           </h1>
 
           {/* Subtext */}
-          <p className="text-xs sm:text-sm md:text-base text-[--text-secondary] font-normal leading-relaxed max-w-xl mx-auto">
+          <p className="text-xs sm:text-sm md:text-base text-[--text-secondary] font-normal leading-relaxed max-w-2xl mx-auto">
             Islah turns local issues into accountable action. Every report is documented, location-aware, and routed directly to responsible municipal departments with complete SLA transparency.
           </p>
 
@@ -55,9 +55,9 @@ export function HeroSection() {
           </div>
         </div>
 
-        {/* Metrics Grid — Width matched to header for complete structural symmetry */}
-        <div className="w-full max-w-3xl mx-auto pt-6 border-t border-[--border]">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5 text-left w-full">
+        {/* Metrics Grid — Expanded across horizontal space */}
+        <div className="w-full max-w-5xl xl:max-w-6xl 2xl:max-w-7xl mx-auto pt-6 border-t border-[--border]">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6 text-left w-full">
 
             <div className="bg-[--bg-surface] border border-[--border] hover:border-[--border-subtle] p-3.5 rounded-xl flex flex-col justify-between space-y-2 transition-all shadow-xs">
               <div className="flex items-center justify-between">

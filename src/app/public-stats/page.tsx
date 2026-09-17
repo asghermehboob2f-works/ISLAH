@@ -20,7 +20,7 @@ export default function PublicStatsPage() {
   const { stats, departments, issues } = useApp();
 
   return (
-    <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 py-10 space-y-10 font-sans overflow-x-hidden">
+    <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 py-10 space-y-10 font-sans overflow-x-hidden">
 
       {/* Header */}
       <div className="text-center max-w-3xl mx-auto space-y-3">

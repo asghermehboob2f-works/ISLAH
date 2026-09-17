@@ -136,7 +136,7 @@ export default function EnvironmentalReportWizardPage() {
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6 font-sans">
+    <div className="w-full max-w-5xl xl:max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 py-8 space-y-6 font-sans">
       
       {/* Navigation Header */}
       {step <= 6 && (

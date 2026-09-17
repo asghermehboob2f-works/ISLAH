@@ -31,7 +31,7 @@ export default function MyReportsPage() {
   // If user is guest/unauthenticated
   if (!user || activeRole !== 'citizen') {
     return (
-      <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 py-20 text-center space-y-6 font-sans">
+      <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 py-20 text-center space-y-6 font-sans">
         <div className="w-14 h-14 rounded-xl bg-[--bg-surface] text-blue-600 dark:text-blue-400 flex items-center justify-center mx-auto border border-[--border] shadow-xs">
           <User className="w-7 h-7" />
         </div>
@@ -74,7 +74,7 @@ export default function MyReportsPage() {
   });
 
   return (
-    <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 py-8 space-y-8 font-sans">
+    <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 py-8 space-y-8 font-sans">
 
       {/* Profile Header */}
       <div className="bg-[--bg-surface] text-[--text-primary] rounded-xl p-6 sm:p-8 border border-[--border] shadow-xs grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">

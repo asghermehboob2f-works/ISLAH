@@ -4,7 +4,7 @@ import { ShieldCheck, ArrowRight, CheckCircle2, Heart, Lightbulb, Users, Compass
 
 export default function AboutPage() {
   return (
-    <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 py-12 space-y-16 font-sans">
+    <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 py-12 space-y-16 font-sans">
 
       {/* Brand Identity & Meaning Header */}
       <div className="text-center space-y-4 max-w-3xl mx-auto">

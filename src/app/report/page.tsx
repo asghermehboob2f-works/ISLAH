@@ -75,7 +75,7 @@ export default function ReportHubPage() {
   }
 
   return (
-    <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 py-10 space-y-10 font-sans">
+    <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 py-10 space-y-10 font-sans">
 
       {/* Header */}
       <div className="text-center space-y-3 max-w-2xl mx-auto">

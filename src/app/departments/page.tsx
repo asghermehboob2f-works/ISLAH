@@ -4,7 +4,7 @@ import { Building, ShieldCheck, Briefcase, ArrowRight } from 'lucide-react';
 
 export default function DepartmentsPage() {
   return (
-    <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 py-12 space-y-10 font-sans">
+    <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 py-12 space-y-10 font-sans">
       <div className="text-center space-y-3 max-w-2xl mx-auto">
         <span className="text-xs font-bold text-[--text-muted] uppercase tracking-wider">
           Municipal Operations

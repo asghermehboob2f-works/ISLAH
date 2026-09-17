@@ -72,7 +72,7 @@ export function Navbar() {
 
   return (
     <header className="sticky top-0 z-40 w-full bg-[--bg-surface] border-b border-[--border] font-sans">
-      <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12">
+      <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
         <div className="flex items-center justify-between h-16 gap-4">
 
           {/* 1. Left: Brand Logo positioned cleanly toward the left */}
