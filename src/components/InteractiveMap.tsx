@@ -188,8 +188,8 @@ export function InteractiveMap({
       }
 
       if (issue.isSensitiveWildlife) {
-        pinBg = 'bg-purple-600';
-        ringColor = 'ring-purple-300';
+        pinBg = 'bg-slate-700';
+        ringColor = 'ring-slate-400';
         pinEmoji = '🛡️';
       }
 
@@ -226,7 +226,7 @@ export function InteractiveMap({
       const photoHtml = issue.photoUrl ? `<img src="${issue.photoUrl}" alt="Issue photo" class="w-full h-24 object-cover rounded-lg my-1.5 border border-slate-200" />` : '';
 
       const sensitiveBadge = issue.isSensitiveWildlife
-        ? `<div class="bg-purple-100 text-purple-800 text-[9px] font-bold px-2 py-0.5 rounded my-1 border border-purple-200">🛡️ Protected Wildlife Zone (~500m Approx)</div>`
+        ? `<div class="bg-slate-100 text-slate-800 text-[9px] font-bold px-2 py-0.5 rounded my-1 border border-slate-300">🛡️ Protected Wildlife Zone (~500m Approx)</div>`
         : '';
 
       const popupContent = document.createElement('div');
@@ -234,11 +234,10 @@ export function InteractiveMap({
       popupContent.innerHTML = `
         <div class="flex items-center justify-between gap-2 border-b border-slate-100 pb-1 mb-1.5">
           <span class="text-[10px] font-mono font-bold text-blue-600">${issue.ticketNumber}</span>
-          <span class="text-[9px] font-extrabold uppercase px-1.5 py-0.5 rounded ${
-            issue.emergency ? 'bg-red-100 text-red-700' :
-            issue.status === 'resolved' ? 'bg-emerald-100 text-emerald-700' :
+          <span class="text-[9px] font-extrabold uppercase px-1.5 py-0.5 rounded ${issue.emergency ? 'bg-red-100 text-red-700' :
+          issue.status === 'resolved' ? 'bg-emerald-100 text-emerald-700' :
             issue.status === 'in_progress' ? 'bg-amber-100 text-amber-700' : 'bg-blue-100 text-blue-700'
-          }">${issue.status.replace('_', ' ')}</span>
+        }">${issue.status.replace('_', ' ')}</span>
         </div>
         ${sensitiveBadge}
         <h4 class="font-extrabold text-xs text-slate-900 leading-snug">${issue.title}</h4>
@@ -279,18 +278,18 @@ export function InteractiveMap({
   };
 
   return (
-    <div className={`relative w-full ${height} bg-slate-900 rounded-2xl overflow-hidden border border-slate-800 shadow-xl flex flex-col`}>
-      
+    <div className={`relative w-full ${height} bg-[--bg-surface] rounded-2xl overflow-hidden border border-[--border] shadow-xs flex flex-col`}>
+
       {/* Map Control Header Bar */}
       {!pickerMode && (
-        <div className="absolute top-4 left-4 right-4 z-[400] flex flex-wrap items-center justify-between gap-3 bg-slate-900/90 backdrop-blur-md border border-slate-800 p-2.5 rounded-xl shadow-lg">
-          
+        <div className="absolute top-4 left-4 right-4 z-[400] flex flex-wrap items-center justify-between gap-3 bg-[--bg-surface] border border-[--border] p-2.5 rounded-xl shadow-sm">
+
           <div className="flex items-center gap-2">
-            <Filter className="w-4 h-4 text-blue-400" />
+            <Filter className="w-4 h-4 text-[--text-secondary]" />
             <select
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
-              className="bg-slate-800 text-xs font-semibold text-white border border-slate-700 rounded-lg px-2.5 py-1.5 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="bg-[--bg-subtle] text-xs font-semibold text-[--text-primary] border border-[--border] rounded-lg px-2.5 py-1.5 focus:outline-none focus:ring-1 focus:ring-[--ring]"
             >
               <option value="all">All Categories ({publicIssues.length} Public Pins)</option>
               {categories.map((c) => (
@@ -302,15 +301,15 @@ export function InteractiveMap({
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="text-[11px] text-slate-400 font-mono hidden sm:inline">
+            <span className="text-[11px] text-[--text-muted] font-mono hidden sm:inline">
               DB Source of Truth
             </span>
             <button
               type="button"
               onClick={handleManualRefresh}
-              className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold rounded-lg border border-slate-700 transition-all active:scale-95"
+              className="flex items-center gap-1.5 px-3 py-1.5 bg-[--bg-subtle] hover:bg-[--bg-surface] text-[--text-primary] text-xs font-bold rounded-lg border border-[--border] transition-all active:scale-95"
             >
-              <RefreshCw className={`w-3.5 h-3.5 ${isRefreshing ? 'animate-spin text-blue-400' : ''}`} />
+              <RefreshCw className={`w-3.5 h-3.5 ${isRefreshing ? 'animate-spin text-[--text-primary]' : ''}`} />
               <span>Refresh Pins</span>
             </button>
           </div>
@@ -319,12 +318,12 @@ export function InteractiveMap({
 
       {/* Picker Guidance Banner */}
       {pickerMode && (
-        <div className="absolute top-3 left-3 right-3 z-[400] bg-slate-900/90 backdrop-blur-md text-white px-3 py-2 rounded-xl text-xs flex items-center justify-between border border-slate-700">
+        <div className="absolute top-3 left-3 right-3 z-[400] bg-[--bg-surface] text-[--text-primary] px-3 py-2 rounded-xl text-xs flex items-center justify-between border border-[--border] shadow-sm">
           <div className="flex items-center gap-2">
-            <MapPin className="w-4 h-4 text-blue-400" />
+            <MapPin className="w-4 h-4 text-[--text-secondary]" />
             <span>Click map or drag blue pin to set exact report coordinates</span>
           </div>
-          <span className="font-mono text-[11px] text-blue-300 font-bold">
+          <span className="font-mono text-[11px] text-[--text-primary] font-bold">
             {initialLat?.toFixed(4)}, {initialLng?.toFixed(4)}
           </span>
         </div>
@@ -335,7 +334,7 @@ export function InteractiveMap({
 
       {/* Live Map Status Legend Bar */}
       {!pickerMode && (
-        <div className="absolute bottom-4 right-4 z-[400] bg-slate-900/90 backdrop-blur-md border border-slate-800 px-3 py-2 rounded-xl text-[11px] text-slate-300 flex items-center gap-3 shadow-lg">
+        <div className="absolute bottom-4 right-4 z-[400] bg-[--bg-surface] border border-[--border] px-3 py-2 rounded-xl text-[11px] text-[--text-secondary] flex items-center gap-3 shadow-sm">
           <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-blue-500" /> Reported</span>
           <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-amber-500" /> In Progress</span>
           <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-emerald-500" /> Resolved</span>

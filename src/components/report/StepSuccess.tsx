@@ -29,11 +29,10 @@ export function StepSuccess({
 
   return (
     <div className="bg-white rounded-3xl border border-slate-200 p-8 sm:p-12 text-center space-y-6 max-w-xl mx-auto shadow-md font-sans">
-      
+
       {/* Icon Badge */}
-      <div className={`w-16 h-16 rounded-2xl flex items-center justify-center mx-auto text-white shadow-md ${
-        isEnv ? 'bg-emerald-600' : 'bg-blue-600'
-      }`}>
+      <div className={`w-16 h-16 rounded-2xl flex items-center justify-center mx-auto text-white shadow-md ${isEnv ? 'bg-emerald-600' : 'bg-blue-600'
+        }`}>
         <CheckCircle2 className="w-9 h-9" />
       </div>
 
@@ -89,9 +88,8 @@ export function StepSuccess({
       <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
         <Link
           href="/my-reports"
-          className={`w-full sm:w-auto px-6 py-3.5 rounded-xl font-bold text-xs text-white shadow-sm flex items-center justify-center gap-2 transition-all ${
-            isEnv ? 'bg-emerald-600 hover:bg-emerald-500' : 'bg-blue-600 hover:bg-blue-500'
-          }`}
+          className={`w-full sm:w-auto px-6 py-3.5 rounded-xl font-bold text-xs text-white shadow-sm flex items-center justify-center gap-2 transition-all ${isEnv ? 'bg-emerald-600 hover:bg-emerald-500' : 'bg-blue-600 hover:bg-blue-500'
+            }`}
         >
           <span>View My Reports</span>
           <ArrowRight className="w-4 h-4" />

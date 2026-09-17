@@ -255,30 +255,30 @@ export function DepartmentManagementSection() {
     <div className="space-y-6 font-sans">
       
       {/* Header Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[--border] pb-4">
         <div>
           <div className="flex items-center gap-2">
-            <Building2 className="w-5 h-5 text-purple-700" />
-            <h1 className="text-xl font-bold text-slate-900">Department Management</h1>
-            <span className="bg-purple-100 text-purple-800 font-mono text-xs font-bold px-2.5 py-0.5 rounded-md">
+            <Building2 className="w-5 h-5 text-[--text-primary]" />
+            <h1 className="text-xl font-bold text-[--text-primary]">Department Management</h1>
+            <span className="bg-[--bg-subtle] text-[--text-primary] border border-[--border] font-mono text-xs font-bold px-2.5 py-0.5 rounded-md">
               {departments.length} Departments
             </span>
           </div>
-          <p className="text-xs text-slate-500 mt-1">
+          <p className="text-xs text-[--text-secondary] mt-1">
             Configure municipal & environmental departments, assign category routing rules, and manage department access credentials.
           </p>
         </div>
 
         <button
           onClick={openCreateModal}
-          className="bg-purple-700 hover:bg-purple-600 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-md shadow-purple-700/20 transition-all flex items-center gap-2 shrink-0"
+          className="bg-[--text-primary] hover:opacity-90 text-[--bg-base] font-bold text-xs px-4 py-2 rounded-md transition-all flex items-center gap-2 shrink-0"
         >
           <Plus className="w-4 h-4" /> Create Department
         </button>
       </div>
 
       {/* Departments Overview Table (Spec #14) */}
-      <div className="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-xs">
+      <div className="bg-[--bg-surface] rounded-lg border border-[--border] overflow-hidden shadow-xs">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs text-slate-700">
             <thead className="bg-slate-950 text-slate-200 uppercase text-[10px] font-bold tracking-wider border-b border-slate-800">
@@ -341,7 +341,7 @@ export function DepartmentManagementSection() {
                             </span>
                           ))}
                           {extraCount > 0 && (
-                            <span className="bg-purple-100 text-purple-800 text-[10px] font-bold px-1.5 py-0.5 rounded">
+                            <span className="bg-[--bg-subtle] text-[--text-secondary] border border-[--border] text-[10px] font-bold px-1.5 py-0.5 rounded">
                               +{extraCount} more
                             </span>
                           )}
@@ -374,7 +374,7 @@ export function DepartmentManagementSection() {
                         <button
                           onClick={() => handleToggleStatus(dept)}
                           title="Click to toggle department access"
-                          className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase transition-colors ${
+                          className={`inline-flex items-center gap-1 px-2.5 py-1 rounded text-[10px] font-bold uppercase transition-colors ${
                             dept.status === 'active' 
                               ? 'bg-emerald-100 text-emerald-800 hover:bg-emerald-200' 
                               : 'bg-red-100 text-red-800 hover:bg-red-200'
@@ -403,7 +403,7 @@ export function DepartmentManagementSection() {
                         </button>
                         <button
                           onClick={() => openEditModal(dept)}
-                          className="bg-purple-50 text-purple-700 border border-purple-200 hover:bg-purple-100 text-[11px] font-bold px-2.5 py-1 rounded transition-colors"
+                          className="bg-slate-100 text-slate-800 border border-slate-300 hover:bg-slate-200 text-[11px] font-bold px-2.5 py-1 rounded transition-colors"
                           title="Edit Department"
                         >
                           <Edit3 className="w-3.5 h-3.5 inline mr-1" /> Edit
@@ -431,31 +431,38 @@ export function DepartmentManagementSection() {
 
       {/* CREATE / EDIT DEPARTMENT MODAL */}
       {modalMode && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm overflow-y-auto font-sans">
-          <div className="bg-white w-full max-w-4xl rounded-2xl shadow-2xl border border-slate-200 overflow-hidden my-8 max-h-[90vh] flex flex-col">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 overflow-y-auto font-sans">
+          {/* Backdrop Scrim */}
+          <div 
+            className="fixed inset-0 bg-black/60 transition-opacity" 
+            onClick={() => setModalMode(null)} 
+            aria-hidden="true" 
+          />
+
+          <div className="relative z-10 bg-white dark:bg-[#1a1d23] text-slate-900 dark:text-[#e8e9eb] w-full max-w-4xl rounded-lg shadow-2xl border border-slate-200 dark:border-[#2c3039] overflow-hidden my-auto max-h-[90vh] flex flex-col">
             
             {/* Modal Header */}
-            <div className="bg-purple-950 text-white px-6 py-4 flex items-center justify-between border-b border-purple-800 shrink-0">
+            <div className="bg-slate-900 text-white px-6 py-4 flex items-center justify-between border-b border-slate-800 shrink-0">
               <div className="flex items-center gap-2">
-                <Building2 className="w-5 h-5 text-purple-300" />
+                <Building2 className="w-5 h-5 text-slate-300" />
                 <h2 className="text-base font-bold text-white">
                   {modalMode === 'create' ? 'Create New Municipal Department' : `Edit Department: ${formData.name}`}
                 </h2>
               </div>
               <button
                 onClick={() => setModalMode(null)}
-                className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-purple-900 transition-colors"
+                className="text-slate-400 hover:text-white p-1 rounded hover:bg-slate-800 transition-colors"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             {/* Modal Form Scrollable */}
-            <form onSubmit={handleSubmitForm} className="p-6 overflow-y-auto space-y-6 flex-1 text-xs text-slate-900">
+            <form onSubmit={handleSubmitForm} className="p-6 overflow-y-auto space-y-6 flex-1 text-xs text-slate-900 dark:text-[#e8e9eb] bg-white dark:bg-[#1a1d23]">
               
               {/* Section 1: Department Info */}
               <div className="space-y-3">
-                <h3 className="text-xs font-bold text-purple-900 uppercase tracking-wider border-b border-slate-200 pb-1">
+                <h3 className="text-xs font-bold text-[--text-primary] uppercase tracking-wider border-b border-[--border] pb-1">
                   1. Basic Department Details
                 </h3>
 
@@ -551,7 +558,7 @@ export function DepartmentManagementSection() {
 
               {/* Section 2: Contact Information */}
               <div className="space-y-3">
-                <h3 className="text-xs font-bold text-purple-900 uppercase tracking-wider border-b border-slate-200 pb-1">
+                <h3 className="text-xs font-bold text-[--text-primary] uppercase tracking-wider border-b border-[--border] pb-1">
                   2. Official Contact Information
                 </h3>
 
@@ -592,13 +599,13 @@ export function DepartmentManagementSection() {
               </div>
 
               {/* Section 3: Department Login Credentials & Password Management */}
-              <div className="bg-purple-50/70 border border-purple-200 p-4 rounded-xl space-y-3">
+              <div className="bg-[--bg-subtle] border border-[--border] p-4 rounded-lg space-y-3">
                 <div className="flex items-center justify-between">
-                  <h3 className="text-xs font-bold text-purple-950 uppercase tracking-wider flex items-center gap-1.5">
-                    <KeyRound className="w-4 h-4 text-purple-700" />
+                  <h3 className="text-xs font-bold text-[--text-primary] uppercase tracking-wider flex items-center gap-1.5">
+                    <KeyRound className="w-4 h-4 text-[--text-primary]" />
                     3. Department Access & Credentials
                   </h3>
-                  <span className="text-[10px] bg-purple-200 text-purple-900 font-bold px-2 py-0.5 rounded font-mono">
+                  <span className="text-[10px] bg-[--bg-surface] border border-[--border] text-[--text-secondary] font-bold px-2 py-0.5 rounded font-mono">
                     SECURE PBKDF2 HASHING
                   </span>
                 </div>
@@ -645,8 +652,8 @@ export function DepartmentManagementSection() {
               {/* Section 4: Category Assignment Multi-Select */}
               <div className="space-y-3">
                 <div className="flex items-center justify-between border-b border-slate-200 pb-1">
-                  <h3 className="text-xs font-bold text-purple-900 uppercase tracking-wider flex items-center gap-1.5">
-                    <Tag className="w-4 h-4 text-purple-700" />
+                  <h3 className="text-xs font-bold text-[--text-primary] uppercase tracking-wider flex items-center gap-1.5">
+                    <Tag className="w-4 h-4 text-[--text-primary]" />
                     4. Category Assignments ({formData.categoriesHandled.length} Selected)
                   </h3>
                   <p className="text-[11px] text-slate-500">
@@ -659,13 +666,13 @@ export function DepartmentManagementSection() {
                     const allInGroup = grp.categories.every(c => formData.categoriesHandled.includes(c));
 
                     return (
-                      <div key={grp.groupName} className="bg-slate-50 p-3 rounded-xl border border-slate-200 space-y-2">
+                      <div key={grp.groupName} className="bg-slate-50 p-3 rounded-lg border border-slate-200 space-y-2">
                         <div className="flex items-center justify-between">
                           <span className="font-bold text-slate-900 text-xs">{grp.groupName}</span>
                           <button
                             type="button"
                             onClick={() => handleToggleSelectAllGroup(grp.categories)}
-                            className="text-[11px] font-bold text-purple-700 hover:underline"
+                            className="text-[11px] font-bold text-slate-800 hover:underline"
                           >
                             {allInGroup ? 'Deselect All' : 'Select All Group'}
                           </button>
@@ -677,9 +684,9 @@ export function DepartmentManagementSection() {
                             return (
                               <label
                                 key={catName}
-                                className={`flex items-center gap-2 p-2 rounded-lg border text-xs cursor-pointer select-none transition-colors ${
+                                className={`flex items-center gap-2 p-2 rounded-md border text-xs cursor-pointer select-none transition-colors ${
                                   isChecked 
-                                    ? 'bg-purple-100/70 border-purple-400 text-purple-950 font-bold' 
+                                    ? 'bg-slate-900 border-slate-900 text-white font-bold' 
                                     : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-100'
                                 }`}
                               >
@@ -687,7 +694,7 @@ export function DepartmentManagementSection() {
                                   type="checkbox"
                                   checked={isChecked}
                                   onChange={() => handleCategoryToggle(catName)}
-                                  className="rounded border-slate-300 text-purple-700 focus:ring-purple-500"
+                                  className="rounded border-slate-300 text-slate-900 focus:ring-slate-500"
                                 />
                                 <span className="truncate">{catName}</span>
                               </label>
@@ -705,13 +712,13 @@ export function DepartmentManagementSection() {
                 <button
                   type="button"
                   onClick={() => setModalMode(null)}
-                  className="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold text-xs rounded-xl transition-colors"
+                  className="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold text-xs rounded-md transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-6 py-2 bg-purple-700 hover:bg-purple-600 text-white font-bold text-xs rounded-xl shadow-md shadow-purple-700/20 transition-all"
+                  className="px-6 py-2 bg-[--text-primary] hover:opacity-90 text-[--bg-base] font-bold text-xs rounded-md transition-all"
                 >
                   {modalMode === 'create' ? 'Save New Department' : 'Update Department'}
                 </button>
@@ -725,19 +732,26 @@ export function DepartmentManagementSection() {
 
       {/* VIEW DEPARTMENT DETAILS MODAL */}
       {selectedDeptForView && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm overflow-y-auto font-sans">
-          <div className="bg-white w-full max-w-2xl rounded-2xl shadow-2xl border border-slate-200 overflow-hidden my-8 p-6 space-y-5">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 overflow-y-auto font-sans">
+          {/* Backdrop Scrim */}
+          <div 
+            className="fixed inset-0 bg-black/60 transition-opacity" 
+            onClick={() => setSelectedDeptForView(null)} 
+            aria-hidden="true" 
+          />
+
+          <div className="relative z-10 bg-white dark:bg-[#1a1d23] text-slate-900 dark:text-[#e8e9eb] w-full max-w-2xl rounded-lg shadow-2xl border border-slate-200 dark:border-[#2c3039] overflow-hidden my-auto p-6 space-y-5">
             
-            <div className="flex items-center justify-between border-b border-slate-200 pb-3">
+            <div className="flex items-center justify-between border-b border-slate-200 dark:border-[#2c3039] pb-3">
               <div className="flex items-center gap-2">
-                <span className="font-mono font-bold bg-purple-100 text-purple-800 text-xs px-2.5 py-1 rounded">
+                <span className="font-mono font-bold bg-slate-100 dark:bg-[#22252d] border border-slate-200 dark:border-[#2c3039] text-slate-900 dark:text-[#e8e9eb] text-xs px-2.5 py-1 rounded">
                   {selectedDeptForView.code}
                 </span>
-                <h2 className="text-lg font-bold text-slate-900">{selectedDeptForView.name}</h2>
+                <h2 className="text-lg font-bold text-slate-900 dark:text-[#e8e9eb]">{selectedDeptForView.name}</h2>
               </div>
               <button
                 onClick={() => setSelectedDeptForView(null)}
-                className="text-slate-400 hover:text-slate-700 p-1"
+                className="text-slate-400 hover:text-slate-700 dark:hover:text-white p-1"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -779,7 +793,7 @@ export function DepartmentManagementSection() {
               <span className="text-slate-400 font-bold uppercase text-[10px]">Assigned Routing Categories</span>
               <div className="flex flex-wrap gap-1.5 pt-1 max-h-36 overflow-y-auto">
                 {(selectedDeptForView.categoriesHandled || []).map((cat, idx) => (
-                  <span key={idx} className="bg-purple-50 text-purple-900 border border-purple-200 text-xs font-semibold px-2.5 py-1 rounded-lg">
+                  <span key={idx} className="bg-slate-100 text-slate-800 border border-slate-200 text-xs font-semibold px-2.5 py-1 rounded-md">
                     {cat}
                   </span>
                 ))}
@@ -789,7 +803,7 @@ export function DepartmentManagementSection() {
             <div className="flex justify-end pt-3 border-t border-slate-200">
               <button
                 onClick={() => setSelectedDeptForView(null)}
-                className="px-4 py-2 bg-slate-900 text-white font-bold text-xs rounded-xl"
+                className="px-4 py-2 bg-slate-900 text-white font-bold text-xs rounded-md"
               >
                 Close Window
               </button>
@@ -875,23 +889,23 @@ function OtherProblemOptionManager({ departments }: { departments: Department[] 
   };
 
   return (
-    <div className="bg-white rounded-xl border border-slate-200 p-5 space-y-4 shadow-xs">
+    <div className="bg-white rounded-lg border border-slate-200 p-5 space-y-4 shadow-xs">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-3">
         <div>
           <h2 className="text-sm font-bold text-slate-900 flex items-center gap-2">
-            <Tag className="w-4 h-4 text-purple-600" />
+            <Tag className="w-4 h-4 text-slate-600" />
             "Other" Category Dynamic Problem Routing
           </h2>
           <p className="text-xs text-slate-500">
             Define specific problem titles that fall under "Other" categories and explicitly assign them to responsible departments.
           </p>
         </div>
-        <span className="bg-purple-50 text-purple-700 text-xs font-bold px-2.5 py-1 rounded-lg border border-purple-200 self-start sm:self-auto">
+        <span className="bg-slate-100 text-slate-800 text-xs font-bold px-2.5 py-1 rounded-md border border-slate-200 self-start sm:self-auto">
           {options.length} Configured Problem Types
         </span>
       </div>
 
-      <form onSubmit={handleAdd} className="grid grid-cols-1 sm:grid-cols-12 gap-3 bg-slate-50 p-3.5 rounded-xl border border-slate-200">
+      <form onSubmit={handleAdd} className="grid grid-cols-1 sm:grid-cols-12 gap-3 bg-slate-50 p-3.5 rounded-lg border border-slate-200">
         <div className="sm:col-span-6">
           <label className="text-[11px] font-bold text-slate-700 block mb-1">
             New Problem Title / Description
@@ -901,7 +915,7 @@ function OtherProblemOptionManager({ departments }: { departments: Department[] 
             value={newTitle}
             onChange={(e) => setNewTitle(e.target.value)}
             placeholder="e.g. Stray Animal / Cattle Hazard, Illegal Hoardings..."
-            className="w-full border border-slate-300 rounded-lg px-3 py-2 text-xs bg-white text-slate-900 font-medium focus:ring-2 focus:ring-purple-500/20"
+            className="w-full border border-slate-300 rounded-lg px-3 py-2 text-xs bg-white text-slate-900 font-medium focus:ring-2 focus:ring-slate-400"
           />
         </div>
 
@@ -912,7 +926,7 @@ function OtherProblemOptionManager({ departments }: { departments: Department[] 
           <select
             value={newDeptId}
             onChange={(e) => setNewDeptId(e.target.value)}
-            className="w-full border border-slate-300 rounded-lg px-3 py-2 text-xs bg-white text-slate-900 font-medium focus:ring-2 focus:ring-purple-500/20"
+            className="w-full border border-slate-300 rounded-lg px-3 py-2 text-xs bg-white text-slate-900 font-medium focus:ring-2 focus:ring-slate-400"
           >
             <option value="">-- Select Concerned Department --</option>
             {departments.map((d) => (
@@ -927,7 +941,7 @@ function OtherProblemOptionManager({ departments }: { departments: Department[] 
           <button
             type="submit"
             disabled={saving}
-            className="w-full bg-purple-700 hover:bg-purple-600 text-white font-bold text-xs py-2 px-3 rounded-lg shadow-xs transition-colors flex items-center justify-center gap-1.5"
+            className="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs py-2 px-3 rounded-md shadow-xs transition-colors flex items-center justify-center gap-1.5"
           >
             <Plus className="w-3.5 h-3.5" /> Add Option
           </button>
@@ -961,7 +975,7 @@ function OtherProblemOptionManager({ departments }: { departments: Department[] 
                 <tr key={opt.id} className="hover:bg-slate-50">
                   <td className="py-2.5 px-3 font-semibold text-slate-900">{opt.title}</td>
                   <td className="py-2.5 px-3">
-                    <span className="bg-purple-50 text-purple-700 font-semibold px-2 py-0.5 rounded border border-purple-200">
+                    <span className="bg-slate-100 text-slate-800 font-semibold px-2 py-0.5 rounded border border-slate-200">
                       {opt.departmentName}
                     </span>
                   </td>

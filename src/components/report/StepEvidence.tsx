@@ -30,7 +30,7 @@ export function StepEvidence({
     if (!files || files.length === 0) return;
 
     setIsUploading(true);
-    
+
     // Read files as Base64 Data URLs for persistent display across sessions & DB
     const newFileUrls: string[] = [];
     for (let i = 0; i < files.length; i++) {
@@ -78,7 +78,7 @@ export function StepEvidence({
         <div className="w-12 h-12 rounded-xl bg-slate-100 text-slate-600 flex items-center justify-center mx-auto shadow-xs">
           <Upload className="w-6 h-6" />
         </div>
-        
+
         <div>
           <span className="text-xs font-bold text-slate-900 block">
             Click to upload or drag files here
@@ -88,9 +88,8 @@ export function StepEvidence({
           </p>
         </div>
 
-        <label className={`inline-flex items-center gap-2 text-xs font-bold px-4 py-2 rounded-xl cursor-pointer shadow-xs transition-all ${
-          isEnv ? 'bg-emerald-600 hover:bg-emerald-500 text-white' : 'bg-blue-600 hover:bg-blue-500 text-white'
-        }`}>
+        <label className={`inline-flex items-center gap-2 text-xs font-bold px-4 py-2 rounded-xl cursor-pointer shadow-xs transition-all ${isEnv ? 'bg-emerald-600 hover:bg-emerald-500 text-white' : 'bg-blue-600 hover:bg-blue-500 text-white'
+          }`}>
           <Upload className="w-3.5 h-3.5" /> Select Files
           <input
             type="file"
@@ -123,7 +122,7 @@ export function StepEvidence({
                     )}
 
                     {isPrimaryPhoto && (
-                      <span className="absolute top-1.5 left-1.5 text-[9px] font-bold bg-slate-900/80 text-white px-2 py-0.5 rounded backdrop-blur-xs">
+                      <span className="absolute top-1.5 left-1.5 text-[9px] font-bold bg-[--bg-surface] text-[--text-primary] border border-[--border] px-2 py-0.5 rounded-md shadow-xs">
                         Cover
                       </span>
                     )}

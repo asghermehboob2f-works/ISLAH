@@ -24,7 +24,7 @@ export function StepperHeader({ currentStep, onStepClick, reportType }: StepperH
 
   return (
     <div className="w-full font-sans">
-      
+
       {/* Visual Stepper Pills for Desktop & Tablet — Single Line Forced */}
       <div className="hidden md:flex items-center justify-between border border-slate-200 bg-white p-2 sm:p-2.5 rounded-2xl shadow-xs overflow-x-auto">
         {STEPS.map((s) => {
@@ -37,21 +37,19 @@ export function StepperHeader({ currentStep, onStepClick, reportType }: StepperH
                 type="button"
                 onClick={() => isCompleted && onStepClick && onStepClick(s.step)}
                 disabled={!isCompleted}
-                className={`flex items-center gap-2 px-2.5 sm:px-3 py-1.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap shrink-0 ${
-                  isActive
+                className={`flex items-center gap-2 px-2.5 sm:px-3 py-1.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap shrink-0 ${isActive
                     ? activeColorClass + ' shadow-xs'
                     : isCompleted
-                    ? 'bg-slate-100 text-slate-800 hover:bg-slate-200 cursor-pointer'
-                    : 'text-slate-400 bg-transparent cursor-not-allowed'
-                }`}
+                      ? 'bg-slate-100 text-slate-800 hover:bg-slate-200 cursor-pointer'
+                      : 'text-slate-400 bg-transparent cursor-not-allowed'
+                  }`}
               >
-                <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-mono font-bold shrink-0 ${
-                  isActive
+                <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-mono font-bold shrink-0 ${isActive
                     ? 'bg-white text-slate-900'
                     : isCompleted
-                    ? 'bg-emerald-600 text-white'
-                    : 'bg-slate-200 text-slate-500'
-                }`}>
+                      ? 'bg-emerald-600 text-white'
+                      : 'bg-slate-200 text-slate-500'
+                  }`}>
                   {isCompleted ? <Check className="w-3 h-3 stroke-[3]" /> : s.step}
                 </span>
                 <span className="whitespace-nowrap">{s.title}</span>
@@ -75,7 +73,7 @@ export function StepperHeader({ currentStep, onStepClick, reportType }: StepperH
             {STEPS[currentStep - 1].title}
           </span>
         </div>
-        
+
         <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
           <div
             className={`h-full transition-all duration-300 ${isEnv ? 'bg-emerald-600' : 'bg-blue-600'}`}

@@ -5,11 +5,11 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useApp } from '@/context/AppContext';
-import { 
-  ShieldCheck, 
-  Briefcase, 
-  KeyRound, 
-  Lock, 
+import {
+  ShieldCheck,
+  Briefcase,
+  KeyRound,
+  Lock,
   ArrowRight
 } from 'lucide-react';
 
@@ -44,16 +44,16 @@ export default function DepartmentLoginPage() {
 
   return (
     <div className="w-full max-w-md mx-auto px-4 py-12 space-y-6 font-sans">
-      
+
       <div className="text-center space-y-3">
         <Link href="/" className="inline-flex items-center justify-center gap-2 focus:outline-none">
-          <Image 
-            src="/logo.png?v=4" 
-            alt="ISLAH Logo" 
-            width={56} 
-            height={44} 
-            className="h-12 w-auto object-contain" 
-            unoptimized 
+          <Image
+            src="/logo.png?v=4"
+            alt="ISLAH Logo"
+            width={56}
+            height={44}
+            className="h-12 w-auto object-contain"
+            unoptimized
           />
         </Link>
         <div>
@@ -67,7 +67,7 @@ export default function DepartmentLoginPage() {
       </div>
 
       <div className="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 space-y-5 shadow-sm">
-        
+
         {errorMessage && (
           <div className="p-3 bg-red-50 border border-red-200 text-red-700 text-xs rounded-xl font-medium">
             {errorMessage}

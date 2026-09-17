@@ -1,16 +1,16 @@
 'use client';
 
 import React from 'react';
-import { 
-  Building2, 
-  Trees, 
-  MapPin, 
-  Globe, 
-  Lock, 
-  ShieldAlert, 
-  Volume2, 
-  Edit, 
-  Link as LinkIcon, 
+import {
+  Building2,
+  Trees,
+  MapPin,
+  Globe,
+  Lock,
+  ShieldAlert,
+  Volume2,
+  Edit,
+  Link as LinkIcon,
   Loader2,
   CheckCircle2,
   Clock
@@ -76,7 +76,7 @@ export function StepReview({
       </div>
 
       <div className="space-y-4">
-        
+
         {/* Section 1: Category & Routing */}
         <div className="bg-slate-50 border border-slate-200 p-4 rounded-xl space-y-2 relative">
           <div className="flex items-center justify-between">
@@ -91,9 +91,8 @@ export function StepReview({
           </div>
 
           <div className="flex items-center gap-3">
-            <div className={`w-9 h-9 rounded-lg flex items-center justify-center font-bold text-white shadow-xs ${
-              isEnv ? 'bg-emerald-600' : 'bg-blue-600'
-            }`}>
+            <div className={`w-9 h-9 rounded-lg flex items-center justify-center font-bold text-white shadow-xs ${isEnv ? 'bg-emerald-600' : 'bg-blue-600'
+              }`}>
               {isEnv ? <Trees className="w-4 h-4" /> : <Building2 className="w-4 h-4" />}
             </div>
             <div>
@@ -215,9 +214,8 @@ export function StepReview({
           </div>
 
           <div className="flex items-center gap-3 flex-wrap text-xs">
-            <span className={`px-2.5 py-1 rounded-md font-bold flex items-center gap-1 ${
-              visibility === 'PUBLIC' ? 'bg-blue-100 text-blue-900' : 'bg-slate-200 text-slate-900'
-            }`}>
+            <span className={`px-2.5 py-1 rounded-md font-bold flex items-center gap-1 ${visibility === 'PUBLIC' ? 'bg-blue-100 text-blue-900' : 'bg-slate-200 text-slate-900'
+              }`}>
               {visibility === 'PUBLIC' ? <Globe className="w-3.5 h-3.5" /> : <Lock className="w-3.5 h-3.5" />}
               {visibility === 'PUBLIC' ? 'Public Report' : 'Private Confidential Report'}
             </span>
@@ -250,9 +248,8 @@ export function StepReview({
           type="button"
           onClick={onSubmit}
           disabled={isSubmitting}
-          className={`px-8 py-3.5 rounded-xl font-bold text-xs text-white shadow-md flex items-center gap-2 transition-all active:scale-95 ${
-            isEnv ? 'bg-emerald-600 hover:bg-emerald-500' : 'bg-blue-600 hover:bg-blue-500'
-          }`}
+          className={`px-8 py-3.5 rounded-xl font-bold text-xs text-white shadow-md flex items-center gap-2 transition-all active:scale-95 ${isEnv ? 'bg-emerald-600 hover:bg-emerald-500' : 'bg-blue-600 hover:bg-blue-500'
+            }`}
         >
           {isSubmitting ? (
             <>

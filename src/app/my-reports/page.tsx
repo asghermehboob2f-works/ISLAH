@@ -136,8 +136,8 @@ export default function MyReportsPage() {
           <button
             onClick={() => setActiveTrack('civic')}
             className={`flex-1 sm:flex-none px-4 py-2 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-2 ${activeTrack === 'civic'
-                ? 'bg-blue-600 text-white shadow-sm'
-                : 'text-slate-600 hover:text-slate-900'
+              ? 'bg-blue-600 text-white shadow-sm'
+              : 'text-slate-600 hover:text-slate-900'
               }`}
           >
             <Building2 className="w-4 h-4" />
@@ -147,8 +147,8 @@ export default function MyReportsPage() {
           <button
             onClick={() => setActiveTrack('environmental')}
             className={`flex-1 sm:flex-none px-4 py-2 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-2 ${activeTrack === 'environmental'
-                ? 'bg-emerald-600 text-white shadow-sm'
-                : 'text-slate-600 hover:text-slate-900'
+              ? 'bg-emerald-600 text-white shadow-sm'
+              : 'text-slate-600 hover:text-slate-900'
               }`}
           >
             <Trees className="w-4 h-4 text-emerald-500" />
@@ -193,8 +193,8 @@ export default function MyReportsPage() {
             key={st}
             onClick={() => setStatusFilter(st)}
             className={`px-3 py-1.5 rounded-lg text-xs font-bold capitalize transition-all shrink-0 ${statusFilter === st
-                ? activeTrack === 'civic' ? 'bg-blue-600 text-white' : 'bg-emerald-600 text-white'
-                : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200'
+              ? activeTrack === 'civic' ? 'bg-blue-600 text-white' : 'bg-emerald-600 text-white'
+              : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200'
               }`}
           >
             {st === 'all' ? `All (${currentTrackReports.length})` : st.replace('_', ' ')}

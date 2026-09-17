@@ -111,7 +111,7 @@ export default function DepartmentDashboardPage() {
 
           <div>
             <label className="text-[10px] font-bold uppercase tracking-wider text-slate-500 block mb-1">
-              Department {isStaffUser && staffDeptId && <span className="text-purple-700 font-extrabold">(Assigned Only)</span>}
+              Department {isStaffUser && staffDeptId && <span className="text-slate-900 font-extrabold">(Assigned Only)</span>}
             </label>
             <select
               value={selectedDept}
@@ -217,7 +217,7 @@ export default function DepartmentDashboardPage() {
                     </td>
                     <td className="py-3 px-4">
                       <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase ${ticket.severity === 'critical' ? 'bg-red-600 text-white' :
-                          ticket.severity === 'high' ? 'bg-orange-100 text-orange-800' : 'bg-slate-100 text-slate-700'
+                        ticket.severity === 'high' ? 'bg-orange-100 text-orange-800' : 'bg-slate-100 text-slate-700'
                         }`}>
                         {ticket.severity}
                       </span>
@@ -227,8 +227,8 @@ export default function DepartmentDashboardPage() {
                     </td>
                     <td className="py-3 px-4">
                       <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase ${ticket.status === 'resolved' ? 'bg-emerald-100 text-emerald-800' :
-                          ticket.status === 'in_progress' ? 'bg-amber-100 text-amber-800' :
-                            ticket.status === 'escalated' ? 'bg-red-100 text-red-800' : 'bg-blue-100 text-blue-800'
+                        ticket.status === 'in_progress' ? 'bg-amber-100 text-amber-800' :
+                          ticket.status === 'escalated' ? 'bg-red-100 text-red-800' : 'bg-blue-100 text-blue-800'
                         }`}>
                         {ticket.status.replace('_', ' ')}
                       </span>

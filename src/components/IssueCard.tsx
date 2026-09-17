@@ -13,9 +13,9 @@ interface IssueCardProps {
 function SeverityDot({ severity }: { severity: CivicIssue['severity'] }) {
   const map: Record<string, string> = {
     critical: 'bg-red-500',
-    high:     'bg-orange-400',
-    medium:   'bg-yellow-400',
-    low:      'bg-zinc-400',
+    high: 'bg-orange-400',
+    medium: 'bg-yellow-400',
+    low: 'bg-zinc-400',
   };
   return (
     <span className={`inline-block w-2 h-2 rounded-full ${map[severity] ?? 'bg-zinc-400'}`} title={severity} />
@@ -24,19 +24,18 @@ function SeverityDot({ severity }: { severity: CivicIssue['severity'] }) {
 
 export function IssueCard({ issue, onSelect, onUpvote }: IssueCardProps) {
   const statusLabel: Record<string, string> = {
-    reported:     'Reported',
+    reported: 'Reported',
     acknowledged: 'Acknowledged',
-    in_progress:  'In Progress',
-    resolved:     'Resolved',
-    escalated:    'Escalated',
+    in_progress: 'In Progress',
+    resolved: 'Resolved',
+    escalated: 'Escalated',
   };
 
   return (
     <div
       onClick={() => onSelect(issue)}
-      className={`bg-[--bg-surface] rounded-2xl border transition-all duration-150 hover:border-[--border-subtle] cursor-pointer overflow-hidden flex flex-col group ${
-        issue.emergency ? 'border-red-400/60 emergency-pulse' : 'border-[--border]'
-      }`}
+      className={`bg-[--bg-surface] rounded-2xl border transition-all duration-150 hover:border-[--border-subtle] cursor-pointer overflow-hidden flex flex-col group ${issue.emergency ? 'border-red-400/60 emergency-pulse' : 'border-[--border]'
+        }`}
     >
       {/* Photo */}
       <div className="relative h-44 w-full bg-[--bg-subtle] overflow-hidden">
@@ -69,7 +68,7 @@ export function IssueCard({ issue, onSelect, onUpvote }: IssueCardProps) {
           </span>
         </div>
 
-        <div className="absolute bottom-3 left-3 bg-[--bg-base]/80 backdrop-blur-md text-[--text-secondary] text-[11px] font-medium px-2.5 py-1 rounded-full flex items-center gap-1.5 border border-[--border]">
+        <div className="absolute bottom-3 left-3 bg-[--bg-surface] text-[--text-secondary] text-[11px] font-medium px-2.5 py-1 rounded-md flex items-center gap-1.5 border border-[--border] shadow-xs">
           <span>{issue.category}</span>
         </div>
       </div>

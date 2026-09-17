@@ -3,14 +3,14 @@
 import React from 'react';
 import Link from 'next/link';
 import { useApp } from '@/context/AppContext';
-import { 
-  Building2, 
-  Trees, 
-  ArrowRight, 
-  Lock, 
-  LogIn, 
-  UserPlus, 
-  ShieldCheck, 
+import {
+  Building2,
+  Trees,
+  ArrowRight,
+  Lock,
+  LogIn,
+  UserPlus,
+  ShieldCheck,
   AlertTriangle,
   FileText,
   MapPin,
@@ -76,7 +76,7 @@ export default function ReportHubPage() {
 
   return (
     <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-10 font-sans">
-      
+
       {/* Header */}
       <div className="text-center space-y-3 max-w-2xl mx-auto">
         <h1 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
@@ -89,11 +89,11 @@ export default function ReportHubPage() {
 
       {/* Two Separate Reporting Tracks */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
-        
+
         {/* Track 1: Civic Issues */}
         <div className="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-sm hover:shadow-md hover:border-blue-300 transition-all flex flex-col justify-between space-y-6 group">
           <div className="space-y-5">
-            
+
             <div className="w-14 h-14 rounded-2xl bg-blue-50 text-blue-600 border border-blue-200 flex items-center justify-center shadow-xs">
               <Building2 className="w-7 h-7" />
             </div>
@@ -139,7 +139,7 @@ export default function ReportHubPage() {
         {/* Track 2: Environment & Wildlife */}
         <div className="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-sm hover:shadow-md hover:border-emerald-300 transition-all flex flex-col justify-between space-y-6 group">
           <div className="space-y-5">
-            
+
             <div className="w-14 h-14 rounded-2xl bg-emerald-50 text-emerald-600 border border-emerald-200 flex items-center justify-center shadow-xs">
               <Trees className="w-7 h-7" />
             </div>

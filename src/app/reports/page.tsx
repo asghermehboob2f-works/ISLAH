@@ -55,16 +55,16 @@ export default function PublicReportsPage() {
     <div className="w-full max-w-[1800px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 py-8 space-y-6 font-sans">
 
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200 pb-5">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-[--border] pb-5">
         <div>
-          <div className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-blue-600 mb-2">
-            <FileText className="w-4 h-4 text-blue-600" />
+          <div className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-[--text-secondary] mb-2">
+            <FileText className="w-4 h-4 text-[--text-muted]" />
             <span>Public Transparency Feed</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-[--text-primary] tracking-tight">
             Public Civic Reports
           </h1>
-          <p className="text-xs sm:text-sm text-slate-500 max-w-2xl mt-1">
+          <p className="text-xs sm:text-sm text-[--text-secondary] max-w-2xl mt-1">
             Browse verified municipal reports submitted by citizens across all wards. All citizen personal contact data is strictly protected.
           </p>
         </div>
@@ -72,7 +72,7 @@ export default function PublicReportsPage() {
         <div className="flex items-center gap-2">
           <Link
             href="/report"
-            className="bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-md shadow-blue-600/30 flex items-center gap-1.5 transition-all"
+            className="bg-[--text-primary] hover:opacity-90 text-[--bg-base] font-semibold text-xs px-4 py-2.5 rounded-lg flex items-center gap-1.5 transition-all"
           >
             <PlusCircle className="w-4 h-4" />
             <span>Report a Civic Issue</span>
@@ -81,31 +81,31 @@ export default function PublicReportsPage() {
       </div>
 
       {/* Filter Toolbar */}
-      <div className="bg-white rounded-2xl border border-slate-200 p-4 space-y-3 shadow-xs">
+      <div className="bg-[--bg-surface] rounded-2xl border border-[--border] p-4 space-y-3 shadow-xs">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
 
           {/* Search */}
           <div>
-            <label className="font-bold text-slate-600 block mb-1">Search Keywords</label>
+            <label className="font-bold text-[--text-secondary] block mb-1">Search Keywords</label>
             <div className="relative">
               <input
                 type="text"
                 placeholder="Search ticket ID, title, or ward..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full border border-slate-300 rounded-xl pl-8 pr-3 py-2 bg-slate-50 focus:bg-white focus:outline-none focus:ring-1 focus:ring-blue-500"
+                className="w-full border border-[--border] rounded-lg pl-8 pr-3 py-2 bg-[--bg-subtle] focus:bg-[--bg-surface] text-[--text-primary] placeholder-[--text-muted] focus:outline-none focus:ring-1 focus:ring-[--ring]"
               />
-              <Search className="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-3" />
+              <Search className="w-3.5 h-3.5 text-[--text-muted] absolute left-2.5 top-3" />
             </div>
           </div>
 
           {/* Category */}
           <div>
-            <label className="font-bold text-slate-600 block mb-1">Category</label>
+            <label className="font-bold text-[--text-secondary] block mb-1">Category</label>
             <select
               value={categoryFilter}
               onChange={(e) => setCategoryFilter(e.target.value)}
-              className="w-full border border-slate-300 rounded-xl px-3 py-2 bg-slate-50 focus:bg-white font-semibold text-slate-800"
+              className="w-full border border-[--border] rounded-lg px-3 py-2 bg-[--bg-subtle] focus:bg-[--bg-surface] font-semibold text-[--text-primary]"
             >
               <option value="all">All Categories ({categories.length})</option>
               {categories.map((cat) => (
@@ -116,11 +116,11 @@ export default function PublicReportsPage() {
 
           {/* Status */}
           <div>
-            <label className="font-bold text-slate-600 block mb-1">Status</label>
+            <label className="font-bold text-[--text-secondary] block mb-1">Status</label>
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="w-full border border-slate-300 rounded-xl px-3 py-2 bg-slate-50 focus:bg-white font-semibold text-slate-800"
+              className="w-full border border-[--border] rounded-lg px-3 py-2 bg-[--bg-subtle] focus:bg-[--bg-surface] font-semibold text-[--text-primary]"
             >
               <option value="all">All Statuses</option>
               <option value="reported">Reported</option>
@@ -133,11 +133,11 @@ export default function PublicReportsPage() {
 
           {/* Severity */}
           <div>
-            <label className="font-bold text-slate-600 block mb-1">Severity</label>
+            <label className="font-bold text-[--text-secondary] block mb-1">Severity</label>
             <select
               value={severityFilter}
               onChange={(e) => setSeverityFilter(e.target.value)}
-              className="w-full border border-slate-300 rounded-xl px-3 py-2 bg-slate-50 focus:bg-white font-semibold text-slate-800"
+              className="w-full border border-[--border] rounded-lg px-3 py-2 bg-[--bg-subtle] focus:bg-[--bg-surface] font-semibold text-[--text-primary]"
             >
               <option value="all">All Severities</option>
               <option value="critical">Critical / Emergency</option>
@@ -152,10 +152,10 @@ export default function PublicReportsPage() {
 
       {/* Grid of Public Issue Cards */}
       {filteredIssues.length === 0 ? (
-        <div className="bg-white rounded-2xl border border-slate-200 p-12 text-center space-y-3">
-          <FileText className="w-10 h-10 text-slate-300 mx-auto" />
-          <h3 className="text-base font-bold text-slate-900">No reports found</h3>
-          <p className="text-xs text-slate-500 max-w-sm mx-auto">
+        <div className="bg-[--bg-surface] rounded-2xl border border-[--border] p-12 text-center space-y-3">
+          <FileText className="w-10 h-10 text-[--text-muted] mx-auto opacity-60" />
+          <h3 className="text-base font-bold text-[--text-primary]">No reports found</h3>
+          <p className="text-xs text-[--text-muted] max-w-sm mx-auto">
             No public civic reports match your selected search criteria or filters.
           </p>
         </div>

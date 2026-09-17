@@ -45,7 +45,7 @@ export function StepLocation({
       (pos) => {
         const fetchedLat = parseFloat(pos.coords.latitude.toFixed(5));
         const fetchedLng = parseFloat(pos.coords.longitude.toFixed(5));
-        
+
         onLocationChange({
           lat: fetchedLat,
           lng: fetchedLng,
@@ -110,9 +110,8 @@ export function StepLocation({
       {/* Clean GPS Bar */}
       <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div className="flex items-center gap-3">
-          <div className={`w-10 h-10 rounded-xl flex items-center justify-center font-bold text-white shrink-0 shadow-xs ${
-            isEnv ? 'bg-emerald-600' : 'bg-blue-600'
-          }`}>
+          <div className={`w-10 h-10 rounded-xl flex items-center justify-center font-bold text-white shrink-0 shadow-xs ${isEnv ? 'bg-emerald-600' : 'bg-blue-600'
+            }`}>
             <Compass className="w-5 h-5" />
           </div>
           <div>
@@ -130,11 +129,10 @@ export function StepLocation({
           type="button"
           onClick={handleFetchGps}
           disabled={isLocating}
-          className={`px-4 py-2.5 rounded-xl font-bold text-xs flex items-center justify-center gap-2 transition-all shadow-xs shrink-0 ${
-            isEnv
+          className={`px-4 py-2.5 rounded-xl font-bold text-xs flex items-center justify-center gap-2 transition-all shadow-xs shrink-0 ${isEnv
               ? 'bg-emerald-600 hover:bg-emerald-500 text-white'
               : 'bg-blue-600 hover:bg-blue-500 text-white'
-          }`}
+            }`}
         >
           <Navigation className={`w-4 h-4 ${isLocating ? 'animate-spin' : ''}`} />
           <span>{isLocating ? 'Acquiring GPS...' : 'Use Current Location'}</span>

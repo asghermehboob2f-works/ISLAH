@@ -32,7 +32,7 @@ export function StepVisibilityEmergency({
       </div>
 
       <div className="space-y-5">
-        
+
         {/* Public / Private Visibility Selection */}
         <div className="space-y-3">
           <label className="text-xs font-bold text-slate-800 uppercase tracking-wider block">
@@ -40,16 +40,15 @@ export function StepVisibilityEmergency({
           </label>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-            
+
             {/* Public Option */}
             <button
               type="button"
               onClick={() => onVisibilityChange('PUBLIC')}
-              className={`p-3.5 rounded-xl border text-left transition-all flex flex-col justify-between space-y-2 cursor-pointer ${
-                visibility === 'PUBLIC'
+              className={`p-3.5 rounded-xl border text-left transition-all flex flex-col justify-between space-y-2 cursor-pointer ${visibility === 'PUBLIC'
                   ? 'bg-blue-50/90 border-blue-600 ring-2 ring-blue-600/20 text-slate-900 shadow-xs'
                   : 'bg-white border-slate-200 hover:border-slate-300 text-slate-700'
-              }`}
+                }`}
             >
               <div>
                 <h3 className="font-bold text-xs text-slate-900 flex items-center gap-1.5">
@@ -66,11 +65,10 @@ export function StepVisibilityEmergency({
             <button
               type="button"
               onClick={() => onVisibilityChange('PRIVATE')}
-              className={`p-3.5 rounded-xl border text-left transition-all flex flex-col justify-between space-y-2 cursor-pointer ${
-                visibility === 'PRIVATE'
+              className={`p-3.5 rounded-xl border text-left transition-all flex flex-col justify-between space-y-2 cursor-pointer ${visibility === 'PRIVATE'
                   ? 'bg-slate-100 border-slate-800 ring-2 ring-slate-800/20 text-slate-900 shadow-xs'
                   : 'bg-white border-slate-200 hover:border-slate-300 text-slate-700'
-              }`}
+                }`}
             >
               <div>
                 <h3 className="font-bold text-xs text-slate-900 flex items-center gap-1.5">
@@ -86,9 +84,8 @@ export function StepVisibilityEmergency({
         </div>
 
         {/* Emergency / Immediate Hazard Flag */}
-        <div className={`p-4 rounded-xl border transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-4 ${
-          emergency ? 'bg-red-50 border-red-300 ring-2 ring-red-500/20' : 'bg-slate-50 border-slate-200'
-        }`}>
+        <div className={`p-4 rounded-xl border transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-4 ${emergency ? 'bg-red-50 border-red-300 ring-2 ring-red-500/20' : 'bg-slate-50 border-slate-200'
+          }`}>
           <div className="space-y-1">
             <div className="font-bold text-xs text-slate-900 flex items-center gap-2">
               <ShieldAlert className="w-4 h-4 text-red-600" />

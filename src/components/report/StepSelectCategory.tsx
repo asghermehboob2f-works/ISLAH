@@ -1,17 +1,17 @@
 'use client';
 
 import React from 'react';
-import { 
-  Building2, 
-  Construction, 
-  Trash2, 
-  Zap, 
-  Droplets, 
-  Waves, 
-  AlertTriangle, 
-  Trees, 
-  Bird, 
-  ShieldAlert, 
+import {
+  Building2,
+  Construction,
+  Trash2,
+  Zap,
+  Droplets,
+  Waves,
+  AlertTriangle,
+  Trees,
+  Bird,
+  ShieldAlert,
   CheckCircle2,
   Biohazard,
   Factory
@@ -122,20 +122,18 @@ export function StepSelectCategory({
                   onSelectCategory(cat.name);
                 }
               }}
-              className={`p-4 rounded-xl border text-left transition-all flex flex-col justify-between space-y-3 cursor-pointer group ${
-                isSelected
+              className={`p-4 rounded-xl border text-left transition-all flex flex-col justify-between space-y-3 cursor-pointer group ${isSelected
                   ? isEnv
                     ? 'bg-emerald-50/90 border-emerald-600 ring-2 ring-emerald-600/20 text-slate-900 shadow-xs'
                     : 'bg-blue-50/90 border-blue-600 ring-2 ring-blue-600/20 text-slate-900 shadow-xs'
                   : 'bg-white border-slate-200 hover:border-slate-300 hover:bg-slate-50/50 text-slate-700'
-              }`}
+                }`}
             >
               <div className="flex items-center justify-between">
-                <div className={`w-9 h-9 rounded-lg flex items-center justify-center transition-colors ${
-                  isSelected
+                <div className={`w-9 h-9 rounded-lg flex items-center justify-center transition-colors ${isSelected
                     ? isEnv ? 'bg-emerald-600 text-white' : 'bg-blue-600 text-white'
                     : 'bg-slate-100 text-slate-600 group-hover:bg-slate-200'
-                }`}>
+                  }`}>
                   <Icon className="w-4 h-4" />
                 </div>
                 {isSelected && (

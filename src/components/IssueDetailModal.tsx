@@ -98,28 +98,40 @@ export function IssueDetailModal({ issue, onClose }: IssueDetailModalProps) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm overflow-y-auto font-sans">
-      <div className="bg-[--bg-surface] text-[--text-primary] w-full max-w-4xl rounded-2xl shadow-2xl border border-[--border] overflow-hidden my-8 max-h-[90vh] flex flex-col">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 overflow-y-auto font-sans">
+      {/* Dark semi-transparent backdrop scrim */}
+      <div 
+        className="fixed inset-0 bg-black/60 transition-opacity" 
+        onClick={onClose} 
+        aria-hidden="true" 
+      />
+
+      {/* Solid Opaque Modal Dialog Box */}
+      <div 
+        role="dialog"
+        aria-modal="true"
+        className="relative z-10 bg-white dark:bg-[#1a1d23] text-slate-900 dark:text-[#e8e9eb] w-full max-w-4xl rounded-lg shadow-2xl border border-slate-200 dark:border-[#2c3039] overflow-hidden my-auto max-h-[90vh] flex flex-col"
+      >
 
         {/* Modal Top Header */}
-        <div className="bg-[--bg-subtle] px-6 py-4 flex items-center justify-between border-b border-[--border] shrink-0">
+        <div className="bg-slate-50 dark:bg-[#22252d] px-6 py-4 flex items-center justify-between border-b border-slate-200 dark:border-[#2c3039] shrink-0">
           <div className="flex items-center gap-3">
-            <span className="text-xs font-mono font-bold bg-[--bg-surface] text-[--text-primary] border border-[--border] px-2.5 py-1 rounded-full">
+            <span className="text-xs font-mono font-bold bg-white dark:bg-[#1a1d23] text-slate-900 dark:text-[#e8e9eb] border border-slate-200 dark:border-[#2c3039] px-2.5 py-1 rounded-md">
               {issue.ticketNumber}
             </span>
-            <span className="text-sm font-semibold text-[--text-primary]">{issue.category}</span>
+            <span className="text-sm font-semibold text-slate-900 dark:text-[#e8e9eb]">{issue.category}</span>
           </div>
 
           <button
             onClick={onClose}
-            className="p-1.5 rounded-full text-[--text-muted] hover:text-[--text-primary] hover:bg-[--bg-surface] transition-colors"
+            className="p-1.5 rounded-md text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-[#1a1d23] transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Modal Content Scroll Area */}
-        <div className="p-6 overflow-y-auto space-y-6 flex-1">
+        <div className="p-6 overflow-y-auto space-y-6 flex-1 bg-white dark:bg-[#1a1d23]">
 
           {/* Main Title & Status Row */}
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-[--border]">
@@ -134,7 +146,7 @@ export function IssueDetailModal({ issue, onClose }: IssueDetailModalProps) {
               </h2>
             </div>
 
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 shrink-0">
               <span className={`status-badge status-${issue.status}`}>
                 {issue.status === 'resolved' ? (
                   <span className="flex items-center gap-1">
@@ -184,7 +196,7 @@ export function IssueDetailModal({ issue, onClose }: IssueDetailModalProps) {
                       className="w-full h-full object-cover"
                     />
                     {issue.aiVerificationStatus && (
-                      <div className="absolute bottom-3 left-3 right-3 bg-[--bg-surface]/90 backdrop-blur-md text-[--text-primary] p-2.5 rounded-lg border border-[--border] text-xs flex items-center justify-between">
+                      <div className="absolute bottom-3 left-3 right-3 bg-[--bg-surface] text-[--text-primary] p-2.5 rounded-lg border border-[--border] text-xs flex items-center justify-between shadow-xs">
                         <span className="flex items-center gap-1.5 text-emerald-600 dark:text-emerald-400 font-semibold">
                           <ShieldCheck className="w-4 h-4" /> AI Verification: {issue.aiVerificationStatus}
                         </span>
@@ -242,7 +254,7 @@ export function IssueDetailModal({ issue, onClose }: IssueDetailModalProps) {
                 GPS: {issue.location.lat.toFixed(4)}, {issue.location.lng.toFixed(4)}
               </p>
               <div className="pt-1">
-                <span className="inline-block px-2.5 py-0.5 rounded-full bg-[--bg-surface] text-[--text-secondary] text-[10px] font-medium border border-[--border]">
+                <span className="inline-block px-2.5 py-0.5 rounded-md bg-[--bg-surface] text-[--text-secondary] text-[10px] font-medium border border-[--border]">
                   {issue.location.ward}
                 </span>
               </div>
@@ -254,10 +266,10 @@ export function IssueDetailModal({ issue, onClose }: IssueDetailModalProps) {
             <div className="bg-[--bg-subtle] border border-[--border] p-4 rounded-xl space-y-3">
               <div className="flex items-center justify-between">
                 <h3 className="text-xs font-semibold text-[--text-primary] uppercase tracking-wider flex items-center gap-1.5">
-                  <ShieldCheck className="w-4 h-4 text-purple-500" />
+                  <ShieldCheck className="w-4 h-4 text-[--text-primary]" />
                   Super Admin Platform Governance
                 </h3>
-                <span className="text-[10px] bg-[--bg-surface] text-[--text-secondary] border border-[--border] font-mono px-2 py-0.5 rounded">
+                <span className="text-[10px] bg-[--bg-surface] text-[--text-secondary] border border-[--border] font-mono px-2 py-0.5 rounded-md">
                   ADMIN AUTHORIZATION
                 </span>
               </div>
@@ -267,16 +279,16 @@ export function IssueDetailModal({ issue, onClose }: IssueDetailModalProps) {
                   <button
                     type="button"
                     onClick={handleCloseReportByAdmin}
-                    className="bg-[--text-primary] text-[--bg-base] text-xs font-semibold px-4 py-2 rounded-xl flex items-center gap-1.5 transition-opacity hover:opacity-80"
+                    className="bg-[--text-primary] text-[--bg-base] text-xs font-semibold px-4 py-2 rounded-lg flex items-center gap-1.5 transition-opacity hover:opacity-90"
                   >
-                    <Check className="w-4 h-4" /> Admin Close & Resolve Report
+                    <Check className="w-4 h-4" /> Admin Close &amp; Resolve Report
                   </button>
                 )}
 
                 <button
                   type="button"
                   onClick={handleDeleteReportByAdmin}
-                  className="bg-[--bg-surface] border border-red-300 dark:border-red-900 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 text-xs font-semibold px-4 py-2 rounded-xl flex items-center gap-1.5 transition-colors"
+                  className="bg-[--bg-surface] border border-red-300 dark:border-red-900 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 text-xs font-semibold px-4 py-2 rounded-lg flex items-center gap-1.5 transition-colors"
                 >
                   <Trash2 className="w-4 h-4" /> Admin Delete Report
                 </button>
@@ -292,7 +304,7 @@ export function IssueDetailModal({ issue, onClose }: IssueDetailModalProps) {
                   <UserCheck className="w-4 h-4 text-blue-500" />
                   Manage Your Report
                 </h3>
-                <span className="text-[10px] bg-[--bg-surface] text-[--text-secondary] border border-[--border] font-medium px-2 py-0.5 rounded">
+                <span className="text-[10px] bg-[--bg-surface] text-[--text-secondary] border border-[--border] font-medium px-2 py-0.5 rounded-md">
                   Report Owner
                 </span>
               </div>
@@ -302,16 +314,16 @@ export function IssueDetailModal({ issue, onClose }: IssueDetailModalProps) {
                   <button
                     type="button"
                     onClick={handleCloseReportByOwner}
-                    className="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold px-4 py-2 rounded-xl flex items-center gap-1.5 transition-colors"
+                    className="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold px-4 py-2 rounded-lg flex items-center gap-1.5 transition-colors"
                   >
-                    <Check className="w-4 h-4" /> Close & Mark Solved
+                    <Check className="w-4 h-4" /> Close &amp; Mark Solved
                   </button>
                 )}
 
                 <button
                   type="button"
                   onClick={handleDeleteReportByOwner}
-                  className="bg-[--bg-surface] border border-red-300 dark:border-red-900 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 text-xs font-semibold px-4 py-2 rounded-xl flex items-center gap-1.5 transition-colors"
+                  className="bg-[--bg-surface] border border-red-300 dark:border-red-900 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 text-xs font-semibold px-4 py-2 rounded-lg flex items-center gap-1.5 transition-colors"
                 >
                   <Trash2 className="w-4 h-4" /> Delete Report
                 </button>
@@ -328,7 +340,7 @@ export function IssueDetailModal({ issue, onClose }: IssueDetailModalProps) {
                   Department Officer Operations ({issue.departmentName})
                 </h3>
                 <div className="flex items-center gap-2">
-                  <span className="text-[11px] text-[--text-secondary] font-mono bg-[--bg-surface] px-2 py-0.5 rounded border border-[--border]">
+                  <span className="text-[11px] text-[--text-secondary] font-mono bg-[--bg-surface] px-2 py-0.5 rounded-md border border-[--border]">
                     SLA Remaining: {issue.slaHoursRemaining} hrs
                   </span>
                 </div>
@@ -345,11 +357,10 @@ export function IssueDetailModal({ issue, onClose }: IssueDetailModalProps) {
                       key={st}
                       type="button"
                       onClick={() => handleStatusChange(st)}
-                      className={`text-xs font-semibold px-3 py-1.5 rounded-lg border transition-all ${
-                        issue.status === st
+                      className={`text-xs font-semibold px-3 py-1.5 rounded-lg border transition-all ${issue.status === st
                           ? 'bg-[--text-primary] text-[--bg-base] border-[--text-primary]'
                           : 'bg-[--bg-surface] text-[--text-secondary] border-[--border] hover:text-[--text-primary] hover:border-[--border-subtle]'
-                      }`}
+                        }`}
                     >
                       {st.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())}
                     </button>
@@ -362,7 +373,7 @@ export function IssueDetailModal({ issue, onClose }: IssueDetailModalProps) {
                 <label className="text-xs font-semibold text-[--text-primary] flex items-center justify-between">
                   <span>Schedule Next Operational Action Date</span>
                   {issue.nextActionDate && (
-                    <span className="text-[11px] font-mono text-[--text-secondary] bg-[--bg-surface] border border-[--border] px-2 py-0.5 rounded">
+                    <span className="text-[11px] font-mono text-[--text-secondary] bg-[--bg-surface] border border-[--border] px-2 py-0.5 rounded-md">
                       Current: {issue.nextActionDate}
                     </span>
                   )}
@@ -372,12 +383,12 @@ export function IssueDetailModal({ issue, onClose }: IssueDetailModalProps) {
                     type="date"
                     value={nextActionDateInput}
                     onChange={(e) => setNextActionDateInput(e.target.value)}
-                    className="text-xs border border-[--border] rounded-lg px-3 py-2 bg-[--bg-surface] font-mono text-[--text-primary] focus:ring-2 focus:ring-[--ring] focus:outline-none"
+                    className="text-xs border border-[--border] rounded-lg px-3 py-2 bg-[--bg-surface] font-mono text-[--text-primary] focus:ring-1 focus:ring-[--ring] focus:outline-none"
                   />
                   <button
                     type="button"
                     onClick={handleUpdateNextActionDate}
-                    className="bg-[--text-primary] hover:opacity-80 text-[--bg-base] text-xs font-semibold px-4 py-2 rounded-lg transition-opacity"
+                    className="bg-[--text-primary] hover:opacity-90 text-[--bg-base] text-xs font-semibold px-4 py-2 rounded-lg transition-opacity"
                   >
                     Save Action Date
                   </button>
@@ -396,7 +407,7 @@ export function IssueDetailModal({ issue, onClose }: IssueDetailModalProps) {
                       placeholder="Paste Resolution / After-Action Image URL..."
                       value={resolutionPhotoInput}
                       onChange={(e) => setResolutionPhotoInput(e.target.value)}
-                      className="flex-1 text-xs border border-[--border] rounded-lg px-3 py-2 bg-[--bg-surface] text-[--text-primary] placeholder-[--text-muted] focus:ring-2 focus:ring-[--ring] focus:outline-none"
+                      className="flex-1 text-xs border border-[--border] rounded-lg px-3 py-2 bg-[--bg-surface] text-[--text-primary] placeholder-[--text-muted] focus:ring-1 focus:ring-[--ring] focus:outline-none"
                     />
                     <button
                       type="button"
@@ -413,8 +424,8 @@ export function IssueDetailModal({ issue, onClose }: IssueDetailModalProps) {
             </div>
           )}
 
-          {/* Timeline & Notes Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+          {/* Timeline & Notes Grid — Stacked cleanly with zero overlap */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-[--border]">
 
             {/* Timeline */}
             <div className="space-y-3">
@@ -437,40 +448,38 @@ export function IssueDetailModal({ issue, onClose }: IssueDetailModalProps) {
             </div>
 
             {/* Department & Citizen Notes */}
-            <div className="space-y-3 flex flex-col justify-between">
-              <div className="space-y-3">
-                <h3 className="text-xs font-semibold text-[--text-secondary] uppercase tracking-wider">
-                  Notes &amp; Audit Trail
-                </h3>
-                <div className="space-y-2 max-h-48 overflow-y-auto pr-1">
-                  {issue.notes.length === 0 ? (
-                    <p className="text-xs text-[--text-muted] italic">No notes added yet.</p>
-                  ) : (
-                    issue.notes.map((n) => (
-                      <div key={n.id} className="bg-[--bg-subtle] border border-[--border] p-2.5 rounded-lg text-xs space-y-1">
-                        <div className="flex justify-between text-[10px] text-[--text-muted] font-medium">
-                          <span>{n.author} ({n.role})</span>
-                          <span suppressHydrationWarning>{formatTime(n.timestamp)}</span>
-                        </div>
-                        <p className="text-[--text-primary]">{n.text}</p>
+            <div className="space-y-3">
+              <h3 className="text-xs font-semibold text-[--text-secondary] uppercase tracking-wider">
+                Notes &amp; Audit Trail
+              </h3>
+              <div className="space-y-2 max-h-52 overflow-y-auto pr-1">
+                {issue.notes.length === 0 ? (
+                  <p className="text-xs text-[--text-muted] italic">No notes added yet.</p>
+                ) : (
+                  issue.notes.map((n) => (
+                    <div key={n.id} className="bg-[--bg-subtle] border border-[--border] p-2.5 rounded-lg text-xs space-y-1">
+                      <div className="flex justify-between text-[10px] text-[--text-muted] font-medium">
+                        <span>{n.author} ({n.role})</span>
+                        <span suppressHydrationWarning>{formatTime(n.timestamp)}</span>
                       </div>
-                    ))
-                  )}
-                </div>
+                      <p className="text-[--text-primary]">{n.text}</p>
+                    </div>
+                  ))
+                )}
               </div>
 
               {/* Add Note / Comment Input Form */}
-              <form onSubmit={handleAddNote} className="flex gap-2 pt-2">
+              <form onSubmit={handleAddNote} className="flex gap-2 pt-3 border-t border-[--border]">
                 <input
                   type="text"
                   placeholder="Add comment or update note..."
                   value={noteInput}
                   onChange={(e) => setNoteInput(e.target.value)}
-                  className="flex-1 text-xs border border-[--border] rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[--ring] bg-[--bg-subtle] text-[--text-primary] placeholder-[--text-muted]"
+                  className="flex-1 text-xs border border-[--border] rounded-lg px-3 py-2 focus:outline-none focus:ring-1 focus:ring-[--ring] bg-[--bg-subtle] text-[--text-primary] placeholder-[--text-muted]"
                 />
                 <button
                   type="submit"
-                  className="bg-[--text-primary] text-[--bg-base] text-xs font-semibold px-3.5 py-2 rounded-lg hover:opacity-80 transition-opacity flex items-center gap-1"
+                  className="bg-[--text-primary] text-[--bg-base] text-xs font-semibold px-3.5 py-2 rounded-lg hover:opacity-90 transition-opacity flex items-center gap-1"
                 >
                   <Send className="w-3.5 h-3.5" /> Post
                 </button>
@@ -482,7 +491,7 @@ export function IssueDetailModal({ issue, onClose }: IssueDetailModalProps) {
         </div>
 
         {/* Modal Footer */}
-        <div className="bg-[--bg-subtle] px-6 py-3 border-t border-[--border] flex justify-end">
+        <div className="bg-[--bg-subtle] px-6 py-3 border-t border-[--border] flex justify-end shrink-0">
           <button
             onClick={onClose}
             className="px-4 py-2 bg-[--bg-surface] text-[--text-primary] border border-[--border] text-xs font-semibold rounded-lg hover:bg-[--bg-subtle] transition-colors"

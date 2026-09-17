@@ -4,12 +4,12 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useApp } from '@/context/AppContext';
-import { 
-  ShieldCheck, 
-  User, 
-  Mail, 
-  Phone, 
-  Lock, 
+import {
+  ShieldCheck,
+  User,
+  Mail,
+  Phone,
+  Lock,
   ArrowRight,
   CheckCircle2
 } from 'lucide-react';
@@ -23,7 +23,7 @@ export default function SignupPage() {
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  
+
   const [errorMessage, setErrorMessage] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -59,7 +59,7 @@ export default function SignupPage() {
 
   return (
     <div className="w-full max-w-md mx-auto px-4 py-12 space-y-6 font-sans">
-      
+
       {/* Header */}
       <div className="text-center space-y-2">
         <div className="w-12 h-12 rounded-2xl bg-blue-600 flex items-center justify-center text-white mx-auto shadow-lg shadow-blue-600/30">
@@ -75,7 +75,7 @@ export default function SignupPage() {
 
       {/* Card */}
       <div className="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 space-y-5 shadow-sm">
-        
+
         {errorMessage && (
           <div className="p-3 bg-red-50 border border-red-200 text-red-700 text-xs rounded-xl font-medium">
             {errorMessage}

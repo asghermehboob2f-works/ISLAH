@@ -7,16 +7,16 @@ import { useApp } from '@/context/AppContext';
 import { IssueCard } from '@/components/IssueCard';
 import { IssueDetailModal } from '@/components/IssueDetailModal';
 import { CivicIssue } from '@/lib/types';
-import { 
-  User, 
-  Award, 
-  PlusCircle, 
-  FileText, 
-  CheckCircle2, 
-  Clock, 
-  AlertTriangle, 
-  TrendingUp, 
-  MapPin, 
+import {
+  User,
+  Award,
+  PlusCircle,
+  FileText,
+  CheckCircle2,
+  Clock,
+  AlertTriangle,
+  TrendingUp,
+  MapPin,
   Sparkles,
   LogIn,
   ArrowRight,
@@ -113,10 +113,10 @@ export default function CitizenDashboardPage() {
 
   return (
     <div className="w-full max-w-[1800px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 py-8 space-y-8 font-sans">
-      
+
       {/* Header Profile Banner */}
       <div className="bg-slate-900 text-white rounded-2xl p-6 sm:p-8 border border-slate-800 shadow-lg grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
-        
+
         <div className="lg:col-span-7 space-y-4">
           <div className="flex items-center gap-4">
             <div className="w-14 h-14 rounded-2xl bg-blue-600 flex items-center justify-center font-black text-xl text-white shadow-md shadow-blue-600/30">
@@ -177,11 +177,10 @@ export default function CitizenDashboardPage() {
       <div className="flex items-center gap-2 border-b border-slate-200 pb-3">
         <button
           onClick={() => setActiveTab('overview')}
-          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 ${
-            activeTab === 'overview'
+          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 ${activeTab === 'overview'
               ? 'bg-slate-900 text-white shadow-md'
               : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200'
-          }`}
+            }`}
         >
           <FileText className="w-4 h-4" />
           <span>Overview & Quick Actions</span>
@@ -189,11 +188,10 @@ export default function CitizenDashboardPage() {
 
         <button
           onClick={() => setActiveTab('emergency')}
-          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 ${
-            activeTab === 'emergency'
+          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 ${activeTab === 'emergency'
               ? 'bg-red-600 text-white shadow-md'
               : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200'
-          }`}
+            }`}
         >
           <AlertTriangle className="w-4 h-4 text-red-500" />
           <span>Emergency Reports ({myEmergencyReports.length})</span>
@@ -201,11 +199,10 @@ export default function CitizenDashboardPage() {
 
         <button
           onClick={() => setActiveTab('settings')}
-          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 ${
-            activeTab === 'settings'
+          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 ${activeTab === 'settings'
               ? 'bg-slate-900 text-white shadow-md'
               : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200'
-          }`}
+            }`}
         >
           <KeyRound className="w-4 h-4" />
           <span>Account Settings & Password</span>
@@ -215,10 +212,10 @@ export default function CitizenDashboardPage() {
       {/* TAB 1: OVERVIEW */}
       {activeTab === 'overview' && (
         <div className="space-y-8">
-          
+
           {/* Quick Action Navigation Grid: Two Separate Reporting Tracks (Spec #2) */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            
+
             {/* Track 1: Civic Issue */}
             <Link
               href="/report/civic"
@@ -271,13 +268,13 @@ export default function CitizenDashboardPage() {
 
             <Link
               href="/live-map"
-              className="bg-white border border-slate-200 hover:border-blue-400 p-5 rounded-2xl shadow-xs transition-all group flex flex-col justify-between space-y-3"
+              className="bg-white border border-slate-200 hover:border-slate-400 p-5 rounded-lg shadow-xs transition-all group flex flex-col justify-between space-y-3"
             >
-              <div className="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center text-slate-700">
-                <TrendingUp className="w-5 h-5 text-purple-600" />
+              <div className="w-10 h-10 rounded-md bg-slate-100 flex items-center justify-center text-slate-700">
+                <TrendingUp className="w-5 h-5 text-slate-700" />
               </div>
               <div>
-                <h3 className="font-bold text-slate-900 text-base flex items-center justify-between group-hover:text-purple-600">
+                <h3 className="font-bold text-slate-900 text-base flex items-center justify-between group-hover:text-slate-900">
                   Live Spatial Map
                   <ArrowRight className="w-4 h-4 text-slate-400 group-hover:translate-x-1 transition-transform" />
                 </h3>
@@ -397,9 +394,8 @@ export default function CitizenDashboardPage() {
           </div>
 
           {passNotice && (
-            <div className={`p-4 rounded-xl text-xs font-bold flex items-center gap-2 ${
-              passNotice.type === 'success' ? 'bg-emerald-100 text-emerald-800 border border-emerald-300' : 'bg-red-100 text-red-800 border border-red-300'
-            }`}>
+            <div className={`p-4 rounded-xl text-xs font-bold flex items-center gap-2 ${passNotice.type === 'success' ? 'bg-emerald-100 text-emerald-800 border border-emerald-300' : 'bg-red-100 text-red-800 border border-red-300'
+              }`}>
               {passNotice.type === 'success' ? <Check className="w-4 h-4" /> : <AlertTriangle className="w-4 h-4" />}
               <span>{passNotice.text}</span>
             </div>
