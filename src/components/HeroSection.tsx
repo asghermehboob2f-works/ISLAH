@@ -24,8 +24,8 @@ export function HeroSection() {
       />
 
       {/* Content */}
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="max-w-[860px] mx-auto text-center space-y-6 sm:space-y-8">
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+        <div className="max-w-3xl mx-auto text-center space-y-6 sm:space-y-8">
 
           {/* Eyebrow */}
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-md bg-[--bg-surface] border border-[--border] text-[--text-secondary] text-xs font-medium shadow-xs">
@@ -39,7 +39,7 @@ export function HeroSection() {
           </h1>
 
           {/* Subtext */}
-          <p className="text-base sm:text-lg text-[--text-secondary] font-normal leading-relaxed max-w-[720px] mx-auto">
+          <p className="text-base sm:text-lg text-[--text-secondary] font-normal leading-relaxed max-w-2xl mx-auto">
             Islah turns local issues into accountable action. Every report is documented, location-aware, and routed directly to responsible municipal departments with complete SLA transparency.
           </p>
 
@@ -61,48 +61,48 @@ export function HeroSection() {
               <ArrowRight className="w-4 h-4 text-[--text-muted] group-hover:translate-x-0.5 transition-transform" />
             </Link>
           </div>
+        </div>
 
-          {/* Metrics */}
-          <div className="pt-8 border-t border-[--border]">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5 text-left max-w-[820px] mx-auto">
+        {/* Metrics Grid — Full Container Width */}
+        <div className="pt-8 border-t border-[--border] w-full">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 lg:gap-6 text-left w-full">
 
-              <div className="bg-[--bg-surface] border border-[--border] hover:border-[--border-subtle] p-4.5 rounded-xl space-y-1.5 transition-all">
-                <div className="flex items-center justify-between">
-                  <div className="text-2xl font-bold text-[--text-primary] tracking-tight">{totalReported.toLocaleString()}</div>
-                  <span className="text-[10px] font-semibold text-[--text-muted] bg-[--bg-subtle] border border-[--border] px-2 py-0.5 rounded-md">Tracked</span>
-                </div>
-                <div className="text-xs font-semibold text-[--text-primary] flex items-center gap-1.5">
-                  <ShieldCheck className="w-3.5 h-3.5 text-[--text-muted] shrink-0" />
-                  Civic Issues Logged
-                </div>
-                <p className="text-[11px] text-[--text-muted] leading-snug">Geotagged infrastructure reports routed directly to municipal authorities.</p>
+            <div className="bg-[--bg-surface] border border-[--border] hover:border-[--border-subtle] p-5 rounded-lg space-y-2 transition-all">
+              <div className="flex items-center justify-between">
+                <div className="text-2xl sm:text-3xl font-bold text-[--text-primary] tracking-tight">{totalReported.toLocaleString()}</div>
+                <span className="text-[10px] font-semibold text-[--text-muted] bg-[--bg-subtle] border border-[--border] px-2 py-0.5 rounded-md">Tracked</span>
               </div>
-
-              <div className="bg-[--bg-surface] border border-[--border] hover:border-[--border-subtle] p-4.5 rounded-xl space-y-1.5 transition-all">
-                <div className="flex items-center justify-between">
-                  <div className="text-2xl font-bold text-[--text-primary] tracking-tight">{totalResolved.toLocaleString()}</div>
-                  <span className="text-[10px] font-semibold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 px-2 py-0.5 rounded-md">Verified</span>
-                </div>
-                <div className="text-xs font-semibold text-[--text-primary] flex items-center gap-1.5">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
-                  Verified Resolutions
-                </div>
-                <p className="text-[11px] text-[--text-muted] leading-snug">Confirmed resolutions backed by transparent public audit trails.</p>
+              <div className="text-xs font-semibold text-[--text-primary] flex items-center gap-1.5">
+                <ShieldCheck className="w-4 h-4 text-[--text-muted] shrink-0" />
+                Civic Issues Logged
               </div>
-
-              <div className="bg-[--bg-surface] border border-[--border] hover:border-[--border-subtle] p-4.5 rounded-xl space-y-1.5 transition-all">
-                <div className="flex items-center justify-between">
-                  <div className="text-2xl font-bold text-[--text-primary] tracking-tight">{typeof avgTime === 'number' ? `${avgTime}h` : avgTime}</div>
-                  <span className="text-[10px] font-semibold text-[--text-muted] bg-[--bg-subtle] border border-[--border] px-2 py-0.5 rounded-md">SLA</span>
-                </div>
-                <div className="text-xs font-semibold text-[--text-primary] flex items-center gap-1.5">
-                  <Clock className="w-3.5 h-3.5 text-[--text-muted] shrink-0" />
-                  Avg Response Time
-                </div>
-                <p className="text-[11px] text-[--text-muted] leading-snug">Automated department dispatch to field crews for rapid triage.</p>
-              </div>
-
+              <p className="text-xs text-[--text-muted] leading-relaxed">Geotagged infrastructure reports routed directly to municipal authorities.</p>
             </div>
+
+            <div className="bg-[--bg-surface] border border-[--border] hover:border-[--border-subtle] p-5 rounded-lg space-y-2 transition-all">
+              <div className="flex items-center justify-between">
+                <div className="text-2xl sm:text-3xl font-bold text-[--text-primary] tracking-tight">{totalResolved.toLocaleString()}</div>
+                <span className="text-[10px] font-semibold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 px-2 py-0.5 rounded-md">Verified</span>
+              </div>
+              <div className="text-xs font-semibold text-[--text-primary] flex items-center gap-1.5">
+                <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
+                Verified Resolutions
+              </div>
+              <p className="text-xs text-[--text-muted] leading-relaxed">Confirmed resolutions backed by transparent public audit trails.</p>
+            </div>
+
+            <div className="bg-[--bg-surface] border border-[--border] hover:border-[--border-subtle] p-5 rounded-lg space-y-2 transition-all">
+              <div className="flex items-center justify-between">
+                <div className="text-2xl sm:text-3xl font-bold text-[--text-primary] tracking-tight">{typeof avgTime === 'number' ? `${avgTime}h` : avgTime}</div>
+                <span className="text-[10px] font-semibold text-[--text-muted] bg-[--bg-subtle] border border-[--border] px-2 py-0.5 rounded-md">SLA</span>
+              </div>
+              <div className="text-xs font-semibold text-[--text-primary] flex items-center gap-1.5">
+                <Clock className="w-4 h-4 text-[--text-muted] shrink-0" />
+                Avg Response Time
+              </div>
+              <p className="text-xs text-[--text-muted] leading-relaxed">Automated department dispatch to field crews for rapid triage.</p>
+            </div>
+
           </div>
         </div>
       </div>

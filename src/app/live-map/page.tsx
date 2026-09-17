@@ -78,7 +78,7 @@ export default function LiveMapPage() {
   const emergencyCount = filteredIssues.filter(i => i.emergency || i.severity === 'critical' || i.severity === 'high').length;
 
   return (
-    <div className="w-full max-w-[1800px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 py-4 space-y-3 font-sans">
+    <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 space-y-3 font-sans">
 
       {/* Single Ultra-Slim Unified Classic White Control Tile */}
       <div className="bg-white rounded-2xl border border-slate-200 p-3 shadow-xs flex flex-col xl:flex-row xl:items-center justify-between gap-3">

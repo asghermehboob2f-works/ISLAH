@@ -26,7 +26,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <ThemeProvider>
           <AppProvider>
             <Navbar />
-            <main className="flex-1 bg-[--bg-base]">
+            <main className="flex-1 w-full bg-[--bg-base]">
               {children}
             </main>
             <Footer />
