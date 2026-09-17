@@ -99,10 +99,9 @@ export function IssueDetailModal({ issue, onClose }: IssueDetailModalProps) {
 
   return (
     <>
-      {/* Backdrop scrim — dims page. NO backdrop-filter blur here.
-          Blur on this element bleeds through to the modal content above it. */}
+      {/* Backdrop scrim — dims page. NO backdrop-filter blur here. */}
       <div
-        className="fixed inset-0 z-[90] bg-black/60"
+        className="fixed inset-0 z-[90] bg-black/70 backdrop-blur-none"
         onClick={onClose}
         aria-hidden="true"
       />
@@ -110,16 +109,19 @@ export function IssueDetailModal({ issue, onClose }: IssueDetailModalProps) {
       {/* Modal shell — centered, scrollable wrapper */}
       <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 overflow-y-auto font-sans pointer-events-none">
 
-        {/* Solid Opaque Modal Dialog Panel */}
+        {/* Solid 100% Opaque Modal Dialog Panel */}
         <div
           role="dialog"
           aria-modal="true"
-          style={{ isolation: 'isolate' }}
-          className="relative bg-[--bg-surface] text-[--text-primary] w-full max-w-4xl rounded-xl shadow-2xl border border-[--border] overflow-hidden my-auto max-h-[90vh] flex flex-col pointer-events-auto"
+          style={{ isolation: 'isolate', backgroundColor: 'var(--bg-surface)' }}
+          className="relative bg-white dark:bg-[#161b22] text-[--text-primary] w-full max-w-4xl rounded-xl shadow-2xl border border-[--border] overflow-hidden my-auto max-h-[90vh] flex flex-col pointer-events-auto"
         >
 
         {/* Modal Top Header */}
-        <div className="bg-[--bg-subtle] px-6 py-4 flex items-center justify-between border-b border-[--border] shrink-0">
+        <div
+          style={{ backgroundColor: 'var(--bg-subtle)' }}
+          className="bg-slate-50 dark:bg-[#1c2333] px-6 py-4 flex items-center justify-between border-b border-[--border] shrink-0"
+        >
           <div className="flex items-center gap-3">
             <span className="text-xs font-mono font-bold bg-[--bg-surface] text-[--text-primary] border border-[--border] px-2.5 py-1 rounded">
               {issue.ticketNumber}
@@ -137,7 +139,10 @@ export function IssueDetailModal({ issue, onClose }: IssueDetailModalProps) {
         </div>
 
         {/* Modal Content Scroll Area */}
-        <div className="p-6 overflow-y-auto space-y-6 flex-1 bg-[--bg-surface]">
+        <div
+          style={{ backgroundColor: 'var(--bg-surface)' }}
+          className="p-6 overflow-y-auto space-y-6 flex-1 bg-white dark:bg-[#161b22]"
+        >
 
           {/* Main Title & Status Row */}
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-[--border]">
@@ -497,7 +502,10 @@ export function IssueDetailModal({ issue, onClose }: IssueDetailModalProps) {
         </div>
 
         {/* Modal Footer */}
-        <div className="bg-[--bg-subtle] px-6 py-3.5 border-t border-[--border] flex justify-end shrink-0">
+        <div
+          style={{ backgroundColor: 'var(--bg-subtle)' }}
+          className="bg-slate-50 dark:bg-[#1c2333] px-6 py-3.5 border-t border-[--border] flex justify-end shrink-0"
+        >
           <button
             onClick={onClose}
             className="px-4 py-2 bg-[--bg-surface] text-[--text-primary] border border-[--border] text-xs font-bold rounded-lg hover:bg-[--bg-subtle] transition-colors"

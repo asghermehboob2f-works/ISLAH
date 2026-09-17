@@ -441,8 +441,8 @@ export function DepartmentManagementSection() {
 
           <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 overflow-y-auto font-sans pointer-events-none">
             <div 
-              style={{ isolation: 'isolate' }}
-              className="relative bg-[--bg-surface] text-[--text-primary] w-full max-w-4xl rounded-xl shadow-2xl border border-[--border] overflow-hidden my-auto max-h-[90vh] flex flex-col pointer-events-auto"
+              style={{ isolation: 'isolate', backgroundColor: 'var(--bg-surface)' }}
+              className="relative bg-white dark:bg-[#161b22] text-[--text-primary] w-full max-w-4xl rounded-xl shadow-2xl border border-[--border] overflow-hidden my-auto max-h-[90vh] flex flex-col pointer-events-auto"
             >
             
             {/* Modal Header */}
@@ -747,8 +747,8 @@ export function DepartmentManagementSection() {
 
           <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 overflow-y-auto font-sans pointer-events-none">
             <div 
-              style={{ isolation: 'isolate' }}
-              className="relative bg-[--bg-surface] text-[--text-primary] w-full max-w-2xl rounded-xl shadow-2xl border border-[--border] overflow-hidden my-auto p-6 space-y-5 pointer-events-auto"
+              style={{ isolation: 'isolate', backgroundColor: 'var(--bg-surface)' }}
+              className="relative bg-white dark:bg-[#161b22] text-[--text-primary] w-full max-w-2xl rounded-xl shadow-2xl border border-[--border] overflow-hidden my-auto p-6 space-y-5 pointer-events-auto"
             >
             
             <div className="flex items-center justify-between border-b border-[--border] pb-3">
