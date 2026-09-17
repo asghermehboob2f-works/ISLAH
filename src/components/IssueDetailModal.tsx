@@ -109,21 +109,21 @@ export function IssueDetailModal({ issue, onClose }: IssueDetailModalProps) {
       {/* Modal shell — centered, scrollable wrapper */}
       <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 overflow-y-auto font-sans pointer-events-none">
 
-        {/* Solid 100% Opaque Modal Dialog Panel */}
+        {/* Solid 100% Opaque Modal Dialog Panel — Classic Clean Professional Off-White */}
         <div
           role="dialog"
           aria-modal="true"
           style={{ isolation: 'isolate', backgroundColor: 'var(--bg-surface)' }}
-          className="relative bg-white dark:bg-[#161b22] text-[--text-primary] w-full max-w-4xl rounded-xl shadow-2xl border border-[--border] overflow-hidden my-auto max-h-[90vh] flex flex-col pointer-events-auto"
+          className="relative bg-[#f8fafc] dark:bg-[#161b22] text-[--text-primary] w-full max-w-4xl rounded-xl shadow-2xl border border-[--border] overflow-hidden my-auto max-h-[90vh] flex flex-col pointer-events-auto"
         >
 
         {/* Modal Top Header */}
         <div
           style={{ backgroundColor: 'var(--bg-subtle)' }}
-          className="bg-slate-50 dark:bg-[#1c2333] px-6 py-4 flex items-center justify-between border-b border-[--border] shrink-0"
+          className="bg-[#edf2f7] dark:bg-[#1c2333] px-6 py-4 flex items-center justify-between border-b border-[--border] shrink-0"
         >
           <div className="flex items-center gap-3">
-            <span className="text-xs font-mono font-bold bg-[--bg-surface] text-[--text-primary] border border-[--border] px-2.5 py-1 rounded">
+            <span className="text-xs font-mono font-bold bg-white dark:bg-[#21262d] text-[--text-primary] border border-[--border] px-2.5 py-1 rounded shadow-2xs">
               {issue.ticketNumber}
             </span>
             <span className="text-sm font-bold text-[--text-primary]">{issue.category}</span>
@@ -131,7 +131,7 @@ export function IssueDetailModal({ issue, onClose }: IssueDetailModalProps) {
 
           <button
             onClick={onClose}
-            className="p-1.5 rounded-lg text-[--text-secondary] hover:text-[--text-primary] hover:bg-[--bg-surface] transition-colors"
+            className="p-1.5 rounded-lg text-[--text-secondary] hover:text-[--text-primary] hover:bg-white/80 dark:hover:bg-white/10 transition-colors"
             aria-label="Close dialog"
           >
             <X className="w-5 h-5" />
@@ -141,7 +141,7 @@ export function IssueDetailModal({ issue, onClose }: IssueDetailModalProps) {
         {/* Modal Content Scroll Area */}
         <div
           style={{ backgroundColor: 'var(--bg-surface)' }}
-          className="p-6 overflow-y-auto space-y-6 flex-1 bg-white dark:bg-[#161b22]"
+          className="p-6 overflow-y-auto space-y-6 flex-1 bg-[#f8fafc] dark:bg-[#161b22]"
         >
 
           {/* Main Title & Status Row */}
@@ -504,11 +504,11 @@ export function IssueDetailModal({ issue, onClose }: IssueDetailModalProps) {
         {/* Modal Footer */}
         <div
           style={{ backgroundColor: 'var(--bg-subtle)' }}
-          className="bg-slate-50 dark:bg-[#1c2333] px-6 py-3.5 border-t border-[--border] flex justify-end shrink-0"
+          className="bg-[#edf2f7] dark:bg-[#1c2333] px-6 py-3.5 border-t border-[--border] flex justify-end shrink-0"
         >
           <button
             onClick={onClose}
-            className="px-4 py-2 bg-[--bg-surface] text-[--text-primary] border border-[--border] text-xs font-bold rounded-lg hover:bg-[--bg-subtle] transition-colors"
+            className="px-4 py-2 bg-white dark:bg-[#21262d] text-[--text-primary] border border-[--border] text-xs font-bold rounded-lg hover:bg-[#edf2f7] dark:hover:bg-[#161b22] transition-colors shadow-2xs"
           >
             Close
           </button>

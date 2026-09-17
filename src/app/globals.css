@@ -18,16 +18,16 @@
    DESIGN TOKENS
    ============================================================ */
 :root {
-  --bg-base: #f4f6f9;
-  --bg-surface: #ffffff;
-  --bg-subtle: #f0f3f7;
-  --bg-muted: #e4e9f0;
-  --border: #dde3ec;
-  --border-subtle: #c8d2df;
-  --text-primary: #0d1117;
-  --text-secondary: #4a5568;
-  --text-muted: #718096;
-  --ring: #93a6b8;
+  --bg-base: #f1f4f8;
+  --bg-surface: #f8fafc;
+  --bg-subtle: #edf2f7;
+  --bg-muted: #e2e8f0;
+  --border: #dbe2ea;
+  --border-subtle: #cad4e0;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+  --ring: #94a3b8;
   --accent: #1e40af;
   --accent-hover: #1d4ed8;
   --accent-subtle: #eff6ff;
