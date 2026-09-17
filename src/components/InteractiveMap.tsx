@@ -223,29 +223,29 @@ export function InteractiveMap({
 
       const marker = L.marker([lat, lng], { icon: pinIcon });
       const reportedDateStr = new Date(issue.reportedAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
-      const photoHtml = issue.photoUrl ? `<img src="${issue.photoUrl}" alt="Issue photo" class="w-full h-24 object-cover rounded-lg my-1.5 border border-slate-200" />` : '';
+      const photoHtml = issue.photoUrl ? `<img src="${issue.photoUrl}" alt="Issue photo" class="w-full h-24 object-cover rounded-lg my-1.5 border border-[--border]" />` : '';
 
       const sensitiveBadge = issue.isSensitiveWildlife
-        ? `<div class="bg-slate-100 text-slate-800 text-[9px] font-bold px-2 py-0.5 rounded my-1 border border-slate-300">🛡️ Protected Wildlife Zone (~500m Approx)</div>`
+        ? `<div class="bg-[--bg-subtle] text-[--text-primary] text-[9px] font-bold px-2 py-0.5 rounded my-1 border border-[--border]">🛡️ Protected Wildlife Zone (~500m Approx)</div>`
         : '';
 
       const popupContent = document.createElement('div');
-      popupContent.className = 'p-1 font-sans max-w-[240px]';
+      popupContent.className = 'p-1 font-sans max-w-[240px] text-[--text-primary]';
       popupContent.innerHTML = `
-        <div class="flex items-center justify-between gap-2 border-b border-slate-100 pb-1 mb-1.5">
-          <span class="text-[10px] font-mono font-bold text-blue-600">${issue.ticketNumber}</span>
-          <span class="text-[9px] font-extrabold uppercase px-1.5 py-0.5 rounded ${issue.emergency ? 'bg-red-100 text-red-700' :
-          issue.status === 'resolved' ? 'bg-emerald-100 text-emerald-700' :
-            issue.status === 'in_progress' ? 'bg-amber-100 text-amber-700' : 'bg-blue-100 text-blue-700'
+        <div class="flex items-center justify-between gap-2 border-b border-[--border] pb-1 mb-1.5">
+          <span class="text-[10px] font-mono font-bold text-blue-600 dark:text-blue-400">${issue.ticketNumber}</span>
+          <span class="text-[9px] font-extrabold uppercase px-1.5 py-0.5 rounded ${issue.emergency ? 'bg-red-100 dark:bg-red-950 text-red-700 dark:text-red-300' :
+          issue.status === 'resolved' ? 'bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300' :
+            issue.status === 'in_progress' ? 'bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-300' : 'bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300'
         }">${issue.status.replace('_', ' ')}</span>
         </div>
         ${sensitiveBadge}
-        <h4 class="font-extrabold text-xs text-slate-900 leading-snug">${issue.title}</h4>
-        <p class="text-[10px] text-slate-500 line-clamp-1 mt-0.5">${issue.location.address}</p>
+        <h4 class="font-bold text-xs text-[--text-primary] leading-snug">${issue.title}</h4>
+        <p class="text-[10px] text-[--text-secondary] line-clamp-1 mt-0.5">${issue.location.address}</p>
         ${photoHtml}
-        <div class="mt-2 flex items-center justify-between text-[10px] text-slate-400">
+        <div class="mt-2 flex items-center justify-between text-[10px] text-[--text-muted]">
           <span>Date: ${reportedDateStr}</span>
-          <button id="btn-view-${issue.id}" class="text-blue-600 font-bold hover:underline flex items-center gap-0.5">
+          <button id="btn-view-${issue.id}" class="text-blue-600 dark:text-blue-400 font-bold hover:underline flex items-center gap-0.5">
             Details &rarr;
           </button>
         </div>
@@ -278,11 +278,11 @@ export function InteractiveMap({
   };
 
   return (
-    <div className={`relative w-full ${height} bg-[--bg-surface] rounded-2xl overflow-hidden border border-[--border] shadow-xs flex flex-col`}>
+    <div className={`relative w-full ${height} bg-[--bg-surface] rounded-xl overflow-hidden border border-[--border] shadow-xs flex flex-col`}>
 
       {/* Map Control Header Bar */}
       {!pickerMode && (
-        <div className="absolute top-4 left-4 right-4 z-[400] flex flex-wrap items-center justify-between gap-3 bg-[--bg-surface] border border-[--border] p-2.5 rounded-xl shadow-sm">
+        <div className="absolute top-4 left-4 right-4 z-[400] flex flex-wrap items-center justify-between gap-3 bg-[--bg-surface] border border-[--border] p-2.5 rounded-lg shadow-sm">
 
           <div className="flex items-center gap-2">
             <Filter className="w-4 h-4 text-[--text-secondary]" />
@@ -334,7 +334,7 @@ export function InteractiveMap({
 
       {/* Live Map Status Legend Bar */}
       {!pickerMode && (
-        <div className="absolute bottom-4 right-4 z-[400] bg-[--bg-surface] border border-[--border] px-3 py-2 rounded-xl text-[11px] text-[--text-secondary] flex items-center gap-3 shadow-sm">
+        <div className="absolute bottom-4 right-4 z-[400] bg-[--bg-surface] border border-[--border] px-3 py-2 rounded-lg text-[11px] text-[--text-secondary] flex items-center gap-3 shadow-sm">
           <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-blue-500" /> Reported</span>
           <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-amber-500" /> In Progress</span>
           <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-emerald-500" /> Resolved</span>

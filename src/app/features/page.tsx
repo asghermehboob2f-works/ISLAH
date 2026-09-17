@@ -3,15 +3,15 @@ import { ShieldCheck, Cpu, MapPin, AlertTriangle, Layers, Lock, RefreshCw, BarCh
 
 export default function FeaturesPage() {
   return (
-    <div className="w-full max-w-6xl xl:max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 py-12 space-y-12">
+    <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 py-12 space-y-12 font-sans">
       <div className="text-center space-y-3 max-w-2xl mx-auto">
-        <span className="text-xs font-extrabold text-blue-600 uppercase tracking-wider">
+        <span className="text-xs font-bold text-[--text-muted] uppercase tracking-wider">
           Technology Overview
         </span>
-        <h1 className="text-3xl font-bold text-slate-900">
+        <h1 className="text-3xl sm:text-4xl font-extrabold text-[--text-primary] tracking-tight">
           ISLAH Technical Capabilities
         </h1>
-        <p className="text-xs sm:text-sm text-slate-600">
+        <p className="text-xs sm:text-sm text-[--text-secondary]">
           Built as a modern civic technology platform with production-grade engineering standards.
         </p>
       </div>
@@ -27,12 +27,12 @@ export default function FeaturesPage() {
         ].map((feat, i) => {
           const Icon = feat.icon;
           return (
-            <div key={i} className="bg-white border border-slate-200 p-6 rounded-2xl space-y-3 shadow-sm">
-              <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold">
+            <div key={i} className="bg-[--bg-surface] border border-[--border] p-6 rounded-xl space-y-3 shadow-xs">
+              <div className="w-10 h-10 rounded-xl bg-blue-600/10 text-blue-600 dark:text-blue-400 border border-blue-600/20 flex items-center justify-center font-bold">
                 <Icon className="w-5 h-5" />
               </div>
-              <h3 className="text-base font-bold text-slate-900">{feat.title}</h3>
-              <p className="text-xs text-slate-600 leading-relaxed">{feat.desc}</p>
+              <h3 className="text-base font-bold text-[--text-primary]">{feat.title}</h3>
+              <p className="text-xs text-[--text-secondary] leading-relaxed">{feat.desc}</p>
             </div>
           );
         })}

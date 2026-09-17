@@ -47,7 +47,7 @@ function LoginContent() {
       </div>
 
       {/* Card */}
-      <div className="bg-[--bg-surface] rounded-2xl border border-[--border] p-6 sm:p-8 space-y-5 shadow-sm">
+      <div className="bg-[--bg-surface] rounded-xl border border-[--border] p-6 sm:p-8 space-y-5 shadow-sm">
 
         {errorMessage && (
           <div className="p-3 bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-800/60 text-red-700 dark:text-red-300 text-xs rounded-xl">
@@ -66,7 +66,7 @@ function LoginContent() {
                 value={identifier}
                 onChange={(e) => setIdentifier(e.target.value)}
                 placeholder="you@domain.org"
-                className="w-full border border-[--border] rounded-xl pl-9 pr-3 py-2.5 bg-[--bg-subtle] text-[--text-primary] placeholder-[--text-muted] focus:ring-2 focus:ring-[--ring] focus:border-[--ring] focus:outline-none transition-all"
+                className="w-full border border-[--border] rounded-xl pl-9 pr-3 py-2.5 bg-[--bg-subtle] text-[--text-primary] placeholder-[--text-muted] focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 focus:outline-none transition-all"
               />
               <Mail className="w-4 h-4 text-[--text-muted] absolute left-3 top-3" />
             </div>
@@ -75,7 +75,7 @@ function LoginContent() {
           <div className="space-y-1.5">
             <div className="flex items-center justify-between">
               <label className="font-semibold text-[--text-primary]">Password</label>
-              <button type="button" onClick={() => alert('Password reset link sent to your registered email/phone.')} className="text-[11px] text-[--text-muted] hover:text-[--text-primary] transition-colors">
+              <button type="button" onClick={() => alert('Password reset link sent to your registered email/phone.')} className="text-[11px] text-[--text-muted] hover:text-[--text-primary] transition-colors cursor-pointer">
                 Forgot password?
               </button>
             </div>
@@ -86,7 +86,7 @@ function LoginContent() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full border border-[--border] rounded-xl pl-9 pr-3 py-2.5 bg-[--bg-subtle] text-[--text-primary] placeholder-[--text-muted] focus:ring-2 focus:ring-[--ring] focus:border-[--ring] focus:outline-none transition-all"
+                className="w-full border border-[--border] rounded-xl pl-9 pr-3 py-2.5 bg-[--bg-subtle] text-[--text-primary] placeholder-[--text-muted] focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 focus:outline-none transition-all"
               />
               <Lock className="w-4 h-4 text-[--text-muted] absolute left-3 top-3" />
             </div>
@@ -95,7 +95,7 @@ function LoginContent() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-[--text-primary] hover:opacity-80 text-[--bg-base] font-semibold py-3 rounded-xl transition-all flex items-center justify-center gap-2 text-xs active:scale-[0.99] disabled:opacity-50"
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-xl transition-all flex items-center justify-center gap-2 text-xs active:scale-[0.99] disabled:opacity-50 shadow-sm cursor-pointer"
           >
             <span>{loading ? 'Signing in…' : 'Sign In'}</span>
             <ArrowRight className="w-4 h-4" />

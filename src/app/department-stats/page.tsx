@@ -8,15 +8,15 @@ export default function DepartmentStatsPage() {
   const { departments, stats } = useApp();
 
   return (
-    <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-10 font-sans text-[--text-primary]">
+    <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 py-10 space-y-10 font-sans text-[--text-primary]">
 
       {/* Header */}
       <div className="space-y-2">
         <span className="text-xs font-semibold text-[--text-muted] uppercase tracking-wider">
           Public Accountability
         </span>
-        <h1 className="text-3xl font-bold tracking-tight text-[--text-primary] flex items-center gap-2.5">
-          <BarChart3 className="w-8 h-8 text-[--text-primary]" />
+        <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-[--text-primary] flex items-center gap-2.5">
+          <BarChart3 className="w-8 h-8 text-[--accent]" />
           Department Performance &amp; SLA Analytics
         </h1>
         <p className="text-sm text-[--text-secondary]">
@@ -26,25 +26,25 @@ export default function DepartmentStatsPage() {
 
       {/* Top Metrics Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-        <div className="bg-[--bg-surface] border border-[--border] hover:border-[--border-subtle] p-6 rounded-2xl space-y-2 transition-all">
+        <div className="bg-[--bg-surface] border border-[--border] hover:border-[--border-subtle] p-6 rounded-xl space-y-2 transition-all shadow-xs">
           <CheckCircle2 className="w-6 h-6 text-emerald-500" />
           <div className="text-3xl font-bold font-mono text-[--text-primary]">{stats.slaCompliancePercent || 98}%</div>
           <div className="text-xs font-semibold text-[--text-muted] uppercase tracking-wider">Overall SLA Pass Rate</div>
         </div>
 
-        <div className="bg-[--bg-surface] border border-[--border] hover:border-[--border-subtle] p-6 rounded-2xl space-y-2 transition-all">
+        <div className="bg-[--bg-surface] border border-[--border] hover:border-[--border-subtle] p-6 rounded-xl space-y-2 transition-all shadow-xs">
           <Clock className="w-6 h-6 text-[--text-muted]" />
           <div className="text-3xl font-bold font-mono text-[--text-primary]">{stats.avgResolutionHours || 14} Hours</div>
           <div className="text-xs font-semibold text-[--text-muted] uppercase tracking-wider">Avg City Resolution Time</div>
         </div>
 
-        <div className="bg-[--bg-surface] border border-[--border] hover:border-[--border-subtle] p-6 rounded-2xl space-y-2 transition-all">
+        <div className="bg-[--bg-surface] border border-[--border] hover:border-[--border-subtle] p-6 rounded-xl space-y-2 transition-all shadow-xs">
           <ShieldCheck className="w-6 h-6 text-[--text-muted]" />
           <div className="text-3xl font-bold font-mono text-[--text-primary]">{stats.totalResolved.toLocaleString()}</div>
           <div className="text-xs font-semibold text-[--text-muted] uppercase tracking-wider">Total Issues Resolved</div>
         </div>
 
-        <div className="bg-[--bg-surface] border border-[--border] hover:border-[--border-subtle] p-6 rounded-2xl space-y-2 transition-all">
+        <div className="bg-[--bg-surface] border border-[--border] hover:border-[--border-subtle] p-6 rounded-xl space-y-2 transition-all shadow-xs">
           <Building className="w-6 h-6 text-[--text-muted]" />
           <div className="text-3xl font-bold font-mono text-[--text-primary]">{departments.length}</div>
           <div className="text-xs font-semibold text-[--text-muted] uppercase tracking-wider">Active Integrated Depts</div>
@@ -52,7 +52,7 @@ export default function DepartmentStatsPage() {
       </div>
 
       {/* Department Leaderboard Table */}
-      <div className="bg-[--bg-surface] rounded-2xl border border-[--border] overflow-hidden space-y-4 p-6">
+      <div className="bg-[--bg-surface] rounded-xl border border-[--border] overflow-hidden space-y-4 p-6 shadow-xs">
         <h2 className="text-lg font-bold text-[--text-primary] flex items-center gap-2">
           <TrendingUp className="w-5 h-5 text-[--text-muted]" />
           Department Performance Scorecard

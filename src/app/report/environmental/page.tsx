@@ -50,16 +50,16 @@ export default function EnvironmentalReportWizardPage() {
   if (!user || activeRole !== 'citizen') {
     return (
       <div className="w-full max-w-md mx-auto px-4 py-16 text-center space-y-6 font-sans">
-        <div className="w-14 h-14 rounded-2xl bg-emerald-50 text-emerald-600 border border-emerald-200 flex items-center justify-center mx-auto">
+        <div className="w-14 h-14 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 flex items-center justify-center mx-auto shadow-sm">
           <Lock className="w-7 h-7" />
         </div>
         <div className="space-y-2">
-          <h2 className="text-2xl font-bold text-slate-900">Authentication Required</h2>
-          <p className="text-xs text-slate-500">Please log in to submit an environmental or wildlife report.</p>
+          <h2 className="text-2xl font-bold text-[--text-primary]">Authentication Required</h2>
+          <p className="text-xs text-[--text-secondary]">Please log in to submit an environmental or wildlife report.</p>
         </div>
         <Link
           href="/login?returnUrl=/report/environmental"
-          className="block w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 rounded-xl text-xs shadow-md"
+          className="block w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3 rounded-xl text-xs shadow-sm"
         >
           Log In to Continue
         </Link>
@@ -136,16 +136,16 @@ export default function EnvironmentalReportWizardPage() {
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto px-4 sm:px-6 py-6 space-y-6 font-sans">
+    <div className="w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6 font-sans">
       
       {/* Navigation Header */}
       {step <= 6 && (
         <div className="flex items-center justify-between">
-          <Link href="/report" className="text-xs font-bold text-slate-500 hover:text-slate-900 flex items-center gap-1.5">
+          <Link href="/report" className="text-xs font-semibold text-[--text-secondary] hover:text-[--text-primary] flex items-center gap-1.5 transition-colors">
             <ArrowLeft className="w-4 h-4" /> Exit Wizard
           </Link>
-          <span className="text-[11px] font-bold bg-emerald-50 text-emerald-800 px-3 py-1 rounded-full border border-emerald-200 uppercase tracking-wider flex items-center gap-1.5">
-            <Trees className="w-3.5 h-3.5 text-emerald-600" /> Environmental & Wildlife Track
+          <span className="text-[11px] font-bold text-[--text-muted] uppercase tracking-wider flex items-center gap-1.5">
+            <Trees className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" /> Environmental & Wildlife Track
           </span>
         </div>
       )}
@@ -275,10 +275,10 @@ export default function EnvironmentalReportWizardPage() {
             type="button"
             onClick={handleBack}
             disabled={step === 1}
-            className={`px-5 py-3 rounded-xl border font-bold text-xs flex items-center gap-1.5 transition-all ${
+            className={`px-5 py-3 rounded-xl border font-semibold text-xs flex items-center gap-1.5 transition-all ${
               step === 1
-                ? 'opacity-40 border-slate-200 text-slate-400 cursor-not-allowed'
-                : 'border-slate-300 text-slate-700 hover:bg-slate-50'
+                ? 'opacity-40 border-[--border] text-[--text-secondary] cursor-not-allowed'
+                : 'border-[--border] text-[--text-primary] hover:bg-[--bg-subtle] cursor-pointer'
             }`}
           >
             <ChevronLeft className="w-4 h-4" /> Back
@@ -288,10 +288,10 @@ export default function EnvironmentalReportWizardPage() {
             type="button"
             onClick={handleNext}
             disabled={!canProceed()}
-            className={`px-7 py-3 rounded-xl font-bold text-xs text-white shadow-md flex items-center gap-1.5 transition-all ${
+            className={`px-7 py-3 rounded-xl font-semibold text-xs text-white shadow-sm flex items-center gap-1.5 transition-all ${
               canProceed()
-                ? 'bg-emerald-600 hover:bg-emerald-500 cursor-pointer active:scale-95'
-                : 'bg-slate-300 cursor-not-allowed'
+                ? 'bg-emerald-600 hover:bg-emerald-700 cursor-pointer active:scale-95'
+                : 'bg-[--border] text-[--text-secondary] cursor-not-allowed'
             }`}
           >
             <span>Next Step</span>

@@ -57,26 +57,26 @@ export default function DepartmentLoginPage() {
           />
         </Link>
         <div>
-          <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">
+          <h1 className="text-2xl font-extrabold text-[--text-primary] tracking-tight">
             Staff Authentication
           </h1>
-          <p className="text-xs text-slate-500 mt-1">
+          <p className="text-xs text-[--text-secondary] mt-1">
             Authorized municipal department officers & field dispatch personnel
           </p>
         </div>
       </div>
 
-      <div className="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 space-y-5 shadow-sm">
+      <div className="bg-[--bg-surface] rounded-xl border border-[--border] p-6 sm:p-8 space-y-5 shadow-sm">
 
         {errorMessage && (
-          <div className="p-3 bg-red-50 border border-red-200 text-red-700 text-xs rounded-xl font-medium">
+          <div className="p-3 bg-red-500/10 border border-red-500/20 text-red-700 dark:text-red-400 text-xs rounded-xl font-medium">
             {errorMessage}
           </div>
         )}
 
         <form onSubmit={handleStaffLogin} className="space-y-4 text-xs">
           <div>
-            <label className="font-bold text-slate-700 block mb-1">
+            <label className="font-semibold text-[--text-primary] block mb-1">
               Official Staff ID or Email
             </label>
             <div className="relative">
@@ -86,14 +86,14 @@ export default function DepartmentLoginPage() {
                 value={staffId}
                 onChange={(e) => setStaffId(e.target.value)}
                 placeholder="STF-PW-001 or officer@metro.gov"
-                className="w-full border border-slate-300 rounded-xl pl-9 pr-3 py-2.5 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-amber-500 focus:outline-none transition-all text-xs font-mono"
+                className="w-full border border-[--border] rounded-xl pl-9 pr-3 py-2.5 bg-[--bg-subtle] text-[--text-primary] focus:ring-2 focus:ring-blue-500/20 focus:outline-none transition-all text-xs font-mono"
               />
-              <KeyRound className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
+              <KeyRound className="w-4 h-4 text-[--text-secondary] absolute left-3 top-3" />
             </div>
           </div>
 
           <div>
-            <label className="font-bold text-slate-700 block mb-1">Password</label>
+            <label className="font-semibold text-[--text-primary] block mb-1">Password</label>
             <div className="relative">
               <input
                 required
@@ -101,25 +101,25 @@ export default function DepartmentLoginPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full border border-slate-300 rounded-xl pl-9 pr-3 py-2.5 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-amber-500 focus:outline-none transition-all text-xs"
+                className="w-full border border-[--border] rounded-xl pl-9 pr-3 py-2.5 bg-[--bg-subtle] text-[--text-primary] focus:ring-2 focus:ring-blue-500/20 focus:outline-none transition-all text-xs"
               />
-              <Lock className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
+              <Lock className="w-4 h-4 text-[--text-secondary] absolute left-3 top-3" />
             </div>
           </div>
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-amber-600 hover:bg-amber-500 text-white font-bold py-3 rounded-xl shadow-md shadow-amber-600/30 transition-all flex items-center justify-center gap-2 text-xs active:scale-[0.99] disabled:opacity-50"
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-xl shadow-sm transition-all flex items-center justify-center gap-2 text-xs active:scale-[0.99] disabled:opacity-50 cursor-pointer"
           >
             <span>{loading ? 'Authenticating Staff...' : 'Authenticate & Enter Queue'}</span>
             <ArrowRight className="w-4 h-4" />
           </button>
         </form>
 
-        <div className="pt-3 border-t border-slate-100 text-center text-xs text-slate-600">
+        <div className="pt-3 border-t border-[--border] text-center text-xs text-[--text-secondary]">
           Are you a citizen?{' '}
-          <Link href="/login" className="font-bold text-blue-600 hover:underline">
+          <Link href="/login" className="font-semibold text-blue-600 dark:text-blue-400 hover:underline">
             Citizen Login
           </Link>
         </div>

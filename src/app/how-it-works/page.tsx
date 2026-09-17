@@ -4,12 +4,12 @@ import { Camera, Sparkles, Route, Clock, CheckCircle2, ShieldCheck, ArrowRight }
 
 export default function HowItWorksPage() {
   return (
-    <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12 overflow-x-hidden">
+    <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 py-12 space-y-12 overflow-x-hidden font-sans">
       <div className="text-center space-y-3 max-w-2xl mx-auto">
         <span className="text-xs font-bold text-[--text-secondary] uppercase tracking-wider">
           System Architecture
         </span>
-        <h1 className="text-3xl sm:text-4xl font-bold text-[--text-primary]">
+        <h1 className="text-3xl sm:text-4xl font-extrabold text-[--text-primary] tracking-tight">
           The 5-Stage ISLAH Lifecycle
         </h1>
         <p className="text-xs sm:text-sm text-[--text-secondary] leading-relaxed">
@@ -27,8 +27,8 @@ export default function HowItWorksPage() {
         ].map((stage, i) => {
           const Icon = stage.icon;
           return (
-            <div key={i} className="bg-[--bg-surface] rounded-lg border border-[--border] p-6 md:p-8 flex flex-col md:flex-row md:items-center gap-6 shadow-xs">
-              <div className={`w-12 h-12 rounded-md bg-[--bg-subtle] border border-[--border] flex items-center justify-center font-extrabold font-mono text-lg shrink-0 ${stage.color}`}>
+            <div key={i} className="bg-[--bg-surface] rounded-xl border border-[--border] p-6 md:p-8 flex flex-col md:flex-row md:items-center gap-6 shadow-xs">
+              <div className={`w-12 h-12 rounded-xl bg-[--bg-subtle] border border-[--border] flex items-center justify-center font-extrabold font-mono text-lg shrink-0 ${stage.color}`}>
                 {stage.step}
               </div>
               <div className="space-y-1 flex-1">
@@ -44,7 +44,7 @@ export default function HowItWorksPage() {
       </div>
 
       <div className="text-center pt-4">
-        <Link href="/report" className="bg-[--text-primary] hover:opacity-90 text-[--bg-base] font-bold text-xs px-6 py-3 rounded-md inline-flex items-center gap-2 shadow-xs transition-opacity">
+        <Link href="/report" className="bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs px-6 py-3.5 rounded-xl inline-flex items-center gap-2 shadow-sm transition-all">
           Try Reporting an Issue <ArrowRight className="w-4 h-4" />
         </Link>
       </div>

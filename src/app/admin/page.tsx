@@ -262,8 +262,8 @@ export default function AdminPage() {
           </p>
         </div>
 
-        <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm space-y-4 text-left">
-          <h3 className="text-xs font-bold text-slate-800 uppercase tracking-wider">
+        <div className="bg-[--bg-surface] border border-[--border] rounded-xl p-6 shadow-sm space-y-4 text-left">
+          <h3 className="text-xs font-bold text-[--text-primary] uppercase tracking-wider">
             Super Admin Authentication
           </h3>
           <form
@@ -280,30 +280,30 @@ export default function AdminPage() {
             className="space-y-3 text-xs"
           >
             <div>
-              <label className="font-bold text-slate-700 block mb-1">Admin Email</label>
+              <label className="font-bold text-[--text-secondary] block mb-1">Super Admin Email</label>
               <input
                 name="email"
                 type="email"
-                placeholder="admin@islah.gov.in"
+                defaultValue="admin@islah-civic.org"
+                className="w-full border border-[--border] rounded-lg p-2.5 bg-[--bg-subtle] text-[--text-primary]"
                 required
-                className="w-full border border-slate-300 rounded-md px-3 py-2 bg-slate-50 font-mono text-xs focus:bg-white focus:ring-2 focus:ring-slate-400 focus:outline-none"
               />
             </div>
             <div>
-              <label className="font-bold text-slate-700 block mb-1">Governance Key / Password</label>
+              <label className="font-bold text-[--text-secondary] block mb-1">Master Password</label>
               <input
                 name="password"
                 type="password"
-                placeholder="Enter password"
+                placeholder="Enter password..."
+                className="w-full border border-[--border] rounded-lg p-2.5 bg-[--bg-subtle] text-[--text-primary]"
                 required
-                className="w-full border border-slate-300 rounded-md px-3 py-2 bg-slate-50 text-xs focus:bg-white focus:ring-2 focus:ring-slate-400 focus:outline-none"
               />
             </div>
             <button
               type="submit"
-              className="w-full bg-[--text-primary] hover:opacity-90 text-[--bg-base] font-bold py-2.5 rounded-md text-xs transition-all"
+              className="w-full bg-blue-700 hover:bg-blue-800 text-white dark:bg-blue-600 font-bold py-2.5 rounded-lg text-xs transition-colors shadow-xs"
             >
-              Authenticate & Unlock Admin Governance
+              Authenticate &amp; Unlock Admin Governance
             </button>
           </form>
         </div>
@@ -312,26 +312,26 @@ export default function AdminPage() {
   }
 
   return (
-    <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 font-sans overflow-x-hidden">
+    <div className="w-full max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 py-8 font-sans overflow-x-hidden">
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
 
         {/* Compact Admin Sidebar */}
         <aside className="lg:col-span-3 xl:col-span-2 space-y-4">
 
-          <div className="bg-slate-900 text-white p-4 rounded-lg border border-slate-800 space-y-3">
+          <div className="bg-[--bg-surface] text-[--text-primary] p-4 rounded-xl border border-[--border] space-y-3 shadow-xs">
             <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-md bg-slate-800 flex items-center justify-center text-white font-bold">
+              <div className="w-8 h-8 rounded-lg bg-blue-700 text-white dark:bg-blue-600 flex items-center justify-center font-bold">
                 <ShieldCheck className="w-5 h-5 stroke-[2.2]" />
               </div>
               <div>
-                <span className="text-xs font-extrabold tracking-tight text-white block">SUPER ADMIN</span>
-                <span className="text-[10px] text-slate-400 font-mono">Central Governance</span>
+                <span className="text-xs font-extrabold tracking-tight text-[--text-primary] block">SUPER ADMIN</span>
+                <span className="text-[10px] text-[--text-muted] font-mono">Central Governance</span>
               </div>
             </div>
           </div>
 
-          <div className="bg-white rounded-lg border border-slate-200 p-2 shadow-xs space-y-0.5 text-xs">
+          <div className="bg-[--bg-surface] rounded-xl border border-[--border] p-2 shadow-xs space-y-0.5 text-xs">
             {navMenuItems.map((item) => {
               const Icon = item.icon;
               const isActive = activeTab === item.id;
@@ -339,9 +339,9 @@ export default function AdminPage() {
                 <button
                   key={item.id}
                   onClick={() => setActiveTab(item.id)}
-                  className={`w-full flex items-center justify-between px-3 py-2 rounded-md font-semibold transition-all ${isActive
-                      ? 'bg-slate-900 text-white shadow-xs'
-                      : 'text-slate-700 hover:bg-slate-100 hover:text-slate-900'
+                  className={`w-full flex items-center justify-between px-3 py-2 rounded-lg font-semibold transition-all ${isActive
+                      ? 'bg-blue-700 text-white dark:bg-blue-600 shadow-xs'
+                      : 'text-[--text-secondary] hover:bg-[--bg-subtle] hover:text-[--text-primary]'
                     }`}
                 >
                   <div className="flex items-center gap-2.5">

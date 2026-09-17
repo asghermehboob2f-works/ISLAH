@@ -8,21 +8,21 @@ import { IssueDetailModal } from '@/components/IssueDetailModal';
 import { InteractiveMap } from '@/components/InteractiveMap';
 import { CivicIssue, UserBadge } from '@/lib/types';
 import {
-  Award,
-  PlusCircle,
-  Map,
-  List,
   FileText,
   User,
-  LogIn,
+  PlusCircle,
   Building2,
   Trees,
-  Leaf
+  Award,
+  List,
+  Map,
+  LogIn
 } from 'lucide-react';
 
 export default function MyReportsPage() {
   const { user, activeRole, issues, upvoteIssue } = useApp();
 
+  // Mode: 'civic' vs 'environmental'
   const [activeTrack, setActiveTrack] = useState<'civic' | 'environmental'>('civic');
   const [viewMode, setViewMode] = useState<'list' | 'map'>('list');
   const [statusFilter, setStatusFilter] = useState<string>('all');
@@ -31,27 +31,27 @@ export default function MyReportsPage() {
   // If user is guest/unauthenticated
   if (!user || activeRole !== 'citizen') {
     return (
-      <div className="w-full max-w-md mx-auto px-4 py-16 text-center space-y-6 font-sans">
-        <div className="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center mx-auto border border-blue-200">
-          <User className="w-6 h-6" />
+      <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 py-20 text-center space-y-6 font-sans">
+        <div className="w-14 h-14 rounded-xl bg-[--bg-surface] text-blue-600 dark:text-blue-400 flex items-center justify-center mx-auto border border-[--border] shadow-xs">
+          <User className="w-7 h-7" />
         </div>
-        <div className="space-y-2">
-          <h2 className="text-2xl font-extrabold text-slate-900">My Reports</h2>
-          <p className="text-xs text-slate-500 max-w-xs mx-auto">
+        <div className="space-y-2 max-w-md mx-auto">
+          <h2 className="text-2xl font-bold text-[--text-primary]">My Reports</h2>
+          <p className="text-xs text-[--text-secondary] leading-relaxed">
             Please log in or create a citizen account to view your personal reported issues and progress timeline.
           </p>
         </div>
-        <div className="flex flex-col gap-2 pt-2">
+        <div className="flex flex-col sm:flex-row gap-3 max-w-sm mx-auto pt-2">
           <Link
             href="/login?returnUrl=/my-reports"
-            className="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 rounded-xl shadow-md text-xs flex items-center justify-center gap-2"
+            className="flex-1 bg-blue-700 hover:bg-blue-800 text-white dark:bg-blue-600 font-bold py-3 px-4 rounded-lg shadow-xs text-xs flex items-center justify-center gap-2 transition-colors"
           >
             <LogIn className="w-4 h-4" />
             <span>Login to View My Reports</span>
           </Link>
           <Link
             href="/signup"
-            className="w-full bg-white hover:bg-slate-50 text-slate-800 font-bold py-3 rounded-xl border border-slate-300 text-xs"
+            className="flex-1 bg-[--bg-surface] hover:bg-[--bg-subtle] text-[--text-primary] font-semibold py-3 px-4 rounded-lg border border-[--border] text-xs transition-colors"
           >
             Create Citizen Account
           </Link>
@@ -74,24 +74,24 @@ export default function MyReportsPage() {
   });
 
   return (
-    <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 font-sans">
+    <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 py-8 space-y-8 font-sans">
 
       {/* Profile Header */}
-      <div className="bg-slate-900 text-white rounded-2xl p-6 md:p-8 border border-slate-800 shadow-xl grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+      <div className="bg-[--bg-surface] text-[--text-primary] rounded-xl p-6 sm:p-8 border border-[--border] shadow-xs grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
 
         <div className="lg:col-span-7 space-y-3">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-2xl bg-blue-600 flex items-center justify-center font-bold text-lg text-white shadow-lg">
+            <div className="w-12 h-12 rounded-xl bg-blue-700 text-white dark:bg-blue-600 flex items-center justify-center font-bold text-lg shadow-xs">
               {user.name.slice(0, 2).toUpperCase()}
             </div>
             <div>
-              <h1 className="text-xl font-bold text-white flex items-center gap-2">
+              <h1 className="text-xl font-bold text-[--text-primary] flex items-center gap-2">
                 {user.name}'s Submissions Portal
-                <span className="text-xs bg-blue-500/20 text-blue-300 border border-blue-400/30 px-2 py-0.5 rounded font-mono">
+                <span className="text-xs bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-900 px-2 py-0.5 rounded font-mono font-bold">
                   {user.ward}
                 </span>
               </h1>
-              <p className="text-xs text-slate-400 font-semibold">{user.rankTitle}</p>
+              <p className="text-xs text-[--text-secondary] font-semibold">{user.rankTitle}</p>
             </div>
           </div>
 
@@ -100,9 +100,9 @@ export default function MyReportsPage() {
               {user.badges.map((bdg: UserBadge) => (
                 <span
                   key={bdg.id}
-                  className="bg-slate-800 border border-slate-700 text-slate-200 text-[11px] font-semibold px-2.5 py-1 rounded-lg flex items-center gap-1.5"
+                  className="bg-[--bg-subtle] border border-[--border] text-[--text-primary] text-[11px] font-semibold px-2.5 py-1 rounded-md flex items-center gap-1.5"
                 >
-                  <Award className="w-3.5 h-3.5 text-amber-400" />
+                  <Award className="w-3.5 h-3.5 text-amber-500" />
                   {bdg.title}
                 </span>
               ))}
@@ -110,34 +110,34 @@ export default function MyReportsPage() {
           )}
         </div>
 
-        <div className="lg:col-span-5 grid grid-cols-3 gap-3 bg-slate-800/80 p-4 rounded-xl border border-slate-700 text-center">
+        <div className="lg:col-span-5 grid grid-cols-3 gap-3 bg-[--bg-subtle] p-4 rounded-xl border border-[--border] text-center">
           <div>
-            <div className="text-2xl font-bold font-mono text-blue-400">{civicReports.length}</div>
-            <div className="text-[11px] text-slate-400 font-medium">Civic Reports</div>
+            <div className="text-2xl font-bold font-mono text-blue-700 dark:text-blue-400">{civicReports.length}</div>
+            <div className="text-[11px] text-[--text-secondary] font-medium">Civic Reports</div>
           </div>
           <div>
-            <div className="text-2xl font-bold font-mono text-emerald-400">{environmentalReports.length}</div>
-            <div className="text-[11px] text-slate-400 font-medium">Environmental</div>
+            <div className="text-2xl font-bold font-mono text-emerald-600 dark:text-emerald-400">{environmentalReports.length}</div>
+            <div className="text-[11px] text-[--text-secondary] font-medium">Environmental</div>
           </div>
           <div>
-            <div className="text-2xl font-bold font-mono text-amber-400 font-mono">
+            <div className="text-2xl font-bold font-mono text-amber-600 dark:text-amber-400">
               {mySubmittedIssues.filter((i) => i.status === 'resolved').length}
             </div>
-            <div className="text-[11px] text-slate-400 font-medium font-mono">Resolved</div>
+            <div className="text-[11px] text-[--text-secondary] font-medium">Resolved</div>
           </div>
         </div>
 
       </div>
 
-      {/* Domain Track Switcher (Spec #11: Visual Separation of Reports) */}
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-4 bg-white p-4 rounded-2xl border border-slate-200 shadow-xs">
+      {/* Domain Track Switcher */}
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-4 bg-[--bg-surface] p-4 rounded-xl border border-[--border] shadow-xs">
 
-        <div className="flex items-center gap-2 bg-slate-100 p-1 rounded-xl border border-slate-200 w-full sm:w-auto">
+        <div className="flex items-center gap-2 bg-[--bg-subtle] p-1 rounded-lg border border-[--border] w-full sm:w-auto">
           <button
             onClick={() => setActiveTrack('civic')}
-            className={`flex-1 sm:flex-none px-4 py-2 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-2 ${activeTrack === 'civic'
-              ? 'bg-blue-600 text-white shadow-sm'
-              : 'text-slate-600 hover:text-slate-900'
+            className={`flex-1 sm:flex-none px-4 py-2 rounded-md text-xs font-bold transition-all flex items-center justify-center gap-2 ${activeTrack === 'civic'
+              ? 'bg-blue-700 text-white dark:bg-blue-600 shadow-xs'
+              : 'text-[--text-secondary] hover:text-[--text-primary]'
               }`}
           >
             <Building2 className="w-4 h-4" />
@@ -146,28 +146,28 @@ export default function MyReportsPage() {
 
           <button
             onClick={() => setActiveTrack('environmental')}
-            className={`flex-1 sm:flex-none px-4 py-2 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-2 ${activeTrack === 'environmental'
-              ? 'bg-emerald-600 text-white shadow-sm'
-              : 'text-slate-600 hover:text-slate-900'
+            className={`flex-1 sm:flex-none px-4 py-2 rounded-md text-xs font-bold transition-all flex items-center justify-center gap-2 ${activeTrack === 'environmental'
+              ? 'bg-emerald-600 text-white shadow-xs'
+              : 'text-[--text-secondary] hover:text-[--text-primary]'
               }`}
           >
-            <Trees className="w-4 h-4 text-emerald-500" />
+            <Trees className="w-4 h-4" />
             <span>My Environmental Reports ({environmentalReports.length})</span>
           </button>
         </div>
 
         <div className="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-end">
-          <div className="flex items-center bg-slate-100 p-1 rounded-lg border border-slate-200">
+          <div className="flex items-center bg-[--bg-subtle] p-0.5 rounded-lg border border-[--border]">
             <button
               onClick={() => setViewMode('list')}
-              className={`p-1.5 rounded-md text-xs font-semibold flex items-center gap-1 ${viewMode === 'list' ? 'bg-slate-900 text-white' : 'text-slate-600 hover:text-slate-900'
+              className={`px-3 py-1.5 rounded-md text-xs font-bold flex items-center gap-1.5 transition-all ${viewMode === 'list' ? 'bg-[--bg-surface] text-[--text-primary] shadow-xs' : 'text-[--text-secondary] hover:text-[--text-primary]'
                 }`}
             >
               <List className="w-4 h-4" /> List
             </button>
             <button
               onClick={() => setViewMode('map')}
-              className={`p-1.5 rounded-md text-xs font-semibold flex items-center gap-1 ${viewMode === 'map' ? 'bg-slate-900 text-white' : 'text-slate-600 hover:text-slate-900'
+              className={`px-3 py-1.5 rounded-md text-xs font-bold flex items-center gap-1.5 transition-all ${viewMode === 'map' ? 'bg-[--bg-surface] text-[--text-primary] shadow-xs' : 'text-[--text-secondary] hover:text-[--text-primary]'
                 }`}
             >
               <Map className="w-4 h-4" /> Map View
@@ -176,7 +176,7 @@ export default function MyReportsPage() {
 
           <Link
             href={activeTrack === 'civic' ? '/report/civic' : '/report/environmental'}
-            className={`text-xs font-bold px-4 py-2 rounded-xl flex items-center gap-1.5 shadow-md transition-colors ${activeTrack === 'civic' ? 'bg-blue-600 hover:bg-blue-500 text-white' : 'bg-emerald-600 hover:bg-emerald-500 text-white'
+            className={`text-xs font-bold px-4 py-2 rounded-lg flex items-center gap-1.5 shadow-xs transition-colors text-white ${activeTrack === 'civic' ? 'bg-blue-700 hover:bg-blue-800 dark:bg-blue-600' : 'bg-emerald-600 hover:bg-emerald-500'
               }`}
           >
             <PlusCircle className="w-4 h-4" />
@@ -187,14 +187,14 @@ export default function MyReportsPage() {
       </div>
 
       {/* Reports Dashboard Status Filter Toolbar */}
-      <div className="flex items-center gap-2 overflow-x-auto pb-1 border-b border-slate-200">
+      <div className="flex items-center gap-2 overflow-x-auto pb-1 border-b border-[--border]">
         {['all', 'reported', 'in_progress', 'resolved', 'escalated'].map((st) => (
           <button
             key={st}
             onClick={() => setStatusFilter(st)}
             className={`px-3 py-1.5 rounded-lg text-xs font-bold capitalize transition-all shrink-0 ${statusFilter === st
-              ? activeTrack === 'civic' ? 'bg-blue-600 text-white' : 'bg-emerald-600 text-white'
-              : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200'
+              ? activeTrack === 'civic' ? 'bg-blue-700 text-white dark:bg-blue-600' : 'bg-emerald-600 text-white'
+              : 'bg-[--bg-surface] text-[--text-secondary] hover:bg-[--bg-subtle] border border-[--border]'
               }`}
           >
             {st === 'all' ? `All (${currentTrackReports.length})` : st.replace('_', ' ')}
@@ -210,19 +210,19 @@ export default function MyReportsPage() {
           height="h-[600px] lg:h-[700px] xl:h-[780px]"
         />
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
           {filteredIssues.length === 0 ? (
-            <div className="col-span-full text-center py-12 bg-white rounded-2xl border border-slate-200 space-y-3">
-              <FileText className="w-10 h-10 text-slate-300 mx-auto" />
-              <h3 className="text-sm font-bold text-slate-700">
+            <div className="col-span-full text-center py-12 bg-[--bg-surface] rounded-xl border border-[--border] space-y-3 shadow-xs">
+              <FileText className="w-10 h-10 text-[--text-muted] mx-auto opacity-50" />
+              <h3 className="text-sm font-bold text-[--text-primary]">
                 No {activeTrack === 'civic' ? 'civic' : 'environmental'} reports submitted yet
               </h3>
-              <p className="text-xs text-slate-500">
+              <p className="text-xs text-[--text-secondary] max-w-sm mx-auto">
                 Submit a report using the button below to start tracking your resolution timeline.
               </p>
               <Link
                 href={activeTrack === 'civic' ? '/report/civic' : '/report/environmental'}
-                className={`inline-flex items-center gap-1.5 text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow-xs ${activeTrack === 'civic' ? 'bg-blue-600 hover:bg-blue-500' : 'bg-emerald-600 hover:bg-emerald-500'
+                className={`inline-flex items-center gap-1.5 text-white text-xs font-bold px-5 py-2.5 rounded-lg shadow-xs ${activeTrack === 'civic' ? 'bg-blue-700 hover:bg-blue-800 dark:bg-blue-600' : 'bg-emerald-600 hover:bg-emerald-500'
                   }`}
               >
                 <PlusCircle className="w-4 h-4" /> Report {activeTrack === 'civic' ? 'Civic' : 'Environmental'} Issue

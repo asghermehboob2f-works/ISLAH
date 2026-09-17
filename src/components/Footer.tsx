@@ -5,18 +5,18 @@ import { ArrowUpRight, PhoneCall } from 'lucide-react';
 
 export function Footer() {
   return (
-    <footer className="bg-[--bg-surface] border-t border-[--border] pt-12 pb-8 font-sans w-full">
-      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <footer className="bg-[--bg-surface] border-t border-[--border] pt-14 pb-10 font-sans w-full mt-auto">
+      <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12">
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 pb-10 border-b border-[--border]">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-12 pb-12 border-b border-[--border]">
 
           {/* Brand */}
           <div className="lg:col-span-2 space-y-4">
             <Link href="/" className="inline-flex items-center gap-2.5 group">
               <Image src="/logo.png?v=4" alt="ISLAH Logo" width={38} height={30} className="h-8 w-auto object-contain" unoptimized />
-              <span className="brand-font text-lg text-[--text-primary] leading-none translate-y-[1px] group-hover:opacity-70 transition-opacity">Islah</span>
+              <span className="brand-font text-xl text-[--text-primary] tracking-wider leading-none translate-y-[1px] group-hover:opacity-75 transition-opacity">Islah</span>
             </Link>
-            <p className="text-xs text-[--text-muted] max-w-sm leading-relaxed">
+            <p className="text-xs text-[--text-secondary] max-w-sm leading-relaxed">
               Islah empowers citizens to report local issues in seconds and enables municipal departments to transparently track, resolve, and verify them.
             </p>
             <p className="text-[11px] text-[--text-muted]">Municipal SLA &amp; AI engine services operational.</p>
@@ -27,7 +27,7 @@ export function Footer() {
             <h3 className="text-xs font-bold text-[--text-primary] uppercase tracking-wider mb-4">Platform</h3>
             <ul className="space-y-2.5 text-xs text-[--text-secondary]">
               {[
-                { label: 'Report Civic Issue', href: '/report', external: true },
+                { label: 'Report Civic Issue', href: '/report' },
                 { label: 'Live City Map', href: '/live-map' },
                 { label: 'Citizen Dashboard', href: '/my-reports' },
                 { label: 'Department Queue', href: '/ticket-queue' },
@@ -35,7 +35,7 @@ export function Footer() {
               ].map((l) => (
                 <li key={l.href}>
                   <Link href={l.href} className="hover:text-[--text-primary] transition-colors inline-flex items-center gap-1">
-                    {l.label} {l.external && <ArrowUpRight className="w-3 h-3 opacity-50" />}
+                    {l.label}
                   </Link>
                 </li>
               ))}

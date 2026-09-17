@@ -52,19 +52,19 @@ export default function PublicReportsPage() {
   ];
 
   return (
-    <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6 font-sans">
+    <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 py-10 space-y-8 font-sans">
 
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-[--border] pb-5">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-[--border] pb-6">
         <div>
           <div className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-[--text-secondary] mb-2">
-            <FileText className="w-4 h-4 text-[--text-muted]" />
+            <FileText className="w-4 h-4 text-blue-600 dark:text-blue-400" />
             <span>Public Transparency Feed</span>
           </div>
           <h1 className="text-2xl sm:text-3xl font-extrabold text-[--text-primary] tracking-tight">
             Public Civic Reports
           </h1>
-          <p className="text-xs sm:text-sm text-[--text-secondary] max-w-2xl mt-1">
+          <p className="text-xs sm:text-sm text-[--text-secondary] max-w-2xl mt-1 leading-relaxed">
             Browse verified municipal reports submitted by citizens across all wards. All citizen personal contact data is strictly protected.
           </p>
         </div>
@@ -72,7 +72,7 @@ export default function PublicReportsPage() {
         <div className="flex items-center gap-2">
           <Link
             href="/report"
-            className="bg-[--text-primary] hover:opacity-90 text-[--bg-base] font-semibold text-xs px-4 py-2.5 rounded-lg flex items-center gap-1.5 transition-all"
+            className="bg-blue-700 hover:bg-blue-800 text-white dark:bg-blue-600 dark:hover:bg-blue-500 font-bold text-xs px-4 py-2.5 rounded-lg flex items-center gap-1.5 transition-all shadow-xs"
           >
             <PlusCircle className="w-4 h-4" />
             <span>Report a Civic Issue</span>
@@ -81,7 +81,7 @@ export default function PublicReportsPage() {
       </div>
 
       {/* Filter Toolbar */}
-      <div className="bg-[--bg-surface] rounded-2xl border border-[--border] p-4 space-y-3 shadow-xs">
+      <div className="bg-[--bg-surface] rounded-xl border border-[--border] p-4 sm:p-5 space-y-3 shadow-xs">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
 
           {/* Search */}
@@ -152,7 +152,7 @@ export default function PublicReportsPage() {
 
       {/* Grid of Public Issue Cards */}
       {filteredIssues.length === 0 ? (
-        <div className="bg-[--bg-surface] rounded-2xl border border-[--border] p-12 text-center space-y-3">
+        <div className="bg-[--bg-surface] rounded-xl border border-[--border] p-12 text-center space-y-3 shadow-xs">
           <FileText className="w-10 h-10 text-[--text-muted] mx-auto opacity-60" />
           <h3 className="text-base font-bold text-[--text-primary]">No reports found</h3>
           <p className="text-xs text-[--text-muted] max-w-sm mx-auto">
@@ -160,7 +160,7 @@ export default function PublicReportsPage() {
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 sm:gap-6">
           {filteredIssues.map((issue) => (
             <IssueCard
               key={issue.id}

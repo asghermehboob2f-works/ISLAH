@@ -26,12 +26,12 @@ export function StepDetails({
   const isEnv = reportType === 'environmental';
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-200 p-5 sm:p-6 space-y-6 shadow-xs font-sans">
+    <div className="bg-[--bg-surface] rounded-xl border border-[--border] p-5 sm:p-6 space-y-6 shadow-xs font-sans">
       <div className="space-y-1">
-        <h2 className="text-lg font-bold text-slate-900">
+        <h2 className="text-lg font-bold text-[--text-primary]">
           Explain What Happened
         </h2>
-        <p className="text-xs text-slate-500">
+        <p className="text-xs text-[--text-secondary]">
           Provide a descriptive title, detailed context notes, or record a quick voice message.
         </p>
       </div>
@@ -39,8 +39,8 @@ export function StepDetails({
       <div className="space-y-4">
         {/* Title */}
         <div>
-          <label className="text-xs font-bold text-slate-800 block mb-1 flex items-center gap-1.5">
-            <Type className="w-4 h-4 text-blue-600" />
+          <label className="text-xs font-semibold text-[--text-primary] block mb-1 flex items-center gap-1.5">
+            <Type className="w-4 h-4 text-blue-600 dark:text-blue-400" />
             Report Title <span className="text-red-500">*</span>
           </label>
           <input
@@ -53,14 +53,14 @@ export function StepDetails({
                 : 'e.g. Deep pothole near main market road causing traffic hazard'
             }
             required
-            className="w-full border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs font-bold bg-slate-50 text-slate-900 focus:ring-2 focus:ring-blue-500/20"
+            className="w-full border border-[--border] rounded-xl px-3.5 py-2.5 text-xs font-semibold bg-[--bg-surface] text-[--text-primary] focus:ring-2 focus:ring-blue-500/20"
           />
         </div>
 
         {/* Detailed Notes / Description */}
         <div>
-          <label className="text-xs font-bold text-slate-800 block mb-1 flex items-center gap-1.5">
-            <AlignLeft className="w-4 h-4 text-blue-600" />
+          <label className="text-xs font-semibold text-[--text-primary] block mb-1 flex items-center gap-1.5">
+            <AlignLeft className="w-4 h-4 text-blue-600 dark:text-blue-400" />
             Detailed Description / Notes
           </label>
           <textarea
@@ -72,7 +72,7 @@ export function StepDetails({
                 ? 'Describe species observed, environmental impact, recurring nature of the problem...'
                 : 'Describe depth of pothole, traffic impact, duration of issue...'
             }
-            className="w-full border border-slate-300 rounded-xl p-3.5 text-xs bg-slate-50 text-slate-900 font-medium focus:ring-2 focus:ring-blue-500/20"
+            className="w-full border border-[--border] rounded-xl p-3.5 text-xs bg-[--bg-surface] text-[--text-primary] font-medium focus:ring-2 focus:ring-blue-500/20"
           />
         </div>
 
