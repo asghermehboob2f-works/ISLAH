@@ -250,6 +250,12 @@ export interface WebsiteCMSContent {
   contactEmail: string;
   contactPhone?: string;
   footerTagline?: string;
+
+  // Metric Controls for Hero Section & Public Displays
+  statsAutoCalculate?: boolean;
+  customTotalReported?: number;
+  customTotalResolved?: number;
+  customAvgResolutionHours?: number;
 }
 
 export type CMSContent = WebsiteCMSContent;

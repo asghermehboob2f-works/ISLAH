@@ -94,7 +94,11 @@ const defaultCMS: CMSContent = {
   aboutPhilosophyText: 'Our platform bridges citizens and municipal departments through verified reporting, real-time spatial mapping, and algorithmic SLA accountability.',
   emergencyHotline: '1800-180-2026',
   contactEmail: 'support@islah.gov.in',
-  contactPhone: '+91 194 200 2026'
+  contactPhone: '+91 194 200 2026',
+  statsAutoCalculate: true,
+  customTotalReported: 142,
+  customTotalResolved: 108,
+  customAvgResolutionHours: 14.2
 };
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -622,17 +626,43 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }
   };
 
-  // Calculated Real Application Stats
-  const totalReported = issues.length;
-  const totalResolved = issues.filter(i => i.status === 'resolved').length;
+  // Calculated Real Application Stats & CMS Metric Overrides
+  const realTotalReported = issues.length;
+  const resolvedList = issues.filter(i => i.status === 'resolved');
+  const realTotalResolved = resolvedList.length;
   const emergencyCount = issues.filter(i => i.emergency).length;
   const activeDepartmentsCount = departments.filter(d => d.status === 'active').length;
   const activeStaffCount = staffAccounts.filter(s => s.status === 'ACTIVE').length;
 
+  let calculatedAvgHours = 14.2;
+  if (resolvedList.length > 0) {
+    const totalDiffHours = resolvedList.reduce((acc, issue) => {
+      const start = new Date(issue.reportedAt).getTime();
+      const end = new Date(issue.updatedAt || issue.reportedAt).getTime();
+      const diff = Math.max(0.5, (end - start) / (1000 * 60 * 60));
+      return acc + diff;
+    }, 0);
+    calculatedAvgHours = parseFloat((totalDiffHours / resolvedList.length).toFixed(1));
+  }
+
+  const isAuto = cmsContent.statsAutoCalculate !== false;
+
+  const totalReported = isAuto
+    ? (realTotalReported > 0 ? realTotalReported : (cmsContent.customTotalReported ?? 142))
+    : (cmsContent.customTotalReported ?? (realTotalReported || 142));
+
+  const totalResolved = isAuto
+    ? (realTotalResolved > 0 ? realTotalResolved : (cmsContent.customTotalResolved ?? 108))
+    : (cmsContent.customTotalResolved ?? (realTotalResolved || 108));
+
+  const avgResolutionHours = isAuto
+    ? (resolvedList.length > 0 ? calculatedAvgHours : (cmsContent.customAvgResolutionHours ?? 14.2))
+    : (cmsContent.customAvgResolutionHours ?? calculatedAvgHours);
+
   const stats: AppStats = {
     totalReported,
     totalResolved,
-    avgResolutionHours: totalResolved > 0 ? 14.2 : 0,
+    avgResolutionHours,
     emergencyCount,
     activeDepartmentsCount,
     activeStaffCount,

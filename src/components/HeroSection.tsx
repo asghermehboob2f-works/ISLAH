@@ -6,11 +6,11 @@ import { useApp } from '@/context/AppContext';
 import { PlusCircle, ArrowRight, ShieldCheck, CheckCircle2, Clock } from 'lucide-react';
 
 export function HeroSection() {
-  const { stats, issues } = useApp();
+  const { stats } = useApp();
 
-  const totalReported = stats?.totalReported || issues?.length || 142;
-  const totalResolved = stats?.totalResolved || issues?.filter((i) => i.status === 'resolved').length || 108;
-  const avgTime = stats?.avgResolutionHours || 14.2;
+  const totalReported = stats?.totalReported ?? 142;
+  const totalResolved = stats?.totalResolved ?? 108;
+  const avgTime = stats?.avgResolutionHours ?? 14.2;
 
   return (
     <section className="relative w-full min-h-[calc(100vh-4rem)] flex flex-col justify-center py-8 sm:py-10 lg:py-12 border-b border-[--border] font-sans bg-[--bg-base]">

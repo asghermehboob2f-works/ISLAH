@@ -110,6 +110,12 @@ export default function AdminPage() {
   const [cmsFormData, setCmsFormData] = useState(cmsContent);
   const [cmsSavedNotice, setCmsSavedNotice] = useState(false);
 
+  React.useEffect(() => {
+    if (cmsContent) {
+      setCmsFormData(cmsContent);
+    }
+  }, [cmsContent]);
+
   // Content Add Modals
   const [showAddStoryModal, setShowAddStoryModal] = useState(false);
   const [newStoryData, setNewStoryData] = useState({
@@ -851,6 +857,125 @@ export default function AdminPage() {
                       className="w-full border border-slate-300 rounded-lg p-2 bg-slate-50 font-mono"
                     />
                   </div>
+                </div>
+
+                {/* HERO STATS & LIVE SYNC CONFIGURATION */}
+                <div className="border-t border-slate-200 pt-5 space-y-4">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-blue-50/80 border border-blue-200 p-4 rounded-xl">
+                    <div>
+                      <h3 className="font-bold text-slate-900 text-sm flex items-center gap-2">
+                        <BarChart3 className="w-4 h-4 text-blue-700" />
+                        Homepage Metric Cards &amp; Display Control
+                      </h3>
+                      <p className="text-xs text-slate-600">
+                        Configure how <strong className="text-slate-800">Civic Issues Logged</strong>, <strong className="text-slate-800">Verified Resolutions</strong>, and <strong className="text-slate-800">Avg Response Time</strong> are updated.
+                      </p>
+                    </div>
+
+                    <div className="flex items-center gap-1.5 bg-white border border-slate-300 p-1.5 rounded-lg text-xs shrink-0 shadow-xs">
+                      <button
+                        type="button"
+                        onClick={() => setCmsFormData({ ...cmsFormData, statsAutoCalculate: true })}
+                        className={`px-3 py-1.5 rounded font-bold transition-all ${
+                          cmsFormData.statsAutoCalculate !== false
+                            ? 'bg-blue-700 text-white shadow-xs'
+                            : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+                        }`}
+                      >
+                        ⚡ Automatic (Live DB Sync)
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setCmsFormData({ ...cmsFormData, statsAutoCalculate: false })}
+                        className={`px-3 py-1.5 rounded font-bold transition-all ${
+                          cmsFormData.statsAutoCalculate === false
+                            ? 'bg-blue-700 text-white shadow-xs'
+                            : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+                        }`}
+                      >
+                        ⚙️ Manual Overrides
+                      </button>
+                    </div>
+                  </div>
+
+                  {cmsFormData.statsAutoCalculate !== false ? (
+                    <div className="bg-emerald-50/80 border border-emerald-200 rounded-xl p-4 text-xs space-y-3">
+                      <div className="flex items-center justify-between">
+                        <span className="font-bold text-emerald-950 flex items-center gap-1.5 text-xs">
+                          <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                          Live Database Auto-Calculation Active
+                        </span>
+                        <span className="text-[10px] font-mono font-bold bg-emerald-200 text-emerald-800 px-2.5 py-0.5 rounded-full uppercase tracking-wider">
+                          AUTOMATIC LIVE UPDATES
+                        </span>
+                      </div>
+                      <p className="text-emerald-800 leading-relaxed text-[11px]">
+                        The 3 hero cards on the homepage update automatically in real-time as users submit civic issues and department officers resolve them in the database.
+                      </p>
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1 font-mono">
+                        <div className="bg-white p-3 rounded-lg border border-emerald-200 shadow-xs">
+                          <div className="text-[10px] text-slate-500 uppercase font-sans font-bold">Civic Issues Logged</div>
+                          <div className="text-xl font-extrabold text-slate-900">{stats.totalReported}</div>
+                          <div className="text-[9px] font-sans text-slate-400">Live DB count</div>
+                        </div>
+                        <div className="bg-white p-3 rounded-lg border border-emerald-200 shadow-xs">
+                          <div className="text-[10px] text-slate-500 uppercase font-sans font-bold">Verified Resolutions</div>
+                          <div className="text-xl font-extrabold text-emerald-700">{stats.totalResolved}</div>
+                          <div className="text-[9px] font-sans text-slate-400">Live DB resolved</div>
+                        </div>
+                        <div className="bg-white p-3 rounded-lg border border-emerald-200 shadow-xs">
+                          <div className="text-[10px] text-slate-500 uppercase font-sans font-bold">Avg Response Time</div>
+                          <div className="text-xl font-extrabold text-amber-700">{stats.avgResolutionHours}h</div>
+                          <div className="text-[9px] font-sans text-slate-400">Calculated velocity</div>
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="space-y-3 bg-amber-50/70 border border-amber-200 p-4 rounded-xl">
+                      <div className="flex items-center justify-between text-xs">
+                        <span className="font-bold text-amber-950 flex items-center gap-1.5">
+                          <Edit3 className="w-4 h-4 text-amber-600" />
+                          Manual Metric Overrides Active
+                        </span>
+                        <span className="text-[10px] font-mono font-bold bg-amber-200 text-amber-900 px-2 py-0.5 rounded uppercase">
+                          CUSTOM VALUES
+                        </span>
+                      </div>
+                      <p className="text-[11px] text-amber-800">
+                        Specify exact custom numbers to display on the hero section cards:
+                      </p>
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+                        <div>
+                          <label className="font-bold text-slate-700 block mb-1">Civic Issues Logged (Card 1)</label>
+                          <input
+                            type="number"
+                            value={cmsFormData.customTotalReported ?? 142}
+                            onChange={(e) => setCmsFormData({ ...cmsFormData, customTotalReported: parseInt(e.target.value) || 0 })}
+                            className="w-full border border-slate-300 rounded-lg p-2.5 bg-white font-mono font-bold text-slate-900"
+                          />
+                        </div>
+                        <div>
+                          <label className="font-bold text-slate-700 block mb-1">Verified Resolutions (Card 2)</label>
+                          <input
+                            type="number"
+                            value={cmsFormData.customTotalResolved ?? 108}
+                            onChange={(e) => setCmsFormData({ ...cmsFormData, customTotalResolved: parseInt(e.target.value) || 0 })}
+                            className="w-full border border-slate-300 rounded-lg p-2.5 bg-white font-mono font-bold text-emerald-700"
+                          />
+                        </div>
+                        <div>
+                          <label className="font-bold text-slate-700 block mb-1">Avg Response Time (Hours) (Card 3)</label>
+                          <input
+                            type="number"
+                            step="0.1"
+                            value={cmsFormData.customAvgResolutionHours ?? 14.2}
+                            onChange={(e) => setCmsFormData({ ...cmsFormData, customAvgResolutionHours: parseFloat(e.target.value) || 0 })}
+                            className="w-full border border-slate-300 rounded-lg p-2.5 bg-white font-mono font-bold text-amber-700"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
 
                 <button
