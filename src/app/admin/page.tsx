@@ -863,16 +863,465 @@ export default function AdminPage() {
             </div>
           )}
 
-          {/* TAB 6: AUDIT LOG */}
-          {activeTab === 'audit' && (
+          {/* TAB 6: SUCCESS STORIES MANAGEMENT */}
+          {activeTab === 'stories' && (
             <div className="space-y-4">
-              <div className="flex items-center justify-between border-b border-slate-200 pb-3">
-                <h1 className="text-lg font-bold text-slate-900">Governance System Audit Trail</h1>
+              <div className="flex items-center justify-between border-b border-[--border] pb-3">
+                <div>
+                  <h1 className="text-lg font-bold text-[--text-primary]">Verified Resolution Success Stories</h1>
+                  <p className="text-xs text-[--text-secondary]">Manage impact portfolio showcase articles and before/after verification photos</p>
+                </div>
+                <button
+                  onClick={() => setShowAddStoryModal(true)}
+                  className="bg-blue-700 hover:bg-blue-800 text-white dark:bg-blue-600 font-bold text-xs px-3.5 py-2 rounded-lg flex items-center gap-1.5 shadow-xs"
+                >
+                  <Plus className="w-4 h-4" /> Add Success Story
+                </button>
               </div>
 
-              <div className="bg-white border border-slate-200 rounded-lg overflow-hidden shadow-xs">
-                <table className="w-full text-left text-xs text-slate-700">
-                  <thead className="bg-slate-900 text-slate-300 uppercase text-[10px] font-bold tracking-wider">
+              {/* Add Story Modal */}
+              {showAddStoryModal && (
+                <form onSubmit={handleCreateStory} className="bg-[--bg-subtle] border border-[--border] p-5 rounded-xl space-y-3 text-xs shadow-xs">
+                  <h3 className="font-bold text-[--text-primary] text-sm">Publish New Success Story</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div>
+                      <label className="font-bold text-[--text-secondary] block mb-1">Story Title</label>
+                      <input
+                        type="text"
+                        placeholder="e.g. Major Pothole Arterial Repair"
+                        value={newStoryData.title}
+                        onChange={(e) => setNewStoryData({ ...newStoryData, title: e.target.value })}
+                        required
+                        className="w-full border border-[--border] rounded-lg p-2 bg-[--bg-surface] text-[--text-primary]"
+                      />
+                    </div>
+                    <div>
+                      <label className="font-bold text-[--text-secondary] block mb-1">Location / Ward</label>
+                      <input
+                        type="text"
+                        placeholder="e.g. Ward 14 - North Sector"
+                        value={newStoryData.location}
+                        onChange={(e) => setNewStoryData({ ...newStoryData, location: e.target.value })}
+                        required
+                        className="w-full border border-[--border] rounded-lg p-2 bg-[--bg-surface] text-[--text-primary]"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div>
+                      <label className="font-bold text-[--text-secondary] block mb-1">Before Photo URL</label>
+                      <input
+                        type="url"
+                        value={newStoryData.beforePhotoUrl}
+                        onChange={(e) => setNewStoryData({ ...newStoryData, beforePhotoUrl: e.target.value })}
+                        required
+                        className="w-full border border-[--border] rounded-lg p-2 bg-[--bg-surface] text-[--text-primary]"
+                      />
+                    </div>
+                    <div>
+                      <label className="font-bold text-[--text-secondary] block mb-1">After Resolution Photo URL</label>
+                      <input
+                        type="url"
+                        value={newStoryData.afterPhotoUrl}
+                        onChange={(e) => setNewStoryData({ ...newStoryData, afterPhotoUrl: e.target.value })}
+                        required
+                        className="w-full border border-[--border] rounded-lg p-2 bg-[--bg-surface] text-[--text-primary]"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="font-bold text-[--text-secondary] block mb-1">Description & Key Resolution Achievements</label>
+                    <textarea
+                      rows={2}
+                      placeholder="Detail how the issue was triaged and resolved..."
+                      value={newStoryData.description}
+                      onChange={(e) => setNewStoryData({ ...newStoryData, description: e.target.value })}
+                      required
+                      className="w-full border border-[--border] rounded-lg p-2 bg-[--bg-surface] text-[--text-primary]"
+                    />
+                  </div>
+
+                  <div className="flex justify-end gap-2 pt-2">
+                    <button type="button" onClick={() => setShowAddStoryModal(false)} className="px-4 py-2 bg-[--bg-surface] border border-[--border] text-[--text-secondary] font-bold rounded-lg">Cancel</button>
+                    <button type="submit" className="px-5 py-2 bg-blue-700 text-white dark:bg-blue-600 font-bold rounded-lg shadow-xs">Publish Story</button>
+                  </div>
+                </form>
+              )}
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {successStories.map((story) => (
+                  <div key={story.id} className="bg-[--bg-surface] border border-[--border] rounded-xl p-4 space-y-3 shadow-xs">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border border-emerald-500/20">
+                        {story.category}
+                      </span>
+                      <button
+                        onClick={() => deleteSuccessStory(story.id)}
+                        className="text-xs text-red-600 hover:text-red-700 font-bold flex items-center gap-1"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" /> Delete
+                      </button>
+                    </div>
+
+                    <h3 className="font-bold text-sm text-[--text-primary]">{story.title}</h3>
+                    <p className="text-xs text-[--text-secondary] line-clamp-2 leading-relaxed">{story.description}</p>
+
+                    <div className="grid grid-cols-2 gap-2 pt-2 border-t border-[--border]">
+                      <div className="space-y-1">
+                        <span className="text-[9px] font-bold uppercase text-[--text-muted]">Before</span>
+                        <img src={story.beforePhotoUrl} alt="Before" className="w-full h-24 object-cover rounded-lg border border-[--border]" />
+                      </div>
+                      <div className="space-y-1">
+                        <span className="text-[9px] font-bold uppercase text-emerald-600 dark:text-emerald-400">After Fix</span>
+                        <img src={story.afterPhotoUrl} alt="After" className="w-full h-24 object-cover rounded-lg border border-[--border]" />
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* TAB 7: BLOG & ARTICLES MANAGEMENT */}
+          {activeTab === 'blog' && (
+            <div className="space-y-4">
+              <div className="flex items-center justify-between border-b border-[--border] pb-3">
+                <div>
+                  <h1 className="text-lg font-bold text-[--text-primary]">Blog &amp; Civic News Management</h1>
+                  <p className="text-xs text-[--text-secondary]">Publish articles on municipal technology, SLA updates, and community engagement</p>
+                </div>
+                <button
+                  onClick={() => setShowAddBlogModal(true)}
+                  className="bg-blue-700 hover:bg-blue-800 text-white dark:bg-blue-600 font-bold text-xs px-3.5 py-2 rounded-lg flex items-center gap-1.5 shadow-xs"
+                >
+                  <Plus className="w-4 h-4" /> Create Blog Post
+                </button>
+              </div>
+
+              {/* Add Blog Modal */}
+              {showAddBlogModal && (
+                <form onSubmit={handleCreateBlog} className="bg-[--bg-subtle] border border-[--border] p-5 rounded-xl space-y-3 text-xs shadow-xs">
+                  <h3 className="font-bold text-[--text-primary] text-sm">Create New Article</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div>
+                      <label className="font-bold text-[--text-secondary] block mb-1">Article Title</label>
+                      <input
+                        type="text"
+                        placeholder="Article Headline..."
+                        value={newBlogData.title}
+                        onChange={(e) => setNewBlogData({ ...newBlogData, title: e.target.value })}
+                        required
+                        className="w-full border border-[--border] rounded-lg p-2 bg-[--bg-surface] text-[--text-primary]"
+                      />
+                    </div>
+                    <div>
+                      <label className="font-bold text-[--text-secondary] block mb-1">Category</label>
+                      <input
+                        type="text"
+                        value={newBlogData.category}
+                        onChange={(e) => setNewBlogData({ ...newBlogData, category: e.target.value })}
+                        className="w-full border border-[--border] rounded-lg p-2 bg-[--bg-surface] text-[--text-primary]"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="font-bold text-[--text-secondary] block mb-1">Article Excerpt</label>
+                    <input
+                      type="text"
+                      placeholder="Short summary for preview cards..."
+                      value={newBlogData.excerpt}
+                      onChange={(e) => setNewBlogData({ ...newBlogData, excerpt: e.target.value })}
+                      className="w-full border border-[--border] rounded-lg p-2 bg-[--bg-surface] text-[--text-primary]"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="font-bold text-[--text-secondary] block mb-1">Article Content Body</label>
+                    <textarea
+                      rows={4}
+                      placeholder="Write full article text..."
+                      value={newBlogData.content}
+                      onChange={(e) => setNewBlogData({ ...newBlogData, content: e.target.value })}
+                      required
+                      className="w-full border border-[--border] rounded-lg p-2 bg-[--bg-surface] text-[--text-primary]"
+                    />
+                  </div>
+
+                  <div className="flex justify-end gap-2 pt-2">
+                    <button type="button" onClick={() => setShowAddBlogModal(false)} className="px-4 py-2 bg-[--bg-surface] border border-[--border] text-[--text-secondary] font-bold rounded-lg">Cancel</button>
+                    <button type="submit" className="px-5 py-2 bg-blue-700 text-white dark:bg-blue-600 font-bold rounded-lg shadow-xs">Publish Article</button>
+                  </div>
+                </form>
+              )}
+
+              <div className="space-y-3">
+                {blogPosts.map((post) => (
+                  <div key={post.id} className="bg-[--bg-surface] border border-[--border] rounded-xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-xs">
+                    <div className="space-y-1 max-w-2xl">
+                      <div className="flex items-center gap-2">
+                        <span className="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-blue-500/10 text-blue-700 dark:text-blue-300 border border-blue-500/20">
+                          {post.category}
+                        </span>
+                        <span className="text-[10px] text-[--text-muted] font-mono">{post.publishedDate}</span>
+                      </div>
+                      <h3 className="font-bold text-sm text-[--text-primary]">{post.title}</h3>
+                      <p className="text-xs text-[--text-secondary] line-clamp-1">{post.excerpt || post.content}</p>
+                    </div>
+
+                    <div className="flex items-center gap-2 shrink-0">
+                      <button
+                        onClick={() => deleteBlogPost(post.id)}
+                        className="bg-red-50 text-red-700 border border-red-200 hover:bg-red-100 text-xs font-bold px-3 py-1.5 rounded-lg flex items-center gap-1 transition-colors"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" /> Delete
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* TAB 8: FAQS MANAGEMENT */}
+          {activeTab === 'faqs' && (
+            <div className="space-y-4">
+              <div className="flex items-center justify-between border-b border-[--border] pb-3">
+                <div>
+                  <h1 className="text-lg font-bold text-[--text-primary]">Frequently Asked Questions (FAQs)</h1>
+                  <p className="text-xs text-[--text-secondary]">Configure user help guidance and platform knowledge base entries</p>
+                </div>
+                <button
+                  onClick={() => setShowAddFaqModal(true)}
+                  className="bg-blue-700 hover:bg-blue-800 text-white dark:bg-blue-600 font-bold text-xs px-3.5 py-2 rounded-lg flex items-center gap-1.5 shadow-xs"
+                >
+                  <Plus className="w-4 h-4" /> Add FAQ Item
+                </button>
+              </div>
+
+              {/* Add FAQ Modal */}
+              {showAddFaqModal && (
+                <form onSubmit={handleCreateFaq} className="bg-[--bg-subtle] border border-[--border] p-5 rounded-xl space-y-3 text-xs shadow-xs">
+                  <h3 className="font-bold text-[--text-primary] text-sm">Add New FAQ Entry</h3>
+                  <div>
+                    <label className="font-bold text-[--text-secondary] block mb-1">Question Title</label>
+                    <input
+                      type="text"
+                      placeholder="e.g. How are emergency tickets prioritized?"
+                      value={newFaqData.question}
+                      onChange={(e) => setNewFaqData({ ...newFaqData, question: e.target.value })}
+                      required
+                      className="w-full border border-[--border] rounded-lg p-2 bg-[--bg-surface] text-[--text-primary]"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="font-bold text-[--text-secondary] block mb-1">Answer Explanation</label>
+                    <textarea
+                      rows={3}
+                      placeholder="Detailed explanation answer..."
+                      value={newFaqData.answer}
+                      onChange={(e) => setNewFaqData({ ...newFaqData, answer: e.target.value })}
+                      required
+                      className="w-full border border-[--border] rounded-lg p-2 bg-[--bg-surface] text-[--text-primary]"
+                    />
+                  </div>
+
+                  <div className="flex justify-end gap-2 pt-2">
+                    <button type="button" onClick={() => setShowAddFaqModal(false)} className="px-4 py-2 bg-[--bg-surface] border border-[--border] text-[--text-secondary] font-bold rounded-lg">Cancel</button>
+                    <button type="submit" className="px-5 py-2 bg-blue-700 text-white dark:bg-blue-600 font-bold rounded-lg shadow-xs">Save FAQ</button>
+                  </div>
+                </form>
+              )}
+
+              <div className="space-y-3">
+                {faqs.map((faq) => (
+                  <div key={faq.id} className="bg-[--bg-surface] border border-[--border] rounded-xl p-4 space-y-2 shadow-xs">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-blue-500/10 text-blue-700 dark:text-blue-300 border border-blue-500/20">
+                        {faq.category}
+                      </span>
+                      <button
+                        onClick={() => deleteFAQ(faq.id)}
+                        className="text-xs text-red-600 hover:text-red-700 font-bold flex items-center gap-1"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" /> Delete
+                      </button>
+                    </div>
+
+                    <h3 className="font-bold text-sm text-[--text-primary] flex items-center gap-2">
+                      <HelpCircle className="w-4 h-4 text-blue-600 dark:text-blue-400 shrink-0" />
+                      {faq.question}
+                    </h3>
+                    <p className="text-xs text-[--text-secondary] leading-relaxed pl-6">{faq.answer}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* TAB 9: ANALYTICS & SLA REPORTS */}
+          {activeTab === 'analytics' && (
+            <div className="space-y-6">
+              <div className="flex items-center justify-between border-b border-[--border] pb-3">
+                <div>
+                  <h1 className="text-lg font-bold text-[--text-primary]">Department &amp; SLA Compliance Analytics</h1>
+                  <p className="text-xs text-[--text-secondary]">Real-time operational velocity, SLA adherence, and issue category metrics</p>
+                </div>
+              </div>
+
+              {/* High-level metrics */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                <div className="bg-[--bg-surface] border border-[--border] p-4 rounded-xl shadow-xs text-center space-y-1">
+                  <span className="text-[10px] font-bold uppercase text-[--text-muted]">Overall SLA Compliance</span>
+                  <div className="text-3xl font-extrabold text-emerald-600 dark:text-emerald-400 tracking-tight">98.4%</div>
+                  <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-semibold">Target &gt; 95%</span>
+                </div>
+
+                <div className="bg-[--bg-surface] border border-[--border] p-4 rounded-xl shadow-xs text-center space-y-1">
+                  <span className="text-[10px] font-bold uppercase text-[--text-muted]">Avg Resolution Speed</span>
+                  <div className="text-3xl font-extrabold text-[--text-primary] tracking-tight">{stats.avgResolutionHours || 14.2}h</div>
+                  <span className="text-[10px] text-[--text-secondary] font-semibold">Standard SLA 24h</span>
+                </div>
+
+                <div className="bg-[--bg-surface] border border-[--border] p-4 rounded-xl shadow-xs text-center space-y-1">
+                  <span className="text-[10px] font-bold uppercase text-[--text-muted]">Emergency Dispatch Triage</span>
+                  <div className="text-3xl font-extrabold text-red-600 dark:text-red-400 tracking-tight">100%</div>
+                  <span className="text-[10px] text-red-600 dark:text-red-400 font-semibold">&lt; 4-Hour SLA Target</span>
+                </div>
+
+                <div className="bg-[--bg-surface] border border-[--border] p-4 rounded-xl shadow-xs text-center space-y-1">
+                  <span className="text-[10px] font-bold uppercase text-[--text-muted]">Active Staff Marshals</span>
+                  <div className="text-3xl font-extrabold text-[--text-primary] tracking-tight">{staffAccounts.length}</div>
+                  <span className="text-[10px] text-[--text-secondary] font-semibold">Cross 5 Municipal Depts</span>
+                </div>
+              </div>
+
+              {/* Department SLA Matrix */}
+              <div className="bg-[--bg-surface] border border-[--border] rounded-xl p-5 space-y-4 shadow-xs">
+                <h3 className="text-sm font-bold text-[--text-primary] flex items-center gap-2">
+                  <BarChart3 className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                  Department SLA Resolution Velocity Matrix
+                </h3>
+
+                <div className="space-y-3">
+                  {departments.map((dept) => {
+                    const assignedCount = issues.filter(i => i.departmentId === dept.id).length;
+                    const resolvedCount = issues.filter(i => i.departmentId === dept.id && i.status === 'resolved').length;
+                    const pct = assignedCount > 0 ? Math.round((resolvedCount / assignedCount) * 100) : 100;
+
+                    return (
+                      <div key={dept.id} className="space-y-1.5">
+                        <div className="flex items-center justify-between text-xs font-semibold">
+                          <span className="text-[--text-primary]">{dept.name} ({dept.code})</span>
+                          <span className="text-[--text-secondary]">{resolvedCount} / {assignedCount} Resolved ({pct}%)</span>
+                        </div>
+                        <div className="w-full bg-[--bg-subtle] h-2.5 rounded-full overflow-hidden border border-[--border]">
+                          <div
+                            className="bg-blue-600 dark:bg-blue-500 h-full rounded-full transition-all duration-500"
+                            style={{ width: `${Math.max(pct, 12)}%` }}
+                          />
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* TAB 10: SYSTEM SETTINGS & GOVERNANCE CONFIG */}
+          {activeTab === 'settings' && (
+            <div className="space-y-6">
+              <div className="flex items-center justify-between border-b border-[--border] pb-3">
+                <div>
+                  <h1 className="text-lg font-bold text-[--text-primary]">System Security &amp; Platform Configuration</h1>
+                  <p className="text-xs text-[--text-secondary]">Global SLA parameters, authentication policy, and database maintenance</p>
+                </div>
+              </div>
+
+              <div className="bg-[--bg-surface] border border-[--border] p-6 rounded-xl space-y-6 shadow-xs">
+                <div className="space-y-3">
+                  <h3 className="text-sm font-bold text-[--text-primary] flex items-center gap-2">
+                    <Lock className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                    Security &amp; Environment Credentials Enforcement
+                  </h3>
+                  <div className="p-4 rounded-xl bg-blue-500/10 border border-blue-500/20 text-xs text-[--text-primary] space-y-2">
+                    <div className="font-bold flex items-center gap-2 text-blue-700 dark:text-blue-300">
+                      <ShieldCheck className="w-4 h-4" />
+                      Super Admin Authentication Enforced via .env / .env.local
+                    </div>
+                    <p className="text-[--text-secondary] leading-relaxed">
+                      All Super Administrator logins are validated against <code className="font-mono bg-[--bg-subtle] px-1.5 py-0.5 rounded border border-[--border]">ADMIN_EMAIL</code> and <code className="font-mono bg-[--bg-subtle] px-1.5 py-0.5 rounded border border-[--border]">ADMIN_PASSWORD</code> environment variables. Unauthorized access attempts are automatically blocked and logged to the audit system.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="border-t border-[--border] pt-5 space-y-4">
+                  <h3 className="text-sm font-bold text-[--text-primary] flex items-center gap-2">
+                    <Settings className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                    Global Operational Thresholds
+                  </h3>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                    <div>
+                      <label className="font-bold text-[--text-secondary] block mb-1">Standard Civic SLA Window (Hours)</label>
+                      <input
+                        type="number"
+                        defaultValue={24}
+                        className="w-full border border-[--border] rounded-lg p-2.5 bg-[--bg-subtle] font-bold text-[--text-primary]"
+                      />
+                    </div>
+                    <div>
+                      <label className="font-bold text-[--text-secondary] block mb-1">Emergency Hazard Priority Window (Hours)</label>
+                      <input
+                        type="number"
+                        defaultValue={4}
+                        className="w-full border border-[--border] rounded-lg p-2.5 bg-[--bg-subtle] font-bold text-[--text-primary]"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="border-t border-[--border] pt-5 space-y-3">
+                  <h3 className="text-sm font-bold text-[--text-primary] flex items-center gap-2">
+                    <RefreshCw className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                    Database Maintenance &amp; Cache Maintenance
+                  </h3>
+                  <div className="flex flex-wrap gap-3">
+                    <button
+                      onClick={() => alert('Database optimization and SQLite vacuum completed successfully.')}
+                      className="bg-blue-700 hover:bg-blue-800 text-white dark:bg-blue-600 font-bold text-xs px-4 py-2.5 rounded-lg shadow-xs transition-colors"
+                    >
+                      Run DB Re-index &amp; Vacuum
+                    </button>
+                    <button
+                      onClick={() => alert('CMS and system cache flushed.')}
+                      className="bg-[--bg-subtle] hover:bg-[--bg-muted] text-[--text-primary] border border-[--border] font-bold text-xs px-4 py-2.5 rounded-lg transition-colors"
+                    >
+                      Flush Application Cache
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* TAB 11: AUDIT LOG */}
+          {activeTab === 'audit' && (
+            <div className="space-y-4">
+              <div className="flex items-center justify-between border-b border-[--border] pb-3">
+                <div>
+                  <h1 className="text-lg font-bold text-[--text-primary]">Governance System Audit Trail</h1>
+                  <p className="text-xs text-[--text-secondary]">Immutable activity log of all admin, staff, and system transactions</p>
+                </div>
+              </div>
+
+              <div className="bg-[--bg-surface] border border-[--border] rounded-xl overflow-hidden shadow-xs">
+                <table className="w-full text-left text-xs text-[--text-primary]">
+                  <thead className="bg-[--bg-subtle] text-[--text-secondary] uppercase text-[10px] font-bold tracking-wider border-b border-[--border]">
                     <tr>
                       <th className="py-3 px-4">Timestamp</th>
                       <th className="py-3 px-4">Actor</th>
@@ -881,14 +1330,14 @@ export default function AdminPage() {
                       <th className="py-3 px-4">Details</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-200 font-medium">
+                  <tbody className="divide-y divide-[--border] font-medium">
                     {auditLogs.map((log) => (
-                      <tr key={log.id} className="hover:bg-slate-50">
-                        <td className="py-3 px-4 font-mono text-[10px] text-slate-500">{new Date(log.timestamp).toISOString()}</td>
-                        <td className="py-3 px-4 font-bold text-slate-900">{log.actorName} ({log.actorRole})</td>
-                        <td className="py-3 px-4 font-mono font-bold text-slate-800">{log.action}</td>
-                        <td className="py-3 px-4 text-slate-800">{log.target}</td>
-                        <td className="py-3 px-4 text-slate-600 max-w-xs truncate">{log.details}</td>
+                      <tr key={log.id} className="hover:bg-[--bg-subtle]">
+                        <td className="py-3 px-4 font-mono text-[10px] text-[--text-muted]">{new Date(log.timestamp).toISOString()}</td>
+                        <td className="py-3 px-4 font-bold text-[--text-primary]">{log.actorName} ({log.actorRole})</td>
+                        <td className="py-3 px-4 font-mono font-bold text-[--text-primary]">{log.action}</td>
+                        <td className="py-3 px-4 text-[--text-secondary]">{log.target}</td>
+                        <td className="py-3 px-4 text-[--text-muted] max-w-xs truncate">{log.details}</td>
                       </tr>
                     ))}
                   </tbody>

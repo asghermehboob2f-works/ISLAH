@@ -122,6 +122,45 @@ export async function POST(req: Request) {
     }
 
     // 3. Citizen or Admin Login
+    const envAdminEmail = (process.env.ADMIN_EMAIL || process.env.INITIAL_ADMIN_EMAIL || 'admin@islah-civic.org').toLowerCase();
+    const envAdminPass = process.env.ADMIN_PASSWORD || process.env.INITIAL_ADMIN_PASSWORD || 'AdminMasterPassword2026!';
+
+    if (role === 'admin' || queryStr === envAdminEmail) {
+      if (queryStr !== envAdminEmail || inputPass !== envAdminPass) {
+        return NextResponse.json(
+          { success: false, error: { code: 'INVALID_CREDENTIALS', message: 'Invalid Super Admin credentials. Password & email must match environment variable (.env) settings.' } },
+          { status: 401 }
+        );
+      }
+
+      let adminUserRecord = db.prepare('SELECT * FROM users WHERE role = ? OR LOWER(email) = ?').get('admin', envAdminEmail) as any;
+      if (!adminUserRecord) {
+        db.prepare(`
+          INSERT INTO users (id, email, name, role, status, civic_score, rank_title, ward, password_hash)
+          VALUES ('usr-super-admin', ?, 'Super Administrator', 'admin', 'ACTIVE', 5000, 'Super Administrator', 'Central Governance', ?)
+        `).run(envAdminEmail, hashPassword(envAdminPass));
+        adminUserRecord = db.prepare('SELECT * FROM users WHERE id = ?').get('usr-super-admin') as any;
+      }
+
+      const adminSessionUser: SessionUser = {
+        id: adminUserRecord?.id || 'usr-super-admin',
+        name: adminUserRecord?.name || 'Super Administrator',
+        email: envAdminEmail,
+        phone: '1-800-475-2424',
+        role: 'admin',
+        status: 'ACTIVE',
+        civicScore: 5000,
+        rankTitle: 'Super Administrator',
+        ward: 'Central Governance',
+        permissions: ['all_permissions']
+      };
+
+      await setAuthCookie(adminSessionUser);
+      logAudit('Super Administrator', 'admin', 'LOGIN', envAdminEmail, 'Super Admin logged in using environment variable credentials');
+
+      return NextResponse.json({ success: true, data: adminSessionUser });
+    }
+
     const user = db.prepare(`
       SELECT * FROM users WHERE LOWER(email) = ? OR (phone IS NOT NULL AND phone = ?)
     `).get(queryStr, queryStr) as any;
@@ -143,9 +182,8 @@ export async function POST(req: Request) {
     if (inputPass && user.password_hash) {
       const passHash = hashPassword(inputPass);
       const isLegacyDefault = user.password_hash === 'password123' && inputPass === 'password123';
-      const isAdminPass = user.role === 'admin' && (inputPass === 'AdminMasterPassword2026!' || inputPass === 'password123');
 
-      if (passHash !== user.password_hash && !isLegacyDefault && !isAdminPass) {
+      if (passHash !== user.password_hash && !isLegacyDefault) {
         return NextResponse.json(
           { success: false, error: { code: 'INVALID_CREDENTIALS', message: 'Incorrect password.' } },
           { status: 401 }
