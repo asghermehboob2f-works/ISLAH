@@ -77,23 +77,23 @@ export default function HomePage() {
       </section>
 
       {/* Emergency Lane */}
-      <section className="w-full py-12 sm:py-14 border-b border-[--border] bg-red-50/50 dark:bg-[#160b0e]/80">
+      <section className="w-full py-12 sm:py-14 border-b border-[--border] bg-[--bg-base]">
         <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
-          <div className="bg-[--bg-surface] border border-red-200 dark:border-red-900/80 rounded-xl p-6 sm:p-8 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center shadow-xs">
-            <div className="lg:col-span-8 space-y-2.5">
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-red-100 dark:bg-red-950 text-red-700 dark:text-red-300 border border-red-200 dark:border-red-800 text-[11px] font-bold uppercase tracking-wider">
-                <ShieldAlert className="w-3.5 h-3.5" />
+          <div className="bg-[#2d1917] border border-[#4a2824] rounded-2xl p-6 sm:p-8 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center shadow-lg">
+            <div className="lg:col-span-8 space-y-3">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-red-500/20 text-red-300 border border-red-500/30 text-[11px] font-bold uppercase tracking-wider">
+                <ShieldAlert className="w-3.5 h-3.5 text-red-400" />
                 Emergency Hazard Priority Lane
               </div>
-              <h3 className="text-xl sm:text-2xl font-bold text-[--text-primary]">Immediate Dispatch for Critical Civic Hazards</h3>
-              <p className="text-xs sm:text-sm text-[--text-secondary] leading-relaxed max-w-2xl">
+              <h3 className="text-xl sm:text-2xl font-extrabold text-white tracking-tight">Immediate Dispatch for Critical Civic Hazards</h3>
+              <p className="text-xs sm:text-sm text-stone-300 leading-relaxed max-w-2xl">
                 Exposed live wires, main road cave-ins, and severe water pipe bursts automatically bypass standard triage. Emergency tickets alert senior departmental marshals with a mandatory 4-hour SLA window.
               </p>
             </div>
             <div className="lg:col-span-4 flex justify-start lg:justify-end">
               <Link
                 href="/report?emergency=true"
-                className="bg-red-600 hover:bg-red-500 text-white text-xs font-bold uppercase tracking-wider px-6 py-3.5 rounded-lg transition-all active:scale-95 shadow-xs"
+                className="bg-red-600 hover:bg-red-500 text-white text-xs font-bold uppercase tracking-wider px-6 py-3.5 rounded-xl transition-all active:scale-95 shadow-md"
               >
                 Report Emergency Hazard
               </Link>
