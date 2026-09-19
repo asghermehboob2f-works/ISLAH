@@ -233,10 +233,10 @@ export function InteractiveMap({
       popupContent.className = 'p-1 font-sans max-w-[240px] text-[--text-primary]';
       popupContent.innerHTML = `
         <div class="flex items-center justify-between gap-2 border-b border-[--border] pb-1 mb-1.5">
-          <span class="text-[10px] font-mono font-bold text-blue-600 dark:text-blue-400">${issue.ticketNumber}</span>
-          <span class="text-[9px] font-extrabold uppercase px-1.5 py-0.5 rounded ${issue.emergency ? 'bg-red-100 dark:bg-red-950 text-red-700 dark:text-red-300' :
-          issue.status === 'resolved' ? 'bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300' :
-            issue.status === 'in_progress' ? 'bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-300' : 'bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300'
+          <span class="text-[10px] font-mono font-bold bg-blue-500/10 text-blue-700 dark:text-blue-300 border border-blue-500/20 px-1.5 py-0.5 rounded">${issue.ticketNumber}</span>
+          <span class="text-[9px] font-extrabold uppercase px-1.5 py-0.5 rounded border ${issue.emergency ? 'bg-red-500/10 text-red-700 dark:text-red-300 border-red-500/20' :
+          issue.status === 'resolved' ? 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border-emerald-500/20' :
+            issue.status === 'in_progress' ? 'bg-amber-500/10 text-amber-700 dark:text-amber-300 border-amber-500/20' : 'bg-blue-500/10 text-blue-700 dark:text-blue-300 border-blue-500/20'
         }">${issue.status.replace('_', ' ')}</span>
         </div>
         ${sensitiveBadge}

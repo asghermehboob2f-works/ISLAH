@@ -59,10 +59,10 @@ export function HeroSection() {
         <div className="w-full max-w-5xl xl:max-w-6xl 2xl:max-w-7xl mx-auto pt-6 border-t border-[--border]">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6 text-left w-full">
 
-            <div className="bg-[--bg-surface] border border-[--border] hover:border-[--border-subtle] p-3.5 rounded-xl flex flex-col justify-between space-y-2 transition-all shadow-xs">
+            <div className="bg-[--bg-surface] border border-[--border] hover:border-[--border-subtle] p-4 rounded-xl flex flex-col justify-between space-y-3 transition-all shadow-xs">
               <div className="flex items-center justify-between">
-                <div className="text-xl sm:text-2xl font-bold text-[--text-primary] font-mono tracking-tight">{totalReported.toLocaleString()}</div>
-                <span className="text-[9px] font-bold text-blue-700 dark:text-blue-300 bg-blue-50 dark:bg-blue-950/60 border border-blue-200 dark:border-blue-900 px-2 py-0.5 rounded font-mono uppercase">Tracked</span>
+                <div className="text-2xl sm:text-3xl font-extrabold text-[--text-primary] tracking-tight">{totalReported.toLocaleString()}</div>
+                <span className="text-[10px] font-extrabold text-blue-700 dark:text-blue-300 bg-blue-500/10 border border-blue-500/20 px-2.5 py-1 rounded-md uppercase tracking-wider">Tracked</span>
               </div>
               <div className="space-y-0.5">
                 <div className="text-xs font-bold text-[--text-primary] flex items-center gap-1.5">
@@ -73,10 +73,10 @@ export function HeroSection() {
               </div>
             </div>
 
-            <div className="bg-[--bg-surface] border border-[--border] hover:border-[--border-subtle] p-3.5 rounded-xl flex flex-col justify-between space-y-2 transition-all shadow-xs">
+            <div className="bg-[--bg-surface] border border-[--border] hover:border-[--border-subtle] p-4 rounded-xl flex flex-col justify-between space-y-3 transition-all shadow-xs">
               <div className="flex items-center justify-between">
-                <div className="text-xl sm:text-2xl font-bold text-[--text-primary] font-mono tracking-tight">{totalResolved.toLocaleString()}</div>
-                <span className="text-[9px] font-bold text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-900 px-2 py-0.5 rounded font-mono uppercase">Verified</span>
+                <div className="text-2xl sm:text-3xl font-extrabold text-[--text-primary] tracking-tight">{totalResolved.toLocaleString()}</div>
+                <span className="text-[10px] font-extrabold text-emerald-700 dark:text-emerald-300 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-1 rounded-md uppercase tracking-wider">Verified</span>
               </div>
               <div className="space-y-0.5">
                 <div className="text-xs font-bold text-[--text-primary] flex items-center gap-1.5">
@@ -87,10 +87,10 @@ export function HeroSection() {
               </div>
             </div>
 
-            <div className="bg-[--bg-surface] border border-[--border] hover:border-[--border-subtle] p-3.5 rounded-xl flex flex-col justify-between space-y-2 transition-all shadow-xs">
+            <div className="bg-[--bg-surface] border border-[--border] hover:border-[--border-subtle] p-4 rounded-xl flex flex-col justify-between space-y-3 transition-all shadow-xs">
               <div className="flex items-center justify-between">
-                <div className="text-xl sm:text-2xl font-bold text-[--text-primary] font-mono tracking-tight">{typeof avgTime === 'number' ? `${avgTime}h` : avgTime}</div>
-                <span className="text-[9px] font-bold text-amber-700 dark:text-amber-300 bg-amber-50 dark:bg-amber-950/60 border border-amber-200 dark:border-amber-900 px-2 py-0.5 rounded font-mono uppercase">SLA</span>
+                <div className="text-2xl sm:text-3xl font-extrabold text-[--text-primary] tracking-tight">{typeof avgTime === 'number' ? `${avgTime}h` : avgTime}</div>
+                <span className="text-[10px] font-extrabold text-amber-700 dark:text-amber-300 bg-amber-500/10 border border-amber-500/20 px-2.5 py-1 rounded-md uppercase tracking-wider">SLA</span>
               </div>
               <div className="space-y-0.5">
                 <div className="text-xs font-bold text-[--text-primary] flex items-center gap-1.5">

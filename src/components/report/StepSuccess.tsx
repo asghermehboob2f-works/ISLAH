@@ -50,7 +50,7 @@ export function StepSuccess({
         <div className="text-[10px] font-bold text-[--text-secondary] uppercase tracking-wider">
           Official Unique Ticket Identifier
         </div>
-        <div className="text-xl sm:text-2xl font-black font-mono text-[--text-primary] tracking-wider">
+        <div className="inline-block bg-blue-500/10 text-blue-700 dark:text-blue-300 border border-blue-500/20 px-4 py-1.5 rounded-lg text-xl sm:text-2xl font-black font-mono tracking-wider shadow-2xs">
           {ticketNumber}
         </div>
 

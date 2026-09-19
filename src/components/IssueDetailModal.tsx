@@ -118,20 +118,17 @@ export function IssueDetailModal({ issue, onClose }: IssueDetailModalProps) {
         >
 
         {/* Modal Top Header */}
-        <div
-          style={{ backgroundColor: 'var(--bg-subtle)' }}
-          className="bg-[#edf2f7] dark:bg-[#1c2333] px-6 py-4 flex items-center justify-between border-b border-[--border] shrink-0"
-        >
+        <div className="bg-[--bg-subtle] px-6 py-4 flex items-center justify-between border-b border-[--border] shrink-0">
           <div className="flex items-center gap-3">
-            <span className="text-xs font-mono font-bold bg-white dark:bg-[#21262d] text-[--text-primary] border border-[--border] px-2.5 py-1 rounded shadow-2xs">
+            <span className="text-xs font-mono font-bold bg-blue-500/10 text-blue-700 dark:text-blue-300 border border-blue-500/20 px-3 py-1 rounded-md shadow-2xs tracking-wide">
               {issue.ticketNumber}
             </span>
-            <span className="text-sm font-bold text-[--text-primary]">{issue.category}</span>
+            <span className="text-base font-bold text-[--text-primary]">{issue.category}</span>
           </div>
 
           <button
             onClick={onClose}
-            className="p-1.5 rounded-lg text-[--text-secondary] hover:text-[--text-primary] hover:bg-white/80 dark:hover:bg-white/10 transition-colors"
+            className="p-1.5 rounded-lg text-[--text-secondary] hover:text-[--text-primary] hover:bg-[--bg-surface] transition-colors"
             aria-label="Close dialog"
           >
             <X className="w-5 h-5" />
@@ -211,7 +208,7 @@ export function IssueDetailModal({ issue, onClose }: IssueDetailModalProps) {
                         <span className="flex items-center gap-1.5 text-emerald-600 dark:text-emerald-400 font-semibold">
                           <ShieldCheck className="w-4 h-4" /> AI Verification: {issue.aiVerificationStatus}
                         </span>
-                        <span className="font-mono font-semibold bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 px-2 py-0.5 rounded text-[11px]">
+                        <span className="font-mono font-semibold bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border border-emerald-500/20 px-2 py-0.5 rounded text-[11px]">
                           Match {issue.aiVerificationScore || 98}%
                         </span>
                       </div>
@@ -502,13 +499,10 @@ export function IssueDetailModal({ issue, onClose }: IssueDetailModalProps) {
         </div>
 
         {/* Modal Footer */}
-        <div
-          style={{ backgroundColor: 'var(--bg-subtle)' }}
-          className="bg-[#edf2f7] dark:bg-[#1c2333] px-6 py-3.5 border-t border-[--border] flex justify-end shrink-0"
-        >
+        <div className="bg-[--bg-subtle] px-6 py-3.5 border-t border-[--border] flex justify-end shrink-0">
           <button
             onClick={onClose}
-            className="px-4 py-2 bg-white dark:bg-[#21262d] text-[--text-primary] border border-[--border] text-xs font-bold rounded-lg hover:bg-[#edf2f7] dark:hover:bg-[#161b22] transition-colors shadow-2xs"
+            className="px-4 py-2 bg-[--bg-surface] text-[--text-primary] border border-[--border] text-xs font-bold rounded-lg hover:bg-[--bg-muted] transition-colors shadow-2xs"
           >
             Close
           </button>

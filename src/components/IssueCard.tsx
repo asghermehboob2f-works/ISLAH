@@ -76,7 +76,7 @@ export function IssueCard({ issue, onSelect, onUpvote }: IssueCardProps) {
       {/* Card Body */}
       <div className="p-4 space-y-2 flex-1">
         <div className="flex items-center justify-between text-xs">
-          <span className="text-[11px] font-mono font-semibold text-[--text-muted]">{issue.ticketNumber}</span>
+          <span className="text-[11px] font-mono font-bold bg-blue-500/10 text-blue-700 dark:text-blue-300 border border-blue-500/20 px-2 py-0.5 rounded tracking-wide">{issue.ticketNumber}</span>
           <SeverityDot severity={issue.severity} />
         </div>
 

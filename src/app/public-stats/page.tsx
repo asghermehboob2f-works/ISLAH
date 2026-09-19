@@ -40,25 +40,25 @@ export default function PublicStatsPage() {
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6">
         <div className="bg-[--bg-surface] border border-[--border] p-6 rounded-xl shadow-xs text-center space-y-1.5">
           <span className="text-xs font-bold text-[--text-muted] uppercase tracking-wider block">Total Reports</span>
-          <div className="text-3xl sm:text-4xl font-extrabold text-[--text-primary] font-mono tracking-tight">{stats.totalReported.toLocaleString()}</div>
+          <div className="text-3xl sm:text-4xl font-extrabold text-[--text-primary] tracking-tight">{stats.totalReported.toLocaleString()}</div>
           <p className="text-xs text-[--text-secondary] font-semibold">Civic observations</p>
         </div>
 
         <div className="bg-[--bg-surface] border border-[--border] p-6 rounded-xl shadow-xs text-center space-y-1.5">
           <span className="text-xs font-bold text-[--text-muted] uppercase tracking-wider block">Verified Solved</span>
-          <div className="text-3xl sm:text-4xl font-extrabold text-emerald-600 dark:text-emerald-400 font-mono tracking-tight">{stats.totalResolved.toLocaleString()}</div>
+          <div className="text-3xl sm:text-4xl font-extrabold text-emerald-600 dark:text-emerald-400 tracking-tight">{stats.totalResolved.toLocaleString()}</div>
           <p className="text-xs text-emerald-600 dark:text-emerald-400 font-semibold">AI photo cross-verified</p>
         </div>
 
         <div className="bg-[--bg-surface] border border-[--border] p-6 rounded-xl shadow-xs text-center space-y-1.5">
           <span className="text-xs font-bold text-[--text-muted] uppercase tracking-wider block">Avg Resolution Time</span>
-          <div className="text-3xl sm:text-4xl font-extrabold text-[--text-primary] font-mono tracking-tight">{stats.avgResolutionHours || 14}h</div>
+          <div className="text-3xl sm:text-4xl font-extrabold text-[--text-primary] tracking-tight">{stats.avgResolutionHours || 14}h</div>
           <p className="text-xs text-[--text-secondary] font-semibold">Target SLA &lt; 24h</p>
         </div>
 
         <div className="bg-[--bg-surface] border border-[--border] p-6 rounded-xl shadow-xs text-center space-y-1.5">
           <span className="text-xs font-bold text-[--text-muted] uppercase tracking-wider block">SLA Adherence</span>
-          <div className="text-3xl sm:text-4xl font-extrabold text-blue-700 dark:text-blue-400 font-mono tracking-tight">{stats.slaCompliancePercent || 98}%</div>
+          <div className="text-3xl sm:text-4xl font-extrabold text-blue-700 dark:text-blue-400 tracking-tight">{stats.slaCompliancePercent || 98}%</div>
           <p className="text-xs text-[--text-secondary] font-semibold">On-time resolution</p>
         </div>
       </div>
@@ -84,7 +84,7 @@ export default function PublicStatsPage() {
                 <div>
                   <h2 className="text-xl font-bold text-[--text-primary] tracking-tight flex items-center gap-2">
                     Environment &amp; Wildlife Safeguard Dashboard
-                    <span className="text-[10px] bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 font-mono px-2.5 py-0.5 rounded border border-emerald-200 dark:border-emerald-800 font-bold">
+                    <span className="text-[10px] bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 font-mono px-2.5 py-0.5 rounded border border-emerald-500/20 font-bold">
                       Live Ecological Telemetry
                     </span>
                   </h2>

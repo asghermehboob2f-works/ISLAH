@@ -87,7 +87,7 @@ export default function MyReportsPage() {
             <div>
               <h1 className="text-xl font-bold text-[--text-primary] flex items-center gap-2">
                 {user.name}'s Submissions Portal
-                <span className="text-xs bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-900 px-2 py-0.5 rounded font-mono font-bold">
+                <span className="text-xs bg-blue-500/10 text-blue-700 dark:text-blue-300 border border-blue-500/20 px-2 py-0.5 rounded font-mono font-bold">
                   {user.ward}
                 </span>
               </h1>

@@ -607,7 +607,7 @@ export default function AdminPage() {
                     <tbody className="divide-y divide-slate-200 font-medium">
                       {filteredReports.map((r) => (
                         <tr key={r.id} className="hover:bg-slate-50">
-                          <td className="py-3 px-4 font-mono font-bold text-slate-900">{r.ticketNumber}</td>
+                          <td className="py-3 px-4 font-mono"><span className="bg-blue-500/10 text-blue-700 dark:text-blue-300 border border-blue-500/20 px-2 py-0.5 rounded text-[11px] font-bold tracking-wide">{r.ticketNumber}</span></td>
                           <td className="py-3 px-4 max-w-xs">
                             <div className="font-bold text-slate-900 truncate">{r.title}</div>
                             <div className="text-[10px] text-slate-500">{r.location.ward}</div>

@@ -123,7 +123,7 @@ export default function CitizenDashboardPage() {
             <div>
               <div className="flex items-center gap-2">
                 <h1 className="text-xl sm:text-2xl font-extrabold text-[--text-primary]">{user.name}</h1>
-                <span className="bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-900 text-[10px] font-bold px-2.5 py-0.5 rounded font-mono uppercase">
+                <span className="bg-blue-500/10 text-blue-700 dark:text-blue-300 border border-blue-500/20 text-[10px] font-extrabold px-2.5 py-0.5 rounded uppercase tracking-wider">
                   Verified Resident
                 </span>
               </div>

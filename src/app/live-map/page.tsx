@@ -86,7 +86,7 @@ export default function LiveMapPage() {
             <div>
               <h1 className="text-sm font-bold text-[--text-primary] flex items-center gap-2 tracking-tight">
                 {mapDomain === 'civic' ? 'Public Live Civic Issue Map' : 'Public Ecological & Wildlife Map'}
-                <span className="text-[10px] font-mono bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 px-2 py-0.5 rounded border border-blue-200 dark:border-blue-900 font-bold">
+                <span className="text-[10px] font-mono bg-blue-500/10 text-blue-700 dark:text-blue-300 px-2 py-0.5 rounded border border-blue-500/20 font-bold">
                   {domainIssues.length} Pins
                 </span>
               </h1>
@@ -253,41 +253,41 @@ export default function LiveMapPage() {
       {/* Summary Telemetry Chips */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3.5">
         <div className="bg-[--bg-surface] rounded-xl p-4 border border-[--border] shadow-xs flex items-center gap-3">
-          <div className="w-9 h-9 rounded-lg bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-900 flex items-center justify-center shrink-0 font-bold">
+          <div className="w-9 h-9 rounded-lg bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20 flex items-center justify-center shrink-0 font-bold">
             <Activity className="w-4 h-4" />
           </div>
           <div>
-            <div className="text-lg font-bold font-mono text-[--text-primary]">{filteredIssues.length}</div>
+            <div className="text-xl font-extrabold text-[--text-primary] tracking-tight">{filteredIssues.length}</div>
             <div className="text-[11px] text-[--text-secondary] font-semibold">Visible Map Pins</div>
           </div>
         </div>
 
         <div className="bg-[--bg-surface] rounded-xl p-4 border border-[--border] shadow-xs flex items-center gap-3">
-          <div className="w-9 h-9 rounded-lg bg-amber-50 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 border border-amber-200 dark:border-amber-900 flex items-center justify-center shrink-0 font-bold">
+          <div className="w-9 h-9 rounded-lg bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 flex items-center justify-center shrink-0 font-bold">
             <Clock className="w-4 h-4" />
           </div>
           <div>
-            <div className="text-lg font-bold font-mono text-[--text-primary]">{activeCount}</div>
+            <div className="text-xl font-extrabold text-[--text-primary] tracking-tight">{activeCount}</div>
             <div className="text-[11px] text-[--text-secondary] font-semibold">Active SLA Tickets</div>
           </div>
         </div>
 
         <div className="bg-[--bg-surface] rounded-xl p-4 border border-[--border] shadow-xs flex items-center gap-3">
-          <div className="w-9 h-9 rounded-lg bg-red-50 dark:bg-red-950/60 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-900 flex items-center justify-center shrink-0 font-bold">
+          <div className="w-9 h-9 rounded-lg bg-red-500/10 text-red-600 dark:text-red-400 border border-red-500/20 flex items-center justify-center shrink-0 font-bold">
             <AlertTriangle className="w-4 h-4" />
           </div>
           <div>
-            <div className="text-lg font-bold font-mono text-[--text-primary]">{emergencyCount}</div>
+            <div className="text-xl font-extrabold text-[--text-primary] tracking-tight">{emergencyCount}</div>
             <div className="text-[11px] text-[--text-secondary] font-semibold">Priority Hazards</div>
           </div>
         </div>
 
         <div className="bg-[--bg-surface] rounded-xl p-4 border border-[--border] shadow-xs flex items-center gap-3">
-          <div className="w-9 h-9 rounded-lg bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-900 flex items-center justify-center shrink-0 font-bold">
+          <div className="w-9 h-9 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 flex items-center justify-center shrink-0 font-bold">
             <CheckCircle2 className="w-4 h-4" />
           </div>
           <div>
-            <div className="text-lg font-bold font-mono text-[--text-primary]">{resolvedCount}</div>
+            <div className="text-xl font-extrabold text-[--text-primary] tracking-tight">{resolvedCount}</div>
             <div className="text-[11px] text-[--text-secondary] font-semibold">Verified Solved</div>
           </div>
         </div>

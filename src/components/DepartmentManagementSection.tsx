@@ -311,7 +311,7 @@ export function DepartmentManagementSection() {
                       {/* Department Name & Code */}
                       <td className="py-3.5 px-4">
                         <div className="flex items-center gap-2">
-                          <span className="font-mono font-bold bg-slate-100 text-slate-800 border border-slate-300 text-[10px] px-2 py-0.5 rounded">
+                          <span className="font-mono font-bold bg-blue-500/10 text-blue-700 dark:text-blue-300 border border-blue-500/20 text-[10px] px-2 py-0.5 rounded">
                             {dept.code}
                           </span>
                           <div>

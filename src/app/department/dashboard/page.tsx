@@ -57,7 +57,7 @@ export default function DepartmentDashboardPage() {
       <div className="bg-[--bg-surface] text-[--text-primary] rounded-xl p-6 sm:p-8 border border-[--border] shadow-xs flex flex-col lg:flex-row lg:items-center justify-between gap-6">
         <div className="space-y-2.5">
           <div className="flex items-center gap-2 flex-wrap">
-            <span className="bg-amber-50 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-900 text-[10px] font-bold px-2.5 py-0.5 rounded font-mono uppercase">
+            <span className="bg-amber-500/10 text-amber-700 dark:text-amber-300 border border-amber-500/20 text-[10px] font-bold px-2.5 py-0.5 rounded font-mono uppercase">
               Department Operational Dashboard
             </span>
             {user?.staffId && (
@@ -66,7 +66,7 @@ export default function DepartmentDashboardPage() {
               </span>
             )}
             {staffDepartment && (
-              <span className="bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-900 text-[10px] font-bold px-2.5 py-0.5 rounded">
+              <span className="bg-blue-500/10 text-blue-700 dark:text-blue-300 border border-blue-500/20 text-[10px] font-bold px-2.5 py-0.5 rounded">
                 {staffDepartment.name}
               </span>
             )}
@@ -204,10 +204,12 @@ export default function DepartmentDashboardPage() {
                     className={`hover:bg-[--bg-subtle] transition-colors ${ticket.emergency ? 'bg-red-50/40 dark:bg-red-950/20' : ''
                       }`}
                   >
-                    <td className="py-3.5 px-4 font-mono font-bold text-[--text-primary]">
-                      {ticket.ticketNumber}
+                    <td className="py-3.5 px-4 font-mono">
+                      <span className="bg-blue-500/10 text-blue-700 dark:text-blue-300 border border-blue-500/20 px-2.5 py-0.5 rounded text-xs font-bold tracking-wide">
+                        {ticket.ticketNumber}
+                      </span>
                       {ticket.emergency && (
-                        <span className="block text-[9px] text-red-600 dark:text-red-400 font-extrabold uppercase">Emergency</span>
+                        <span className="block text-[9px] text-red-600 dark:text-red-400 font-extrabold uppercase mt-1">Emergency</span>
                       )}
                     </td>
                     <td className="py-3.5 px-4 max-w-xs">

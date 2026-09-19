@@ -47,7 +47,7 @@ export default function PublicTicketTrackerPage() {
           <ArrowLeft className="w-4 h-4" /> Back to Dashboard
         </Link>
 
-        <span className="text-xs bg-[--bg-surface] text-[--text-primary] border border-[--border] px-3 py-1 rounded-md font-mono font-bold shadow-xs">
+        <span className="text-xs bg-blue-500/10 text-blue-700 dark:text-blue-300 border border-blue-500/20 px-3 py-1 rounded-md font-mono font-bold shadow-2xs tracking-wide">
           {ticket.ticketNumber}
         </span>
       </div>
@@ -81,7 +81,7 @@ export default function PublicTicketTrackerPage() {
             </span>
 
             {ticket.nextActionDate && (
-              <span className="text-[11px] bg-amber-50 text-amber-900 border border-amber-300 font-mono font-bold px-3 py-1 rounded dark:bg-amber-950 dark:text-amber-300 dark:border-amber-800">
+              <span className="text-[11px] bg-amber-500/10 text-amber-700 dark:text-amber-300 border border-amber-500/20 font-mono font-bold px-3 py-1 rounded">
                 Next Action: {ticket.nextActionDate}
               </span>
             )}
