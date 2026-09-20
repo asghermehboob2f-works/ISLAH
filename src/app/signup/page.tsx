@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useApp } from '@/context/AppContext';
 import {
@@ -62,8 +63,15 @@ export default function SignupPage() {
 
       {/* Header */}
       <div className="text-center space-y-2">
-        <div className="w-12 h-12 rounded-xl bg-blue-600 flex items-center justify-center text-white mx-auto shadow-sm">
-          <ShieldCheck className="w-7 h-7 stroke-[2.2]" />
+        <div className="flex items-center justify-center mx-auto">
+          <Image
+            src="/logo.png?v=4"
+            alt="Islah Logo"
+            width={64}
+            height={64}
+            className="h-14 w-auto object-contain"
+            unoptimized
+          />
         </div>
         <h1 className="text-2xl font-extrabold text-[--text-primary] tracking-tight">
           Create your account
