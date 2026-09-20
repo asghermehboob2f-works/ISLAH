@@ -2,12 +2,12 @@
 
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useApp } from '@/context/AppContext';
 import {
   Building2,
   Trees,
   ArrowRight,
-  Lock,
   LogIn,
   UserPlus,
   ShieldCheck,
@@ -29,8 +29,15 @@ export default function ReportHubPage() {
   if (!user || activeRole !== 'citizen') {
     return (
       <div className="w-full max-w-xl mx-auto px-4 py-16 text-center space-y-8 font-sans">
-        <div className="w-16 h-16 rounded-xl bg-blue-600/10 border border-blue-600/20 text-[--accent] flex items-center justify-center mx-auto shadow-sm">
-          <Lock className="w-8 h-8" />
+        <div className="flex items-center justify-center mx-auto">
+          <Image
+            src="/logo.png?v=4"
+            alt="Islah Logo"
+            width={64}
+            height={64}
+            className="h-14 w-auto object-contain"
+            unoptimized
+          />
         </div>
 
         <div className="space-y-3">

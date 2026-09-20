@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useApp } from '@/context/AppContext';
 import { StepperHeader } from '@/components/report/StepperHeader';
 import { StepSelectCategory } from '@/components/report/StepSelectCategory';
@@ -12,7 +13,7 @@ import { StepDetails } from '@/components/report/StepDetails';
 import { StepVisibilityEmergency } from '@/components/report/StepVisibilityEmergency';
 import { StepReview } from '@/components/report/StepReview';
 import { StepSuccess } from '@/components/report/StepSuccess';
-import { Building2, Lock, ArrowLeft, ChevronRight, ChevronLeft } from 'lucide-react';
+import { Building2, ArrowLeft, ChevronRight, ChevronLeft } from 'lucide-react';
 import { IssueCategory, EnvironmentalSubcategory } from '@/lib/types';
 import { getDepartmentForCategory } from '@/lib/departmentRouting';
 
@@ -49,8 +50,15 @@ export default function CivicReportWizardPage() {
   if (!user || activeRole !== 'citizen') {
     return (
       <div className="w-full max-w-md mx-auto px-4 py-16 text-center space-y-6 font-sans">
-        <div className="w-14 h-14 rounded-xl bg-blue-600/10 text-[--accent] border border-blue-600/20 flex items-center justify-center mx-auto shadow-sm">
-          <Lock className="w-7 h-7" />
+        <div className="flex items-center justify-center mx-auto">
+          <Image
+            src="/logo.png?v=4"
+            alt="Islah Logo"
+            width={56}
+            height={56}
+            className="h-12 w-auto object-contain"
+            unoptimized
+          />
         </div>
         <div className="space-y-2">
           <h2 className="text-2xl font-bold text-[--text-primary]">Authentication Required</h2>

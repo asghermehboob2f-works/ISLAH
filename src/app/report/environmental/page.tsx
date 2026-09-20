@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useApp } from '@/context/AppContext';
 import { StepperHeader } from '@/components/report/StepperHeader';
 import { StepSelectCategory } from '@/components/report/StepSelectCategory';
@@ -12,7 +13,7 @@ import { StepDetails } from '@/components/report/StepDetails';
 import { StepVisibilityEmergency } from '@/components/report/StepVisibilityEmergency';
 import { StepReview } from '@/components/report/StepReview';
 import { StepSuccess } from '@/components/report/StepSuccess';
-import { Trees, Lock, ArrowLeft, ChevronRight, ChevronLeft, EyeOff } from 'lucide-react';
+import { Trees, ArrowLeft, ChevronRight, ChevronLeft, EyeOff } from 'lucide-react';
 import { EnvironmentalSubcategory } from '@/lib/types';
 import { getDepartmentForCategory } from '@/lib/departmentRouting';
 
@@ -50,8 +51,15 @@ export default function EnvironmentalReportWizardPage() {
   if (!user || activeRole !== 'citizen') {
     return (
       <div className="w-full max-w-md mx-auto px-4 py-16 text-center space-y-6 font-sans">
-        <div className="w-14 h-14 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 flex items-center justify-center mx-auto shadow-sm">
-          <Lock className="w-7 h-7" />
+        <div className="flex items-center justify-center mx-auto">
+          <Image
+            src="/logo.png?v=4"
+            alt="Islah Logo"
+            width={56}
+            height={56}
+            className="h-12 w-auto object-contain"
+            unoptimized
+          />
         </div>
         <div className="space-y-2">
           <h2 className="text-2xl font-bold text-[--text-primary]">Authentication Required</h2>
