@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef, useState, useMemo } from 'react';
 import { CivicIssue } from '@/lib/types';
-import { MapPin, Filter, RefreshCw } from 'lucide-react';
+import { MapPin, Filter, RefreshCw, Locate } from 'lucide-react';
 
 interface InteractiveMapProps {
   issues?: CivicIssue[];
@@ -32,6 +32,7 @@ export function InteractiveMap({
   const leafletLibRef = useRef<any>(null);
 
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [selectedStatus, setSelectedStatus] = useState<string>('all');
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [isMapReady, setIsMapReady] = useState(false);
 
@@ -43,9 +44,10 @@ export function InteractiveMap({
   const filteredIssues = useMemo(() => {
     return publicIssues.filter((iss) => {
       if (selectedCategory !== 'all' && iss.category !== selectedCategory) return false;
+      if (selectedStatus !== 'all' && iss.status !== selectedStatus) return false;
       return true;
     });
-  }, [publicIssues, selectedCategory]);
+  }, [publicIssues, selectedCategory, selectedStatus]);
 
   const categories = useMemo(() => {
     return Array.from(new Set(publicIssues.map((i) => i.category)));
@@ -277,21 +279,37 @@ export function InteractiveMap({
     setTimeout(() => setIsRefreshing(false), 800);
   };
 
+  const handleRecenter = () => {
+    const map = mapInstanceRef.current;
+    if (!map) return;
+    if (filteredIssues.length > 0) {
+      const bounds: [number, number][] = filteredIssues
+        .filter((i) => typeof i.location?.lat === 'number' && typeof i.location?.lng === 'number')
+        .map((i) => [i.location.lat, i.location.lng]);
+      if (bounds.length > 0) {
+        map.fitBounds(bounds, { padding: [50, 50], maxZoom: 15 });
+        return;
+      }
+    }
+    map.setView([initialLat || 28.6139, initialLng || 77.2090], 12);
+  };
+
   return (
     <div className={`relative w-full ${height} bg-[--bg-surface] rounded-xl overflow-hidden border border-[--border] shadow-xs flex flex-col`}>
 
       {/* Map Control Header Bar */}
       {!pickerMode && (
-        <div className="absolute top-3 left-1/2 -translate-x-1/2 z-[400] max-w-[calc(100%-24px)] w-max flex flex-wrap items-center justify-center gap-2 bg-[--bg-surface]/95 backdrop-blur-md border border-[--border] p-1.5 px-3 rounded-lg shadow-sm">
+        <div className="absolute top-3 left-1/2 -translate-x-1/2 z-[400] max-w-[calc(100%-24px)] w-max flex items-center gap-2 sm:gap-3 bg-[--bg-surface]/95 backdrop-blur-md border border-[--border] p-1.5 px-3.5 rounded-full shadow-md transition-all font-sans">
 
+          {/* Category Filter */}
           <div className="flex items-center gap-1.5">
             <Filter className="w-3.5 h-3.5 text-[--text-secondary]" />
             <select
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
-              className="bg-[--bg-subtle] text-[11px] font-semibold text-[--text-primary] border border-[--border] rounded-md px-2 py-1 focus:outline-none focus:ring-1 focus:ring-[--ring]"
+              className="bg-transparent text-[11px] font-bold text-[--text-primary] focus:outline-none cursor-pointer pr-1"
             >
-              <option value="all">All Categories ({publicIssues.length} Public Pins)</option>
+              <option value="all">All Categories</option>
               {categories.map((c) => (
                 <option key={c} value={c}>
                   {c}
@@ -300,19 +318,52 @@ export function InteractiveMap({
             </select>
           </div>
 
-          <div className="flex items-center gap-2">
-            <span className="text-[10px] text-[--text-muted] font-mono hidden sm:inline">
-              DB Source of Truth
-            </span>
+          <div className="h-4 w-[1px] bg-[--border]" />
+
+          {/* Status Filter */}
+          <div className="flex items-center gap-1.5">
+            <select
+              value={selectedStatus}
+              onChange={(e) => setSelectedStatus(e.target.value)}
+              className="bg-transparent text-[11px] font-bold text-[--text-secondary] hover:text-[--text-primary] focus:outline-none cursor-pointer"
+            >
+              <option value="all">All Statuses</option>
+              <option value="REPORTED">Reported / New</option>
+              <option value="IN_PROGRESS">In Progress</option>
+              <option value="RESOLVED">Resolved</option>
+            </select>
+          </div>
+
+          <div className="h-4 w-[1px] bg-[--border]" />
+
+          {/* Live Pin Count Pill */}
+          <div className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-[10px] font-bold border border-emerald-500/20 shrink-0">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+            <span>{filteredIssues.length} Pins</span>
+          </div>
+
+          <div className="h-4 w-[1px] bg-[--border] hidden sm:block" />
+
+          {/* Actions: Recenter & Refresh */}
+          <div className="flex items-center gap-1">
+            <button
+              type="button"
+              onClick={handleRecenter}
+              title="Recenter Map"
+              className="p-1 text-[--text-secondary] hover:text-[--text-primary] hover:bg-[--bg-subtle] rounded-full transition-colors"
+            >
+              <Locate className="w-3.5 h-3.5" />
+            </button>
             <button
               type="button"
               onClick={handleManualRefresh}
-              className="flex items-center gap-1 px-2.5 py-1 bg-[--bg-subtle] hover:bg-[--bg-surface] text-[--text-primary] text-[11px] font-bold rounded-md border border-[--border] transition-all active:scale-95"
+              title="Refresh Pins"
+              className="p-1 text-[--text-secondary] hover:text-[--text-primary] hover:bg-[--bg-subtle] rounded-full transition-colors"
             >
-              <RefreshCw className={`w-3 h-3 ${isRefreshing ? 'animate-spin text-[--text-primary]' : ''}`} />
-              <span>Refresh Pins</span>
+              <RefreshCw className={`w-3.5 h-3.5 ${isRefreshing ? 'animate-spin text-blue-600' : ''}`} />
             </button>
           </div>
+
         </div>
       )}
 
