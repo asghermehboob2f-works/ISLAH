@@ -282,7 +282,7 @@ export function InteractiveMap({
 
       {/* Map Control Header Bar */}
       {!pickerMode && (
-        <div className="absolute top-3 left-3 right-3 sm:right-auto sm:max-w-fit z-[400] flex flex-wrap items-center justify-between gap-2 bg-[--bg-surface]/95 backdrop-blur-md border border-[--border] p-1.5 px-3 rounded-lg shadow-sm">
+        <div className="absolute top-3 left-1/2 -translate-x-1/2 z-[400] max-w-[calc(100%-24px)] w-max flex flex-wrap items-center justify-center gap-2 bg-[--bg-surface]/95 backdrop-blur-md border border-[--border] p-1.5 px-3 rounded-lg shadow-sm">
 
           <div className="flex items-center gap-1.5">
             <Filter className="w-3.5 h-3.5 text-[--text-secondary]" />
