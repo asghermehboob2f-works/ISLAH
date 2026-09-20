@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useApp } from '@/context/AppContext';
 import { IssueCard } from '@/components/IssueCard';
 import { IssueDetailModal } from '@/components/IssueDetailModal';
@@ -32,8 +33,15 @@ export default function MyReportsPage() {
   if (!user || activeRole !== 'citizen') {
     return (
       <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 py-20 text-center space-y-6 font-sans">
-        <div className="w-14 h-14 rounded-xl bg-[--bg-surface] text-blue-600 dark:text-blue-400 flex items-center justify-center mx-auto border border-[--border] shadow-xs">
-          <User className="w-7 h-7" />
+        <div className="flex items-center justify-center mx-auto">
+          <Image
+            src="/logo.png?v=4"
+            alt="Islah Logo"
+            width={64}
+            height={64}
+            className="h-14 w-auto object-contain"
+            unoptimized
+          />
         </div>
         <div className="space-y-2 max-w-md mx-auto">
           <h2 className="text-2xl font-bold text-[--text-primary]">My Reports</h2>
