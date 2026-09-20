@@ -282,14 +282,14 @@ export function InteractiveMap({
 
       {/* Map Control Header Bar */}
       {!pickerMode && (
-        <div className="absolute top-4 left-4 right-4 z-[400] flex flex-wrap items-center justify-between gap-3 bg-[--bg-surface] border border-[--border] p-2.5 rounded-lg shadow-sm">
+        <div className="absolute top-3 left-3 right-3 sm:right-auto sm:max-w-fit z-[400] flex flex-wrap items-center justify-between gap-2 bg-[--bg-surface]/95 backdrop-blur-md border border-[--border] p-1.5 px-3 rounded-lg shadow-sm">
 
-          <div className="flex items-center gap-2">
-            <Filter className="w-4 h-4 text-[--text-secondary]" />
+          <div className="flex items-center gap-1.5">
+            <Filter className="w-3.5 h-3.5 text-[--text-secondary]" />
             <select
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
-              className="bg-[--bg-subtle] text-xs font-semibold text-[--text-primary] border border-[--border] rounded-lg px-2.5 py-1.5 focus:outline-none focus:ring-1 focus:ring-[--ring]"
+              className="bg-[--bg-subtle] text-[11px] font-semibold text-[--text-primary] border border-[--border] rounded-md px-2 py-1 focus:outline-none focus:ring-1 focus:ring-[--ring]"
             >
               <option value="all">All Categories ({publicIssues.length} Public Pins)</option>
               {categories.map((c) => (
@@ -301,15 +301,15 @@ export function InteractiveMap({
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="text-[11px] text-[--text-muted] font-mono hidden sm:inline">
+            <span className="text-[10px] text-[--text-muted] font-mono hidden sm:inline">
               DB Source of Truth
             </span>
             <button
               type="button"
               onClick={handleManualRefresh}
-              className="flex items-center gap-1.5 px-3 py-1.5 bg-[--bg-subtle] hover:bg-[--bg-surface] text-[--text-primary] text-xs font-bold rounded-lg border border-[--border] transition-all active:scale-95"
+              className="flex items-center gap-1 px-2.5 py-1 bg-[--bg-subtle] hover:bg-[--bg-surface] text-[--text-primary] text-[11px] font-bold rounded-md border border-[--border] transition-all active:scale-95"
             >
-              <RefreshCw className={`w-3.5 h-3.5 ${isRefreshing ? 'animate-spin text-[--text-primary]' : ''}`} />
+              <RefreshCw className={`w-3 h-3 ${isRefreshing ? 'animate-spin text-[--text-primary]' : ''}`} />
               <span>Refresh Pins</span>
             </button>
           </div>
